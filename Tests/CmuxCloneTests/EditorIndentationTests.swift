@@ -26,23 +26,36 @@ final class EditorIndentationTests: XCTestCase {
         XCTAssertEqual(editor.selectedRange(), NSRange(location: 0, length: 34))
     }
 
-    func testMatchesControlledShippedMethodFixtures() throws {
-        let root = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-        let data = try Data(contentsOf: root.appendingPathComponent("analysis/vscode/indentation/shipped-probe.json"))
-        let probe = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        let fixtures = try XCTUnwrap(probe["results"] as? [[String: Any]])
+    func testIndentationFixturesAreSelfContained() {
+        // Synthetic cases stay with the tests so a clean checkout needs no local reports.
+        let fixtures: [(name: String, text: String, selection: [Int], outdent: Bool, expected: String)] = [
+            ("partial multiline", "first: item\nsecond: item\nlast: item", [1, 2, 2, 7], false,
+             "    first: item\n    second: item\nlast: item"),
+            ("end at next line start", "red\ngreen\nblue", [1, 1, 3, 1], false,
+             "    red\n    green\nblue"),
+            ("empty lines skipped", "x\n\n  \ny", [1, 1, 4, 2], false,
+             "    x\n\n    \n    y"),
+            ("ragged indentation", "  x\n     y", [1, 1, 2, 7], false,
+             "    x\n        y"),
+            ("full single line", "cat\ndog", [1, 1, 1, 4], false, "    cat\ndog"),
+            ("partial single line replaces selection", "planet", [1, 2, 1, 4], false, "p   net"),
+            ("caret advances to stop", "cat", [1, 3, 1, 3], false, "ca  t"),
+            ("outdent multiline", "    x\n  y\nz", [1, 1, 3, 2], true, "x\ny\nz"),
+            ("outdent caret", "      cat", [1, 9, 1, 9], true, "    cat"),
+            ("mixed tabs normalize to spaces", "\t x\n\ty", [1, 1, 2, 3], false,
+             "        x\n        y"),
+            ("outdent tab", "\t  x", [1, 4, 1, 4], true, "    x"),
+        ]
         for fixture in fixtures {
-            let name = try XCTUnwrap(fixture["name"] as? String)
-            let text = try XCTUnwrap(fixture["text"] as? String)
-            let selection = try XCTUnwrap(fixture["selection"] as? [Int])
-            let lines = text.components(separatedBy: "\n")
+            let lines = fixture.text.components(separatedBy: "\n")
             func offset(_ line: Int, _ column: Int) -> Int {
                 lines.prefix(line - 1).reduce(0) { $0 + ($1 as NSString).length + 1 } + column - 1
             }
+            let selection = fixture.selection
             let start = offset(selection[0], selection[1]), end = offset(selection[2], selection[3])
-            let view = editor(text, selection: NSRange(location: start, length: end - start))
-            if fixture["outdent"] as? Bool == true { view.insertBacktab(nil) } else { view.insertTab(nil) }
-            XCTAssertEqual(view.string, fixture["actual"] as? String, name)
+            let view = editor(fixture.text, selection: NSRange(location: start, length: end - start))
+            if fixture.outdent { view.insertBacktab(nil) } else { view.insertTab(nil) }
+            XCTAssertEqual(view.string, fixture.expected, fixture.name)
         }
     }
 
