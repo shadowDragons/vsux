@@ -18,6 +18,11 @@ trap 'rm -rf "$staging"' EXIT
 app="$staging/vsux.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/ghostty" "$app/Contents/Resources/terminfo"
 cp "$bin_path/CmuxClone" "$app/Contents/MacOS/vsux"
+# Release binaries must not carry STABS entries containing local build paths.
+# Keep debug builds intact, and strip before creating the code signature.
+if [[ "$configuration" == release ]]; then
+  xcrun strip -S "$app/Contents/MacOS/vsux"
+fi
 # Bundle.module resolves this location with the Xcode SwiftPM driver; the parser
 # also checks this explicit packaged location for the native SwiftPM driver.
 resource_bundle="$bin_path/CmuxClone_CmuxClone.bundle"
