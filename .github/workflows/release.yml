@@ -1,0 +1,96 @@
+name: Build macOS release draft
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag, for example v0.1.0
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      - name: Validate tag
+        id: version
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          echo "tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${RELEASE_TAG#v}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: refs/tags/${{ steps.version.outputs.tag }}
+          persist-credentials: false
+      - name: Verify toolchain and dependencies
+        run: |
+          test "$(uname -m)" = arm64
+          swift --version
+          Scripts/bootstrap-ghostty.sh
+          python3 Scripts/check-localizations.py
+      - name: Test application and security behavior
+        run: |
+          swift test
+      - name: Audit and build website
+        working-directory: web
+        run: |
+          npm ci
+          npm audit
+          npm run build
+      - name: Build and verify DMG
+        env:
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: Scripts/release.sh "$RELEASE_VERSION"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: macos-arm64-release
+          path: |
+            dist/vsux-*.dmg
+            dist/vsux-*.dmg.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  draft:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: macos-arm64-release
+          path: dist
+      - name: Create release draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          Native macOS terminal with workspaces, split panes, file editing, Markdown preview, Git, and saved commands.
+
+          Download the DMG and its SHA-256 file below. Apple Silicon only; macOS 14 or later.
+          Drag vsux.app to Applications. Verify with `shasum -a 256 -c vsux-*.dmg.sha256`.
+
+          This preview is ad-hoc signed and is not notarized by Apple. If macOS blocks it, verify the source and checksum, then use System Settings → Privacy & Security → Open Anyway. Do not disable Gatekeeper globally.
+
+          Workspaces must be trusted: terminals, Git hooks, and credential/remote helpers run with your user permissions.
+          NOTES
+          gh release create "$RELEASE_TAG" --verify-tag --draft --prerelease \
+            --title "vsux $RELEASE_TAG (Apple Silicon preview)" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" dist/*.dmg dist/*.sha256

@@ -1,0 +1,7 @@
+VS Code Codicons — git-branch icon
+Microsoft and Codicons contributors
+Source: https://github.com/microsoft/vscode-codicons/blob/main/src/icons/git-branch.svg
+License: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+Changes: original SVG path translated into a native SwiftUI Path; geometry unchanged.
+Original SVG retained in Resources/Icons/git-branch.svg.

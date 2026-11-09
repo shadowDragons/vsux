@@ -1,0 +1,2290 @@
+{
+  "files": {
+    "zh": "文件",
+    "en": "Files"
+  },
+  "quick_open_file": {
+    "zh": "快速打开文件…",
+    "en": "Quick Open File…"
+  },
+  "filter_file_names": {
+    "zh": "筛选文件名",
+    "en": "Filter file names"
+  },
+  "clear_filter": {
+    "zh": "清除筛选",
+    "en": "Clear Filter"
+  },
+  "go_to_file": {
+    "zh": "转到文件",
+    "en": "Go to File"
+  },
+  "loading_files": {
+    "zh": "正在读取文件…",
+    "en": "Loading files…"
+  },
+  "no_files_found": {
+    "zh": "未找到文件",
+    "en": "No files found"
+  },
+  "recently_opened": {
+    "zh": "最近打开",
+    "en": "Recently opened"
+  },
+  "new_file": {
+    "zh": "新建文件",
+    "en": "New File"
+  },
+  "new_folder": {
+    "zh": "新建文件夹",
+    "en": "New Folder"
+  },
+  "refresh_file_tree": {
+    "zh": "刷新文件树",
+    "en": "Refresh File Tree"
+  },
+  "show_hidden_files": {
+    "zh": "显示隐藏文件",
+    "en": "Show Hidden Files"
+  },
+  "collapse_all_folders": {
+    "zh": "折叠所有文件夹",
+    "en": "Collapse All Folders"
+  },
+  "reveal_workspace_in_finder": {
+    "zh": "在 Finder 中显示工作区",
+    "en": "Reveal Workspace in Finder"
+  },
+  "file_actions": {
+    "zh": "文件操作",
+    "en": "File Actions"
+  },
+  "this_folder_is_empty": {
+    "zh": "此目录为空",
+    "en": "This folder is empty"
+  },
+  "new_file_9": {
+    "zh": "新建文件…",
+    "en": "New File…"
+  },
+  "new_folder_10": {
+    "zh": "新建文件夹…",
+    "en": "New Folder…"
+  },
+  "refresh": {
+    "zh": "刷新",
+    "en": "Refresh"
+  },
+  "folder": {
+    "zh": "，文件夹",
+    "en": ", folder"
+  },
+  "file": {
+    "zh": "，文件",
+    "en": ", file"
+  },
+  "open_and_keep": {
+    "zh": "打开并保留",
+    "en": "Open and Keep"
+  },
+  "rename": {
+    "zh": "重命名…",
+    "en": "Rename…"
+  },
+  "reveal_in_finder": {
+    "zh": "在 Finder 中显示",
+    "en": "Reveal in Finder"
+  },
+  "copy_path": {
+    "zh": "复制路径",
+    "en": "Copy Path"
+  },
+  "move_to_trash": {
+    "zh": "移到废纸篓…",
+    "en": "Move to Trash…"
+  },
+  "rename_19": {
+    "zh": "重命名",
+    "en": "Rename"
+  },
+  "move_to_the_trash": {
+    "zh": "将“{0}”移到废纸篓？",
+    "en": "Move “{0}” to the Trash?"
+  },
+  "the_folder_and_its_contents_will_be_moved": {
+    "zh": "文件夹及其内容将移到 macOS 废纸篓。",
+    "en": "The folder and its contents will be moved to the macOS Trash."
+  },
+  "you_can_restore_this_file_from_the_macos": {
+    "zh": "可在 macOS 废纸篓中恢复此文件。",
+    "en": "You can restore this file from the macOS Trash."
+  },
+  "move_to_trash_23": {
+    "zh": "移到废纸篓",
+    "en": "Move to Trash"
+  },
+  "save_current_file_s": {
+    "zh": "保存当前文件（⌘S）",
+    "en": "Save Current File (⌘S)"
+  },
+  "unsaved": {
+    "zh": "未保存",
+    "en": "Unsaved"
+  },
+  "close_preview": {
+    "zh": "关闭预览",
+    "en": "Close Preview"
+  },
+  "preview_to_the_side": {
+    "zh": "侧边预览",
+    "en": "Preview to the Side"
+  },
+  "open_or_close_markdown_preview_to_the_side": {
+    "zh": "在右侧打开或关闭 Markdown 预览（⇧⌘V）",
+    "en": "Open or close Markdown preview to the side (⇧⌘V)"
+  },
+  "the_file_on_disk_changed_your_edits_have": {
+    "zh": "磁盘文件已更改，当前编辑内容已保留。",
+    "en": "The file on disk changed. Your edits have been kept."
+  },
+  "reload": {
+    "zh": "重新载入",
+    "en": "Reload"
+  },
+  "discard_unsaved_edits": {
+    "zh": "放弃未保存的编辑？",
+    "en": "Discard unsaved edits?"
+  },
+  "the_contents_on_disk_will_be_loaded": {
+    "zh": "将使用磁盘上的文件内容。",
+    "en": "The contents on disk will be loaded."
+  },
+  "overwrite_disk_file": {
+    "zh": "覆盖磁盘",
+    "en": "Overwrite Disk File"
+  },
+  "overwrite_the_file_on_disk": {
+    "zh": "覆盖磁盘文件？",
+    "en": "Overwrite the file on disk?"
+  },
+  "changes_saved_by_another_application_will_be_replaced": {
+    "zh": "其他程序保存的更改将被当前内容替换。",
+    "en": "Changes saved by another application will be replaced with the current contents."
+  },
+  "overwrite": {
+    "zh": "覆盖",
+    "en": "Overwrite"
+  },
+  "ln_col": {
+    "zh": "行 {0}，列 {1}",
+    "en": "Ln {0}, Col {1}"
+  },
+  "large_file_highlighting_paused": {
+    "zh": "大文件：暂停高亮",
+    "en": "Large file: highlighting paused"
+  },
+  "select_a_file_on_the_left_to_start": {
+    "zh": "从左侧选择文件开始编辑",
+    "en": "Select a file on the left to start editing"
+  },
+  "click_to_preview_double_click_to_keep_s": {
+    "zh": "单击预览 · 双击保留标签 · ⌘S 保存",
+    "en": "Click to preview · Double-click to keep · ⌘S to save"
+  },
+  "close_unsaved_changes": {
+    "zh": "关闭（有未保存更改）",
+    "en": "Close (unsaved changes)"
+  },
+  "close_file": {
+    "zh": "关闭文件",
+    "en": "Close File"
+  },
+  "save": {
+    "zh": "保存",
+    "en": "Save"
+  },
+  "keep_open": {
+    "zh": "保留打开",
+    "en": "Keep Open"
+  },
+  "close": {
+    "zh": "关闭",
+    "en": "Close"
+  },
+  "dismiss_error": {
+    "zh": "关闭错误信息",
+    "en": "Dismiss Error"
+  },
+  "unable_to_read_workspaces_the_original_file_was": {
+    "zh": "无法读取工作区，原文件已保留：{0}",
+    "en": "Unable to read workspaces. The original file was preserved: {0}"
+  },
+  "unable_to_save_workspaces": {
+    "zh": "无法保存工作区：{0}",
+    "en": "Unable to save workspaces: {0}"
+  },
+  "the_workspace_configuration_is_invalid_or_exceeds_the": {
+    "zh": "工作区配置格式不正确或超过大小限制。",
+    "en": "The workspace configuration is invalid or exceeds the size limit."
+  },
+  "this_workspace_configuration_version_is_not_supported": {
+    "zh": "不支持此工作区配置版本。",
+    "en": "This workspace configuration version is not supported."
+  },
+  "resize_markdown_split": {
+    "zh": "调整 Markdown 分栏宽度",
+    "en": "Resize Markdown Split"
+  },
+  "preview": {
+    "zh": "预览 {0}",
+    "en": "Preview {0}"
+  },
+  "sync_scrolling": {
+    "zh": "同步滚动",
+    "en": "Sync Scrolling"
+  },
+  "close_markdown_preview": {
+    "zh": "关闭 Markdown 预览",
+    "en": "Close Markdown Preview"
+  },
+  "markdown_preview": {
+    "zh": "Markdown 预览",
+    "en": "Markdown Preview"
+  },
+  "allow_this_terminal_to_read_the_clipboard": {
+    "zh": "允许终端读取剪贴板？",
+    "en": "Allow this terminal to read the clipboard?"
+  },
+  "the_current_terminal_program_is_requesting_access_to": {
+    "zh": "当前终端程序请求读取系统剪贴板。",
+    "en": "The current terminal program is requesting access to the system clipboard."
+  },
+  "allow": {
+    "zh": "允许",
+    "en": "Allow"
+  },
+  "allow_writing_to_the_clipboard": {
+    "zh": "允许写入剪贴板？",
+    "en": "Allow writing to the clipboard?"
+  },
+  "the_current_terminal_program_is_requesting_to_update": {
+    "zh": "当前终端程序请求更新系统剪贴板。",
+    "en": "The current terminal program is requesting to update the system clipboard."
+  },
+  "unable_to_create_the_ghostty_terminal": {
+    "zh": "无法创建 Ghostty 终端。",
+    "en": "Unable to create the Ghostty terminal."
+  },
+  "copy": {
+    "zh": "复制",
+    "en": "Copy"
+  },
+  "paste": {
+    "zh": "粘贴",
+    "en": "Paste"
+  },
+  "select_all": {
+    "zh": "全选",
+    "en": "Select All"
+  },
+  "clear_terminal": {
+    "zh": "清屏",
+    "en": "Clear Terminal"
+  },
+  "plain_text": {
+    "zh": "纯文本",
+    "en": "Plain Text"
+  },
+  "new_branch": {
+    "zh": "新建分支…",
+    "en": "New Branch…"
+  },
+  "create_from_branch_or_tag": {
+    "zh": "从指定分支或标签新建…",
+    "en": "Create from Branch or Tag…"
+  },
+  "checkout_detached_head": {
+    "zh": "以游离 HEAD 检出…",
+    "en": "Checkout Detached HEAD…"
+  },
+  "select_a_branch_or_tag_to_check_out": {
+    "zh": "选择要切换的分支或标签",
+    "en": "Select a branch or tag to check out"
+  },
+  "select_a_starting_point_for_the_new_branch": {
+    "zh": "选择新分支的起点",
+    "en": "Select a starting point for the new branch"
+  },
+  "select_a_reference_to_check_out_as_detached": {
+    "zh": "选择引用，以游离 HEAD 检出",
+    "en": "Select a reference to check out as detached HEAD"
+  },
+  "create_and_check_out_branch": {
+    "zh": "新建并切换分支",
+    "en": "Create and Check Out Branch"
+  },
+  "detached_head": {
+    "zh": "游离 HEAD",
+    "en": "Detached HEAD"
+  },
+  "starting_point": {
+    "zh": "起点：",
+    "en": "Starting point: "
+  },
+  "enter_a_new_branch_name": {
+    "zh": "输入新分支名称",
+    "en": "Enter a new branch name"
+  },
+  "back": {
+    "zh": "返回",
+    "en": "Back"
+  },
+  "create_and_check_out": {
+    "zh": "创建并切换",
+    "en": "Create and Check Out"
+  },
+  "search_branches_tags_or_commit_details": {
+    "zh": "搜索分支、标签或提交信息",
+    "en": "Search branches, tags, or commit details"
+  },
+  "loading_branches": {
+    "zh": "正在读取分支…",
+    "en": "Loading branches…"
+  },
+  "retry": {
+    "zh": "重试",
+    "en": "Retry"
+  },
+  "no_matching_branches_or_tags": {
+    "zh": "没有匹配的分支或标签",
+    "en": "No matching branches or tags"
+  },
+  "detached_head_is_not_linked_to_a_branch": {
+    "zh": "检出后不关联任何分支；新提交需另建分支保存。",
+    "en": "Detached HEAD is not linked to a branch. Create a branch to keep new commits."
+  },
+  "remote_branches_create_a_local_tracking_branch_tags": {
+    "zh": "远程分支会建立本地跟踪分支，标签会以游离 HEAD 检出。",
+    "en": "Remote branches create a local tracking branch. Tags are checked out as detached HEAD."
+  },
+  "select_confirm": {
+    "zh": "↑↓ 选择  ↩ 确认",
+    "en": "↑↓ Select  ↩ Confirm"
+  },
+  "current_branch": {
+    "zh": "当前分支",
+    "en": "Current Branch"
+  },
+  "pull_fast_forward_only": {
+    "zh": "Pull（拉取，快进）",
+    "en": "Pull (Fast-forward Only)"
+  },
+  "push": {
+    "zh": "Push（推送）",
+    "en": "Push"
+  },
+  "clone": {
+    "zh": "Clone（克隆）…",
+    "en": "Clone…"
+  },
+  "fetch": {
+    "zh": "Fetch（获取）",
+    "en": "Fetch"
+  },
+  "fetch_all_remotes_and_prune": {
+    "zh": "获取全部远程并清理失效引用",
+    "en": "Fetch All Remotes and Prune"
+  },
+  "pull_fast_forward_only_92": {
+    "zh": "拉取（仅快进）",
+    "en": "Pull (Fast-forward Only)"
+  },
+  "pull_with_rebase": {
+    "zh": "拉取并变基",
+    "en": "Pull with Rebase"
+  },
+  "push_current_branch_set_upstream": {
+    "zh": "推送当前分支 / 设置上游",
+    "en": "Push Current Branch / Set Upstream"
+  },
+  "push_all_local_tags": {
+    "zh": "推送全部本地标签",
+    "en": "Push All Local Tags"
+  },
+  "show_commit_history": {
+    "zh": "查看提交历史",
+    "en": "Show Commit History"
+  },
+  "show_git_output": {
+    "zh": "显示 Git 输出",
+    "en": "Show Git Output"
+  },
+  "copy_repository_path": {
+    "zh": "复制仓库路径",
+    "en": "Copy Repository Path"
+  },
+  "actions_for": {
+    "zh": "{0} 仓库操作",
+    "en": "Actions for {0}"
+  },
+  "checkout_to": {
+    "zh": "Checkout to…（切换到）",
+    "en": "Checkout to…"
+  },
+  "remote_tracking_branches": {
+    "zh": "远程跟踪分支",
+    "en": "Remote-tracking Branches"
+  },
+  "create_and_check_out_local_branch": {
+    "zh": "新建并切换本地分支…",
+    "en": "Create and Check Out Local Branch…"
+  },
+  "commit": {
+    "zh": "Commit（提交）",
+    "en": "Commit"
+  },
+  "commit_staged_changes": {
+    "zh": "提交已暂存更改…",
+    "en": "Commit Staged Changes…"
+  },
+  "stage_all_and_commit": {
+    "zh": "暂存全部并提交…",
+    "en": "Stage All and Commit…"
+  },
+  "amend_last_commit": {
+    "zh": "修改最近一次提交…",
+    "en": "Amend Last Commit…"
+  },
+  "undo_last_commit_keep_changes": {
+    "zh": "撤销最近一次提交（保留更改）…",
+    "en": "Undo Last Commit (Keep Changes)…"
+  },
+  "undo_the_last_commit": {
+    "zh": "撤销最近一次提交？",
+    "en": "Undo the last commit?"
+  },
+  "the_current_branch_will_move_back_one_commit": {
+    "zh": "当前分支回退一次提交，更改保留在暂存区。已推送的历史也会受到影响。",
+    "en": "The current branch will move back one commit, keeping changes staged. Published history will also be affected."
+  },
+  "undo_commit": {
+    "zh": "撤销提交",
+    "en": "Undo Commit"
+  },
+  "changes": {
+    "zh": "Changes（更改）",
+    "en": "Changes"
+  },
+  "stage_all_changes": {
+    "zh": "暂存全部更改",
+    "en": "Stage All Changes"
+  },
+  "unstage_all_changes": {
+    "zh": "取消全部暂存",
+    "en": "Unstage All Changes"
+  },
+  "show_working_tree_diff": {
+    "zh": "查看工作区差异",
+    "en": "Show Working Tree Diff"
+  },
+  "show_staged_diff": {
+    "zh": "查看已暂存差异",
+    "en": "Show Staged Diff"
+  },
+  "discard_unstaged_changes_in_tracked_files": {
+    "zh": "放弃已跟踪文件的未暂存更改…",
+    "en": "Discard Unstaged Changes in Tracked Files…"
+  },
+  "discard_unstaged_changes_in_files": {
+    "zh": "放弃 {0} 个文件的未暂存更改？",
+    "en": "Discard unstaged changes in {0} files?"
+  },
+  "files_will_be_restored_to_the_staged_version": {
+    "zh": "文件会恢复为暂存区版本，尚未暂存的编辑无法通过此应用恢复。",
+    "en": "Files will be restored to the staged version. Unstaged edits cannot be recovered through this application."
+  },
+  "discard_changes": {
+    "zh": "放弃更改",
+    "en": "Discard Changes"
+  },
+  "move_untracked_files_to_trash": {
+    "zh": "将未跟踪文件移到废纸篓…",
+    "en": "Move Untracked Files to Trash…"
+  },
+  "move_untracked_files_to_the_trash": {
+    "zh": "将 {0} 个未跟踪文件移到废纸篓？",
+    "en": "Move {0} untracked files to the Trash?"
+  },
+  "you_can_restore_them_from_the_macos_trash": {
+    "zh": "可在 macOS 废纸篓中恢复。",
+    "en": "You can restore them from the macOS Trash."
+  },
+  "branch": {
+    "zh": "Branch（分支）",
+    "en": "Branch"
+  },
+  "new_local_branch": {
+    "zh": "新建本地分支…",
+    "en": "New Local Branch…"
+  },
+  "rename_current_branch": {
+    "zh": "重命名当前分支…",
+    "en": "Rename Current Branch…"
+  },
+  "rename_branch": {
+    "zh": "重命名分支",
+    "en": "Rename Branch"
+  },
+  "delete_merged_local_branch": {
+    "zh": "删除已合并的本地分支",
+    "en": "Delete Merged Local Branch"
+  },
+  "delete_local_branch": {
+    "zh": "删除本地分支 {0}？",
+    "en": "Delete local branch {0}?"
+  },
+  "git_will_refuse_to_delete_a_branch_that": {
+    "zh": "Git 会拒绝删除尚未合并的分支。",
+    "en": "Git will refuse to delete a branch that has not been merged."
+  },
+  "delete_branch": {
+    "zh": "删除分支",
+    "en": "Delete Branch"
+  },
+  "merge_branch_into_current_branch": {
+    "zh": "合并分支到当前分支",
+    "en": "Merge Branch into Current Branch"
+  },
+  "rebase_current_branch_onto": {
+    "zh": "将当前分支变基到",
+    "en": "Rebase Current Branch onto"
+  },
+  "rebase_onto": {
+    "zh": "变基到 {0}？",
+    "en": "Rebase onto {0}?"
+  },
+  "rebasing_rewrites_commits_on_the_current_branch_if": {
+    "zh": "变基会重写当前分支上的提交；如有冲突，可在菜单中继续或中止。",
+    "en": "Rebasing rewrites commits on the current branch. If conflicts occur, continue or abort from the menu."
+  },
+  "rebase": {
+    "zh": "变基",
+    "en": "Rebase"
+  },
+  "abort_merge": {
+    "zh": "中止合并",
+    "en": "Abort Merge"
+  },
+  "continue_rebase": {
+    "zh": "继续变基",
+    "en": "Continue Rebase"
+  },
+  "abort_rebase": {
+    "zh": "中止变基",
+    "en": "Abort Rebase"
+  },
+  "remote": {
+    "zh": "Remote（远程仓库）",
+    "en": "Remote"
+  },
+  "add_remote": {
+    "zh": "添加远程仓库…",
+    "en": "Add Remote…"
+  },
+  "remote_name": {
+    "zh": "远程仓库名称",
+    "en": "Remote Name"
+  },
+  "remote_url_https_ssh_local_path": {
+    "zh": "远程仓库地址（HTTPS / SSH / 本地路径）",
+    "en": "Remote URL (HTTPS / SSH / local path)"
+  },
+  "show_url": {
+    "zh": "查看地址",
+    "en": "Show URL"
+  },
+  "remote_url": {
+    "zh": " · 远程地址",
+    "en": " · Remote URL"
+  },
+  "change_url": {
+    "zh": "更改地址…",
+    "en": "Change URL…"
+  },
+  "new_url_for": {
+    "zh": "{0} 的新地址",
+    "en": "New URL for {0}"
+  },
+  "rename_remote": {
+    "zh": "重命名远程仓库",
+    "en": "Rename Remote"
+  },
+  "remove": {
+    "zh": "移除…",
+    "en": "Remove…"
+  },
+  "remove_remote": {
+    "zh": "移除远程仓库 {0}？",
+    "en": "Remove remote {0}?"
+  },
+  "this_removes_local_remote_configuration_and_tracking_references": {
+    "zh": "删除本机的远程配置和跟踪引用，不会删除服务器上的仓库。",
+    "en": "This removes local remote configuration and tracking references. The repository on the server is kept."
+  },
+  "remove_151": {
+    "zh": "移除",
+    "en": "Remove"
+  },
+  "stash": {
+    "zh": "Stash（暂存工作现场）",
+    "en": "Stash"
+  },
+  "stash_changes_include_untracked": {
+    "zh": "保存工作现场（含未跟踪文件）…",
+    "en": "Stash Changes (Include Untracked)…"
+  },
+  "stash_changes": {
+    "zh": "保存工作现场",
+    "en": "Stash Changes"
+  },
+  "apply_and_keep_stash": {
+    "zh": "应用并保留 Stash",
+    "en": "Apply and Keep Stash"
+  },
+  "apply_and_drop_stash": {
+    "zh": "应用并删除 Stash",
+    "en": "Apply and Drop Stash"
+  },
+  "drop_stash": {
+    "zh": "删除 Stash…",
+    "en": "Drop Stash…"
+  },
+  "delete": {
+    "zh": "删除 {0}？",
+    "en": "Delete {0}?"
+  },
+  "the_saved_stash_will_be_deleted_and_cannot": {
+    "zh": "保存的工作现场将被删除，无法通过此应用恢复。",
+    "en": "The saved stash will be deleted and cannot be recovered through this application."
+  },
+  "delete_160": {
+    "zh": "删除",
+    "en": "Delete"
+  },
+  "tags": {
+    "zh": "Tags（标签）",
+    "en": "Tags"
+  },
+  "create_tag_at_head": {
+    "zh": "在 HEAD 创建标签…",
+    "en": "Create Tag at HEAD…"
+  },
+  "create_tag": {
+    "zh": "创建标签",
+    "en": "Create Tag"
+  },
+  "checkout_tag_detached_head": {
+    "zh": "切换到标签（游离 HEAD）",
+    "en": "Checkout Tag (Detached HEAD)"
+  },
+  "delete_local_tag": {
+    "zh": "删除本地标签…",
+    "en": "Delete Local Tag…"
+  },
+  "delete_local_tag_166": {
+    "zh": "删除本地标签 {0}？",
+    "en": "Delete local tag {0}?"
+  },
+  "tags_on_the_remote_server_will_be_kept": {
+    "zh": "不会删除远程服务器上的标签。",
+    "en": "Tags on the remote server will be kept."
+  },
+  "delete_tag": {
+    "zh": "删除标签",
+    "en": "Delete Tag"
+  },
+  "worktrees": {
+    "zh": "Worktrees（工作树）",
+    "en": "Worktrees"
+  },
+  "new_worktree_detached_head": {
+    "zh": "新建工作树（游离 HEAD）…",
+    "en": "New Worktree (Detached HEAD)…"
+  },
+  "new_worktree": {
+    "zh": "新建 Worktree",
+    "en": "New Worktree"
+  },
+  "create": {
+    "zh": "创建",
+    "en": "Create"
+  },
+  "remove_this_worktree": {
+    "zh": "移除此工作树…",
+    "en": "Remove This Worktree…"
+  },
+  "remove_this_worktree_174": {
+    "zh": "移除此工作树？",
+    "en": "Remove this worktree?"
+  },
+  "git_will_refuse_to_remove_a_locked_worktree": {
+    "zh": "{0}\nGit 会拒绝移除有未提交更改或已锁定的工作树。",
+    "en": "{0}\nGit will refuse to remove a locked worktree or one with uncommitted changes."
+  },
+  "remove_worktree": {
+    "zh": "移除工作树",
+    "en": "Remove Worktree"
+  },
+  "new_local_branch_177": {
+    "zh": "新建本地分支",
+    "en": "New Local Branch"
+  },
+  "amend_the_last_commit": {
+    "zh": "修改最近一次提交？",
+    "en": "Amend the last commit?"
+  },
+  "this_replaces_the_last_commit_and_changes_its": {
+    "zh": "此操作会替换最近提交，提交 ID 会改变。",
+    "en": "This replaces the last commit and changes its commit ID."
+  },
+  "continue": {
+    "zh": "继续",
+    "en": "Continue"
+  },
+  "amend_last_commit_181": {
+    "zh": "修改最近一次提交",
+    "en": "Amend Last Commit"
+  },
+  "commit_to": {
+    "zh": "提交到 {0}",
+    "en": "Commit to {0}"
+  },
+  "repository_url_to_clone_https_ssh_local_path": {
+    "zh": "克隆仓库地址（HTTPS / SSH / 本地路径）",
+    "en": "Repository URL to Clone (HTTPS / SSH / local path)"
+  },
+  "clone_into_a_new_folder": {
+    "zh": "克隆到新目录",
+    "en": "Clone into a New Folder"
+  },
+  "clone_185": {
+    "zh": "克隆",
+    "en": "Clone"
+  },
+  "the_name_cannot_be_empty_contain_or_line": {
+    "zh": "名称不能为空，且不能包含 /、换行或使用 .、..。",
+    "en": "The name cannot be empty, contain / or line breaks, or be . or ..."
+  },
+  "this_operation_is_limited_to_the_current_workspace": {
+    "zh": "此操作仅允许在当前工作区目录内进行。",
+    "en": "This operation is limited to the current workspace folder."
+  },
+  "open_this_symbolic_link_in_finder_to_avoid": {
+    "zh": "为避免修改链接目标，请在 Finder 中打开此符号链接。",
+    "en": "Open this symbolic link in Finder to avoid modifying its target."
+  },
+  "the_file_exceeds_mb_open_it_in_an": {
+    "zh": "文件超过 4 MB，请使用外部编辑器打开。",
+    "en": "The file exceeds 4 MB. Open it in an external editor."
+  },
+  "this_file_is_not_utf_text_and_cannot": {
+    "zh": "此文件不是 UTF-8 文本，无法在代码编辑器中打开。",
+    "en": "This file is not UTF-8 text and cannot be opened in the code editor."
+  },
+  "the_file_has_unsaved_changes_save_or_close": {
+    "zh": "文件有未保存的更改，请先保存或关闭该文件。",
+    "en": "The file has unsaved changes. Save or close it first."
+  },
+  "the_file_was_changed_by_another_application_reload": {
+    "zh": "文件已被其他程序修改。请重新载入，或明确选择覆盖磁盘文件。",
+    "en": "The file was changed by another application. Reload it or explicitly overwrite the file on disk."
+  },
+  "unable_to_read_folder": {
+    "zh": "无法读取目录：{0}",
+    "en": "Unable to read folder: {0}"
+  },
+  "unable_to_open": {
+    "zh": "打开失败：{0}",
+    "en": "Unable to open: {0}"
+  },
+  "unable_to_save": {
+    "zh": "保存失败：{0}",
+    "en": "Unable to save: {0}"
+  },
+  "unable_to_reload": {
+    "zh": "重新载入失败：{0}",
+    "en": "Unable to reload: {0}"
+  },
+  "save_changes_to": {
+    "zh": "保存对“{0}”的更改？",
+    "en": "Save changes to “{0}”?"
+  },
+  "unsaved_changes_will_be_lost_when_closing": {
+    "zh": "关闭前未保存的更改将丢失。",
+    "en": "Unsaved changes will be lost when closing."
+  },
+  "don_t_save": {
+    "zh": "不保存",
+    "en": "Don't Save"
+  },
+  "cancel": {
+    "zh": "取消",
+    "en": "Cancel"
+  },
+  "unable_to_read_the_command_library_the_original": {
+    "zh": "无法读取命令库，原文件已保留：{0}",
+    "en": "Unable to read the command library. The original file was preserved: {0}"
+  },
+  "unable_to_migrate_the_command_library_the_original": {
+    "zh": "无法迁移命令库，原文件已保留：{0}",
+    "en": "Unable to migrate the command library. The original file was preserved: {0}"
+  },
+  "import_failed": {
+    "zh": "导入失败：{0}",
+    "en": "Import failed: {0}"
+  },
+  "import_into_this_workspace_only_keeping_existing_commands": {
+    "zh": "仅导入到当前工作区，保留已有命令；名称和正文都相同的命令会跳过。",
+    "en": "Import into this workspace only, keeping existing commands. Commands with identical names and contents are skipped."
+  },
+  "commands_json": {
+    "zh": "{0}-常用命令.json",
+    "en": "{0}-commands.json"
+  },
+  "export_commands_from_the_current_workspace_only": {
+    "zh": "仅导出当前工作区的命令。",
+    "en": "Export commands from the current workspace only."
+  },
+  "export_failed": {
+    "zh": "导出失败：{0}",
+    "en": "Export failed: {0}"
+  },
+  "unable_to_save_commands": {
+    "zh": "保存命令失败：{0}",
+    "en": "Unable to save commands: {0}"
+  },
+  "the_command_library_file_exceeds_mb": {
+    "zh": "命令库文件超过 8 MB。",
+    "en": "The command library file exceeds 8 MB."
+  },
+  "this_command_library_version_is_not_supported": {
+    "zh": "不支持此命令库版本。",
+    "en": "This command library version is not supported."
+  },
+  "the_command_library_is_invalid_names_and_contents": {
+    "zh": "命令库格式不正确：名称和内容不能为空，标识不能重复。",
+    "en": "The command library is invalid: names and contents cannot be empty, and IDs must be unique."
+  },
+  "unable_to_restore_file_tabs_the_configuration_is": {
+    "zh": "无法恢复文件标签：配置格式不正确。",
+    "en": "Unable to restore file tabs: the configuration is invalid."
+  },
+  "some_file_tabs_could_not_be_restored_files": {
+    "zh": "部分文件标签无法恢复（文件可能已删除、移动或无法读取）：",
+    "en": "Some file tabs could not be restored (files may have been moved, deleted, or become unreadable): "
+  },
+  "local_terminal": {
+    "zh": "本地终端",
+    "en": "Local Terminal"
+  },
+  "create_workspace": {
+    "zh": "创建工作区",
+    "en": "Create Workspace"
+  },
+  "select_a_starting_folder_for_the_new_workspace": {
+    "zh": "选择新工作区的启动目录",
+    "en": "Select a starting folder for the new workspace"
+  },
+  "rename_workspace": {
+    "zh": "重命名工作区",
+    "en": "Rename Workspace"
+  },
+  "workspace_description": {
+    "zh": "工作区描述",
+    "en": "Workspace Description"
+  },
+  "close_219": {
+    "zh": "关闭“{0}”？",
+    "en": "Close “{0}”?"
+  },
+  "rename_terminal": {
+    "zh": "重命名终端",
+    "en": "Rename Terminal"
+  },
+  "close_terminal": {
+    "zh": "关闭终端？",
+    "en": "Close terminal?"
+  },
+  "close_this_pane": {
+    "zh": "关闭此分屏？",
+    "en": "Close this pane?"
+  },
+  "select_a_terminal_first": {
+    "zh": "请先选择一个终端。",
+    "en": "Select a terminal first."
+  },
+  "processes_are_still_running_in_the_terminal_closing": {
+    "zh": "终端中仍有运行的进程，关闭后进程将结束。",
+    "en": "Processes are still running in the terminal. Closing it will terminate them."
+  },
+  "close_the_window_and_all_terminals": {
+    "zh": "关闭窗口和全部终端？",
+    "en": "Close the window and all terminals?"
+  },
+  "close_the_terminals_in_this_pane": {
+    "zh": "关闭分屏中的终端？",
+    "en": "Close the terminals in this pane?"
+  },
+  "processes_are_still_running_closing_will_terminate_them": {
+    "zh": "仍有运行的进程，关闭后进程将结束。",
+    "en": "Processes are still running. Closing will terminate them."
+  },
+  "rename_pane_tab": {
+    "zh": "重命名分屏 Tab",
+    "en": "Rename Pane Tab"
+  },
+  "saved_commands": {
+    "zh": "常用命令",
+    "en": "Saved Commands"
+  },
+  "import_json": {
+    "zh": "导入 JSON…",
+    "en": "Import JSON…"
+  },
+  "export_json": {
+    "zh": "导出 JSON…",
+    "en": "Export JSON…"
+  },
+  "manage_commands_in_this_workspace": {
+    "zh": "当前工作区的命令库管理",
+    "en": "Manage commands in this workspace"
+  },
+  "add_saved_command": {
+    "zh": "添加常用命令",
+    "en": "Add Saved Command"
+  },
+  "search_commands": {
+    "zh": "搜索命令",
+    "en": "Search commands"
+  },
+  "clear_search": {
+    "zh": "清除搜索",
+    "en": "Clear Search"
+  },
+  "no_saved_commands_in_this_workspace": {
+    "zh": "当前工作区暂无常用命令",
+    "en": "No saved commands in this workspace"
+  },
+  "commands_are_saved_in_this_workspace_each_workspace": {
+    "zh": "添加后仅保存在此工作区，切换工作区会显示各自的命令。",
+    "en": "Commands are saved in this workspace. Each workspace has its own command list."
+  },
+  "add_command": {
+    "zh": "添加命令…",
+    "en": "Add Command…"
+  },
+  "no_matching_commands": {
+    "zh": "没有匹配的命令",
+    "en": "No matching commands"
+  },
+  "edit": {
+    "zh": "编辑…",
+    "en": "Edit…"
+  },
+  "delete_242": {
+    "zh": "删除…",
+    "en": "Delete…"
+  },
+  "delete_243": {
+    "zh": "删除“{0}”？",
+    "en": "Delete “{0}”?"
+  },
+  "this_removes_the_command_from_the_current_workspace": {
+    "zh": "此操作将从当前工作区移除此命令。",
+    "en": "This removes the command from the current workspace."
+  },
+  "copy_command": {
+    "zh": "复制命令",
+    "en": "Copy Command"
+  },
+  "copy_246": {
+    "zh": "复制{0}",
+    "en": "Copy {0}"
+  },
+  "insert_into_terminal": {
+    "zh": "填入终端",
+    "en": "Insert into Terminal"
+  },
+  "insert_into_the_focused_terminal_without_running": {
+    "zh": "填入当前聚焦的终端，不执行",
+    "en": "Insert into the focused terminal without running"
+  },
+  "edit_saved_command": {
+    "zh": "编辑常用命令",
+    "en": "Edit Saved Command"
+  },
+  "services": {
+    "zh": "服务",
+    "en": "Services"
+  },
+  "quick_tunnel": {
+    "zh": "公网隧道",
+    "en": "Quick Tunnel"
+  },
+  "local_port": {
+    "zh": "本地端口",
+    "en": "Local port"
+  },
+  "expose_port": {
+    "zh": "公开端口",
+    "en": "Expose Port"
+  },
+  "quick_tunnel_public_warning": {
+    "zh": "端口 {0} 将通过公网地址开放。任何拿到链接的人都可能访问此服务。",
+    "en": "Port {0} will be exposed at a public URL. Anyone with the link may be able to access this service."
+  },
+  "continue_public_tunnel": {
+    "zh": "继续并公开",
+    "en": "Continue and Expose"
+  },
+  "copy_public_url": {
+    "zh": "复制公网地址",
+    "en": "Copy Public URL"
+  },
+  "stop_quick_tunnel": {
+    "zh": "停止 Quick Tunnel",
+    "en": "Stop Quick Tunnel"
+  },
+  "cloudflared_required": {
+    "zh": "需要安装 cloudflared",
+    "en": "cloudflared is required"
+  },
+  "cloudflared_install_description": {
+    "zh": "安装 cloudflared 后才能创建临时公网地址。",
+    "en": "Install cloudflared to create a temporary public URL."
+  },
+  "cloudflared_install_command": {
+    "zh": "brew install cloudflared",
+    "en": "brew install cloudflared"
+  },
+  "copy_install_command": {
+    "zh": "复制安装命令",
+    "en": "Copy Install Command"
+  },
+  "open_install_guide": {
+    "zh": "打开官方安装说明",
+    "en": "Open Official Install Guide"
+  },
+  "check_again": {
+    "zh": "重新检测",
+    "en": "Check Again"
+  },
+  "quick_tunnel_port_invalid": {
+    "zh": "请输入 1 到 65535 之间的端口号。",
+    "en": "Enter a port between 1 and 65535."
+  },
+  "unable_to_start_cloudflared": {
+    "zh": "无法启动 cloudflared：{0}",
+    "en": "Unable to start cloudflared: {0}"
+  },
+  "cloudflared_exited_before_url": {
+    "zh": "cloudflared 在生成公网地址前退出。",
+    "en": "cloudflared exited before producing a public URL."
+  },
+  "add_service": {
+    "zh": "添加服务",
+    "en": "Add Service"
+  },
+  "add_service_ellipsis": {
+    "zh": "添加服务…",
+    "en": "Add Service…"
+  },
+  "no_services_in_this_workspace": {
+    "zh": "当前工作区暂无服务",
+    "en": "No services in this workspace"
+  },
+  "services_run_in_background_without_terminal": {
+    "zh": "服务会在后台运行，不显示终端窗口。",
+    "en": "Services run in the background without a terminal window."
+  },
+  "edit_service": {
+    "zh": "编辑服务",
+    "en": "Edit Service"
+  },
+  "service_name_example": {
+    "zh": "例如：后端",
+    "en": "e.g. Backend"
+  },
+  "start_command": {
+    "zh": "启动命令",
+    "en": "Start Command"
+  },
+  "service_runs_in_workspace_directory": {
+    "zh": "服务将在工作区目录中作为后台进程运行，不显示终端。",
+    "en": "The service runs as a background process in the workspace directory without a terminal."
+  },
+  "stopped": {
+    "zh": "已停止",
+    "en": "Stopped"
+  },
+  "starting": {
+    "zh": "启动中",
+    "en": "Starting"
+  },
+  "running": {
+    "zh": "运行中",
+    "en": "Running"
+  },
+  "stopping": {
+    "zh": "停止中",
+    "en": "Stopping"
+  },
+  "exited_with_error": {
+    "zh": "异常退出",
+    "en": "Exited with error"
+  },
+  "stop": {
+    "zh": "停止",
+    "en": "Stop"
+  },
+  "start": {
+    "zh": "启动",
+    "en": "Start"
+  },
+  "restart": {
+    "zh": "重启",
+    "en": "Restart"
+  },
+  "service_delete_detail": {
+    "zh": "此操作将停止服务并从当前工作区移除。",
+    "en": "This stops the service and removes it from the current workspace."
+  },
+  "running_services": {
+    "zh": "有运行中的服务",
+    "en": "Running services"
+  },
+  "unable_to_start_service": {
+    "zh": "无法启动服务：{0}",
+    "en": "Unable to start service: {0}"
+  },
+  "workspace": {
+    "zh": "工作区：{0}",
+    "en": "Workspace: {0}"
+  },
+  "name": {
+    "zh": "名称",
+    "en": "Name"
+  },
+  "e_g_list_listening_ports": {
+    "zh": "例如：查看监听端口",
+    "en": "e.g. List listening ports"
+  },
+  "command": {
+    "zh": "命令正文",
+    "en": "Command"
+  },
+  "save_multiple_lines_confirm_execution_yourself_after_inserting": {
+    "zh": "可保存多行命令。填入终端后由你确认执行。",
+    "en": "Save multiple lines. Confirm execution yourself after inserting into the terminal."
+  },
+  "settings": {
+    "zh": "设置",
+    "en": "Settings"
+  },
+  "app_appearance": {
+    "zh": "应用外观",
+    "en": "App Appearance"
+  },
+  "font_name": {
+    "zh": "字体名称",
+    "en": "Font Name"
+  },
+  "font_size_pt": {
+    "zh": "字号  {0} pt",
+    "en": "Font Size  {0} pt"
+  },
+  "cursor": {
+    "zh": "光标",
+    "en": "Cursor"
+  },
+  "block": {
+    "zh": "方块",
+    "en": "Block"
+  },
+  "bar": {
+    "zh": "竖线",
+    "en": "Bar"
+  },
+  "underline": {
+    "zh": "下划线",
+    "en": "Underline"
+  },
+  "blink_cursor": {
+    "zh": "光标闪烁",
+    "en": "Blink Cursor"
+  },
+  "terminal_padding_pt": {
+    "zh": "终端边距  {0} pt",
+    "en": "Terminal Padding  {0} pt"
+  },
+  "opacity": {
+    "zh": "不透明度",
+    "en": "Opacity"
+  },
+  "blur_background": {
+    "zh": "背景模糊",
+    "en": "Blur Background"
+  },
+  "use_option_as_alt": {
+    "zh": "将 Option 用作 Alt",
+    "en": "Use Option as Alt"
+  },
+  "scrollback_buffer_mb": {
+    "zh": "滚屏缓冲区  {0} MB",
+    "en": "Scrollback Buffer  {0} MB"
+  },
+  "restore_defaults": {
+    "zh": "恢复默认",
+    "en": "Restore Defaults"
+  },
+  "done": {
+    "zh": "完成",
+    "en": "Done"
+  },
+  "toggle_workspaces": {
+    "zh": "显示 / 隐藏工作区",
+    "en": "Toggle Workspaces"
+  },
+  "show_terminal": {
+    "zh": "显示终端",
+    "en": "Show Terminal"
+  },
+  "show_file_editor": {
+    "zh": "显示文件编辑器",
+    "en": "Show File Editor"
+  },
+  "split_right": {
+    "zh": "向右分屏",
+    "en": "Split Right"
+  },
+  "split_left": {
+    "zh": "向左分屏",
+    "en": "Split Left"
+  },
+  "split_down": {
+    "zh": "向下分屏",
+    "en": "Split Down"
+  },
+  "split_up": {
+    "zh": "向上分屏",
+    "en": "Split Up"
+  },
+  "equalize_splits": {
+    "zh": "均分分屏",
+    "en": "Equalize Splits"
+  },
+  "split_pane": {
+    "zh": "分屏",
+    "en": "Split Pane"
+  },
+  "find_in_terminal": {
+    "zh": "查找终端内容",
+    "en": "Find in Terminal"
+  },
+  "toggle_saved_commands": {
+    "zh": "显示 / 隐藏常用命令",
+    "en": "Toggle Saved Commands"
+  },
+  "operation_incomplete": {
+    "zh": "操作未完成",
+    "en": "Operation Incomplete"
+  },
+  "ok": {
+    "zh": "好",
+    "en": "OK"
+  },
+  "workspaces": {
+    "zh": "工作区",
+    "en": "Workspaces"
+  },
+  "new_workspace": {
+    "zh": "新建工作区",
+    "en": "New Workspace"
+  },
+  "edit_description": {
+    "zh": "编辑描述…",
+    "en": "Edit Description…"
+  },
+  "unpin": {
+    "zh": "取消置顶",
+    "en": "Unpin"
+  },
+  "pin": {
+    "zh": "置顶",
+    "en": "Pin"
+  },
+  "color": {
+    "zh": "颜色",
+    "en": "Color"
+  },
+  "move_to_new_window": {
+    "zh": "移至新窗口",
+    "en": "Move to New Window"
+  },
+  "close_workspace": {
+    "zh": "关闭工作区",
+    "en": "Close Workspace"
+  },
+  "local_only": {
+    "zh": "仅本地",
+    "en": "Local Only"
+  },
+  "close_terminal_293": {
+    "zh": "关闭终端",
+    "en": "Close Terminal"
+  },
+  "detach_into_new_window": {
+    "zh": "拆离到新窗口",
+    "en": "Detach into New Window"
+  },
+  "merge_to_the_right_of_the_current_tab": {
+    "zh": "合并到当前 Tab 的右侧",
+    "en": "Merge to the Right of the Current Tab"
+  },
+  "move_to_workspace": {
+    "zh": "移动到工作区",
+    "en": "Move to Workspace"
+  },
+  "new_terminal_tab": {
+    "zh": "新建终端 Tab",
+    "en": "New Terminal Tab"
+  },
+  "find_in_scrollback": {
+    "zh": "查找滚屏内容",
+    "en": "Find in scrollback"
+  },
+  "find": {
+    "zh": "查找",
+    "en": "Find"
+  },
+  "previous": {
+    "zh": "上一个",
+    "en": "Previous"
+  },
+  "next": {
+    "zh": "下一个",
+    "en": "Next"
+  },
+  "close_find": {
+    "zh": "关闭查找",
+    "en": "Close Find"
+  },
+  "close_this_pane_tab": {
+    "zh": "关闭此分屏 Tab",
+    "en": "Close This Pane Tab"
+  },
+  "detach_as_workspace_tab": {
+    "zh": "拆离为工作区 Tab",
+    "en": "Detach as Workspace Tab"
+  },
+  "new_terminal_tab_in_this_pane": {
+    "zh": "在此分屏新增终端 Tab",
+    "en": "New Terminal Tab in This Pane"
+  },
+  "detach_pane_as_workspace_tab": {
+    "zh": "拆分为工作区 Tab",
+    "en": "Detach Pane as Workspace Tab"
+  },
+  "maximize_restore_pane": {
+    "zh": "放大 / 还原分屏",
+    "en": "Maximize / Restore Pane"
+  },
+  "close_entire_pane": {
+    "zh": "关闭整个分屏",
+    "en": "Close Entire Pane"
+  },
+  "about_vsux": {
+    "zh": "关于 vsux",
+    "en": "About vsux"
+  },
+  "settings_310": {
+    "zh": "设置…",
+    "en": "Settings…"
+  },
+  "hide_vsux": {
+    "zh": "隐藏 vsux",
+    "en": "Hide vsux"
+  },
+  "quit_vsux": {
+    "zh": "退出 vsux",
+    "en": "Quit vsux"
+  },
+  "new_window": {
+    "zh": "新建窗口",
+    "en": "New Window"
+  },
+  "new_workspace_314": {
+    "zh": "新建工作区…",
+    "en": "New Workspace…"
+  },
+  "close_current_pane": {
+    "zh": "关闭当前分屏",
+    "en": "Close Current Pane"
+  },
+  "close_window": {
+    "zh": "关闭窗口",
+    "en": "Close Window"
+  },
+  "edit_317": {
+    "zh": "编辑",
+    "en": "Edit"
+  },
+  "undo": {
+    "zh": "撤销",
+    "en": "Undo"
+  },
+  "redo": {
+    "zh": "重做",
+    "en": "Redo"
+  },
+  "cut": {
+    "zh": "剪切",
+    "en": "Cut"
+  },
+  "find_in_terminal_321": {
+    "zh": "查找终端内容…",
+    "en": "Find in Terminal…"
+  },
+  "view": {
+    "zh": "显示",
+    "en": "View"
+  },
+  "markdown_preview_to_the_side": {
+    "zh": "Markdown 侧边预览",
+    "en": "Markdown Preview to the Side"
+  },
+  "enter_full_screen": {
+    "zh": "进入全屏幕",
+    "en": "Enter Full Screen"
+  },
+  "window": {
+    "zh": "窗口",
+    "en": "Window"
+  },
+  "minimize": {
+    "zh": "最小化",
+    "en": "Minimize"
+  },
+  "zoom": {
+    "zh": "缩放",
+    "en": "Zoom"
+  },
+  "commit_or_reference": {
+    "zh": "提交或引用",
+    "en": "commit or reference"
+  },
+  "no_git_commands_have_been_run_yet": {
+    "zh": "尚无 Git 命令输出。",
+    "en": "No Git commands have been run yet."
+  },
+  "the_clone_destination_folder_must_not_already_exist": {
+    "zh": "克隆目标目录必须尚不存在",
+    "en": "The clone destination folder must not already exist"
+  },
+  "stash_message": {
+    "zh": "暂存说明",
+    "en": "stash message"
+  },
+  "the_worktree_destination_folder_must_not_already_exist": {
+    "zh": "Worktree 目标目录必须尚不存在",
+    "en": "The worktree destination folder must not already exist"
+  },
+  "the_current_branch_has_no_upstream_publish_the": {
+    "zh": "当前分支尚未设置上游，请先发布分支",
+    "en": "The current branch has no upstream. Publish the branch first"
+  },
+  "a_branch_cannot_be_published_from_detached_head": {
+    "zh": "游离 HEAD 无法发布分支",
+    "en": "a branch cannot be published from detached HEAD"
+  },
+  "file_restore_list": {
+    "zh": "还原文件列表",
+    "en": "file restore list"
+  },
+  "untracked_file_list": {
+    "zh": "未跟踪文件列表",
+    "en": "untracked file list"
+  },
+  "repository_url": {
+    "zh": "仓库地址",
+    "en": "repository URL"
+  },
+  "repository_url_scheme": {
+    "zh": "仓库地址协议",
+    "en": "repository URL scheme"
+  },
+  "tag_name": {
+    "zh": "标签名称",
+    "en": "tag name"
+  },
+  "structured_status_read": {
+    "zh": "[已读取结构化状态]",
+    "en": "[Structured status read]"
+  },
+  "exit_code": {
+    "zh": "\n[退出码 {0}]",
+    "en": "\n[Exit code {0}]"
+  },
+  "not_a_usable_local_git_workspace": {
+    "zh": "不是可用的本地 Git 工作区：{0}",
+    "en": "Not a usable local Git workspace: {0}"
+  },
+  "invalid_repository_relative_path": {
+    "zh": "无效的仓库相对路径：{0}",
+    "en": "Invalid repository-relative path: {0}"
+  },
+  "invalid_local_branch_name": {
+    "zh": "无效的本地分支名称：{0}",
+    "en": "Invalid local branch name: {0}"
+  },
+  "the_commit_message_cannot_be_empty": {
+    "zh": "提交说明不能为空。",
+    "en": "The commit message cannot be empty."
+  },
+  "invalid_git_operation_argument": {
+    "zh": "无效的 Git 操作参数：{0}",
+    "en": "Invalid Git operation argument: {0}"
+  },
+  "unable_to_start_git": {
+    "zh": "无法启动 Git：{0}",
+    "en": "Unable to start Git: {0}"
+  },
+  "git_command_failed_exit_code": {
+    "zh": "Git 命令失败（退出码 {0}）。",
+    "en": "Git command failed (exit code {0})."
+  },
+  "code_editor": {
+    "zh": "代码编辑器",
+    "en": "Code Editor"
+  },
+  "source_control": {
+    "zh": "源代码管理",
+    "en": "Source Control"
+  },
+  "changes_353": {
+    "zh": "变更",
+    "en": "Changes"
+  },
+  "select_a_changed_file_to_view_its_diff": {
+    "zh": "选择一个变更文件以查看差异。",
+    "en": "Select a changed file to view its diff."
+  },
+  "unable_to_fetch_remote_status_previous_counts_have": {
+    "zh": "{0}：获取远程状态失败，计数保留上次结果。\n{1}",
+    "en": "{0}: Unable to fetch remote status. Previous counts have been kept.\n{1}"
+  },
+  "commit_complete_select_a_changed_file_to_view": {
+    "zh": "提交完成。选择变更文件以查看差异。",
+    "en": "Commit complete. Select a changed file to view its diff."
+  },
+  "last_commits": {
+    "zh": " · 最近 50 次提交",
+    "en": " · Last 50 Commits"
+  },
+  "no_commits_yet": {
+    "zh": "暂无提交。",
+    "en": "No commits yet."
+  },
+  "all_staged_changes": {
+    "zh": " · 全部已暂存更改",
+    "en": " · All Staged Changes"
+  },
+  "all_working_tree_changes": {
+    "zh": " · 全部工作区更改",
+    "en": " · All Working Tree Changes"
+  },
+  "no_tracked_file_diff_to_display_select_an": {
+    "zh": "没有可显示的已跟踪文件差异。未跟踪文件请单独选择查看。",
+    "en": "No tracked file diff to display. Select an untracked file individually."
+  },
+  "git_output": {
+    "zh": " · Git 输出",
+    "en": " · Git Output"
+  },
+  "staged": {
+    "zh": " · 已暂存",
+    "en": " · Staged"
+  },
+  "working_tree": {
+    "zh": " · 工作区",
+    "en": " · Working Tree"
+  },
+  "this_file_is_untracked_open_it_to_view": {
+    "zh": "此文件尚未跟踪。打开文件查看内容；暂存后可查看添加差异。",
+    "en": "This file is untracked. Open it to view its contents; stage it to view the added lines."
+  },
+  "no_text_diff_to_display_the_file_may": {
+    "zh": "没有可显示的文本差异（可能是二进制文件或仅元数据变化）。",
+    "en": "No text diff to display (the file may be binary or have metadata changes only)."
+  },
+  "refresh_all_repositories": {
+    "zh": "刷新所有仓库",
+    "en": "Refresh All Repositories"
+  },
+  "fetch_remote_status": {
+    "zh": "获取远程状态（Fetch）",
+    "en": "Fetch Remote Status"
+  },
+  "clone_git_repository": {
+    "zh": "克隆 Git 仓库…",
+    "en": "Clone Git Repository…"
+  },
+  "source_control_actions": {
+    "zh": "源代码管理操作",
+    "en": "Source Control Actions"
+  },
+  "repositories": {
+    "zh": "仓库",
+    "en": "Repositories"
+  },
+  "repository_list_actions": {
+    "zh": "仓库列表操作",
+    "en": "Repository List Actions"
+  },
+  "changes_373": {
+    "zh": "更改",
+    "en": "Changes"
+  },
+  "staged_changes": {
+    "zh": "已暂存的更改",
+    "en": "Staged Changes"
+  },
+  "working_tree_clean": {
+    "zh": "工作区干净",
+    "en": "Working tree clean"
+  },
+  "no_git_repositories_in_this_workspace_or_its": {
+    "zh": "当前工作区及子目录没有 Git 仓库",
+    "en": "No Git repositories in this workspace or its subfolders"
+  },
+  "scanning_workspace_for_git_repositories": {
+    "zh": "正在扫描工作区中的 Git 仓库…",
+    "en": "Scanning workspace for Git repositories…"
+  },
+  "collapse": {
+    "zh": "折叠",
+    "en": "Collapse"
+  },
+  "expand": {
+    "zh": "展开",
+    "en": "Expand"
+  },
+  "message_to_commit_to": {
+    "zh": "提交说明（⌘↩ 提交到 {0}）",
+    "en": "Message (⌘↩ to commit to {0})"
+  },
+  "commit_message": {
+    "zh": "提交说明",
+    "en": "Commit Message"
+  },
+  "commit_382": {
+    "zh": "提交",
+    "en": "Commit"
+  },
+  "commit_all_changes_in_the_current_repository": {
+    "zh": "提交当前仓库的全部更改",
+    "en": "Commit all changes in the current repository"
+  },
+  "commit_staged_changes_384": {
+    "zh": "提交已暂存更改",
+    "en": "Commit staged changes"
+  },
+  "commit_changes": {
+    "zh": "提交更改",
+    "en": "Commit Changes"
+  },
+  "stage_all_and_commit_386": {
+    "zh": "暂存全部并提交",
+    "en": "Stage All and Commit"
+  },
+  "amend_the_last_commit_using_the_current_message": {
+    "zh": "以当前提交说明和暂存区修改最近一次提交。",
+    "en": "Amend the last commit using the current message and staged changes."
+  },
+  "amend_commit": {
+    "zh": "修改提交",
+    "en": "Amend Commit"
+  },
+  "commit_options": {
+    "zh": "提交选项",
+    "en": "Commit Options"
+  },
+  "unstage": {
+    "zh": "取消暂存",
+    "en": "Unstage"
+  },
+  "stage_changes": {
+    "zh": "暂存更改",
+    "en": "Stage Changes"
+  },
+  "open_file": {
+    "zh": "打开文件",
+    "en": "Open File"
+  },
+  "git_repository": {
+    "zh": "Git 仓库 {0}",
+    "en": "Git repository {0}"
+  },
+  "switch_branch_or_tag_in": {
+    "zh": "切换 {0} 的分支或标签",
+    "en": "Switch branch or tag in {0}"
+  },
+  "uncommitted_changes": {
+    "zh": "（有未提交的改动）",
+    "en": " (uncommitted changes)"
+  },
+  "switch_branch_in": {
+    "zh": "切换 {0} 的分支：{1}",
+    "en": "Switch branch in {0}: {1}"
+  },
+  "uncommitted_changes_397": {
+    "zh": "，有未提交的改动",
+    "en": ", uncommitted changes"
+  },
+  "refresh_local_status_of": {
+    "zh": "刷新 {0} 的本地状态",
+    "en": "Refresh local status of {0}"
+  },
+  "fetching_remote_commit_status": {
+    "zh": "正在获取远程提交状态",
+    "en": "Fetching remote commit status"
+  },
+  "pull": {
+    "zh": "拉取",
+    "en": "Pull"
+  },
+  "push_401": {
+    "zh": "推送",
+    "en": "Push"
+  },
+  "publish_the_current_branch_to_and_set_its": {
+    "zh": "将当前分支发布到 {0} 并设置上游",
+    "en": "Publish the current branch to {0} and set its upstream"
+  },
+  "publish_the_branch_in_to": {
+    "zh": "发布 {0} 的分支到 {1}",
+    "en": "Publish the branch in {0} to {1}"
+  },
+  "choose_a_remote_to_publish_the_current_branch": {
+    "zh": "选择远程以发布当前分支并设置上游",
+    "en": "Choose a remote to publish the current branch and set its upstream"
+  },
+  "choose_a_remote_to_publish_the_branch_in": {
+    "zh": "选择远程以发布 {0} 的分支",
+    "en": "Choose a remote to publish the branch in {0}"
+  },
+  "publish_branch": {
+    "zh": "发布分支",
+    "en": "Publish Branch"
+  },
+  "commits": {
+    "zh": "{0} {1}：{2} 个提交（{3}）",
+    "en": "{0} {1}: {2} commits ({3})"
+  },
+  "commits_in": {
+    "zh": "{0} {1} 的 {2} 个提交",
+    "en": "{0} {2} commits in {1}"
+  },
+  "back_to_terminal": {
+    "zh": "返回终端",
+    "en": "Back to Terminal"
+  },
+  "follow_system": {
+    "zh": "跟随系统",
+    "en": "Follow System"
+  },
+  "light": {
+    "zh": "浅色",
+    "en": "Light"
+  },
+  "dark": {
+    "zh": "深色",
+    "en": "Dark"
+  },
+  "appearance": {
+    "zh": "外观",
+    "en": "Appearance"
+  },
+  "appearance_414": {
+    "zh": "外观：{0}",
+    "en": "Appearance: {0}"
+  },
+  "switch_appearance_currently": {
+    "zh": "切换外观，当前{0}",
+    "en": "Switch appearance, currently {0}"
+  },
+  "language": {
+    "zh": "界面语言",
+    "en": "Language"
+  },
+  "language_switch": {
+    "zh": "切换语言",
+    "en": "Switch Language"
+  },
+  "language_help": {
+    "zh": "切换后立即生效，无需重启。",
+    "en": "Changes apply immediately. No restart needed."
+  },
+  "branch_local": {
+    "zh": "本地分支",
+    "en": "Local Branches"
+  },
+  "branch_remote": {
+    "zh": "远程分支",
+    "en": "Remote Branches"
+  },
+  "branch_tags": {
+    "zh": "标签",
+    "en": "Tags"
+  },
+  "default_terminal": {
+    "zh": "终端",
+    "en": "Terminal"
+  },
+  "workspace_editor": {
+    "zh": "编辑器",
+    "en": "Editor"
+  },
+  "copy_code_block": {
+    "zh": "复制代码块",
+    "en": "Copy Code Block"
+  },
+  "copied": {
+    "zh": "已复制",
+    "en": "Copied"
+  },
+  "blue": {
+    "zh": "蓝色",
+    "en": "Blue"
+  },
+  "green": {
+    "zh": "绿色",
+    "en": "Green"
+  },
+  "orange": {
+    "zh": "橙色",
+    "en": "Orange"
+  },
+  "purple": {
+    "zh": "紫色",
+    "en": "Purple"
+  },
+  "red": {
+    "zh": "红色",
+    "en": "Red"
+  },
+  "gray": {
+    "zh": "灰色",
+    "en": "Gray"
+  },
+  "markdown_image_placeholder": {
+    "zh": "[图片：{0}]",
+    "en": "[Image: {0}]"
+  },
+  "workspace_search_0": {
+    "zh": "搜索",
+    "en": "Search"
+  },
+  "workspace_search_1": {
+    "zh": "取消搜索",
+    "en": "Cancel Search"
+  },
+  "workspace_search_2": {
+    "zh": "刷新搜索",
+    "en": "Refresh Search"
+  },
+  "workspace_search_3": {
+    "zh": "清除搜索结果",
+    "en": "Clear Search Results"
+  },
+  "workspace_search_4": {
+    "zh": "撤销上次替换",
+    "en": "Undo Last Replacement"
+  },
+  "workspace_search_5": {
+    "zh": "折叠或展开搜索结果",
+    "en": "Collapse or Expand Results"
+  },
+  "workspace_search_6": {
+    "zh": "显示或隐藏替换",
+    "en": "Show or Hide Replace"
+  },
+  "workspace_search_7": {
+    "zh": "搜索工作区内容",
+    "en": "Search Workspace Contents"
+  },
+  "workspace_search_8": {
+    "zh": "区分大小写",
+    "en": "Match Case"
+  },
+  "workspace_search_9": {
+    "zh": "全词匹配",
+    "en": "Match Whole Word"
+  },
+  "workspace_search_10": {
+    "zh": "使用正则表达式",
+    "en": "Use Regular Expression"
+  },
+  "workspace_search_11": {
+    "zh": "替换",
+    "en": "Replace"
+  },
+  "workspace_search_12": {
+    "zh": "全部替换…",
+    "en": "Replace All…"
+  },
+  "workspace_search_13": {
+    "zh": "包含和排除的文件",
+    "en": "Files to Include and Exclude"
+  },
+  "workspace_search_14": {
+    "zh": "包含的文件",
+    "en": "Files to Include"
+  },
+  "workspace_search_15": {
+    "zh": "例如：*.swift, src/**",
+    "en": "e.g. *.swift, src/**"
+  },
+  "workspace_search_16": {
+    "zh": "排除的文件",
+    "en": "Files to Exclude"
+  },
+  "workspace_search_17": {
+    "zh": "例如：Tests/**, *.lock",
+    "en": "e.g. Tests/**, *.lock"
+  },
+  "workspace_search_18": {
+    "zh": "使用忽略规则",
+    "en": "Use Ignore Rules"
+  },
+  "workspace_search_19": {
+    "zh": "未找到结果",
+    "en": "No Results Found"
+  },
+  "workspace_search_20": {
+    "zh": "{0} 个结果，分布于 {1} 个文件",
+    "en": "{0} results in {1} files"
+  },
+  "workspace_search_21": {
+    "zh": "已达到搜索上限，请缩小搜索范围。",
+    "en": "Search limit reached. Narrow your search."
+  },
+  "workspace_search_22": {
+    "zh": "在当前工作区的文件内容中搜索。",
+    "en": "Search file contents in the current workspace."
+  },
+  "workspace_search_23": {
+    "zh": "已跳过 {0} 个不可搜索的文件",
+    "en": "Skipped {0} unsearchable files"
+  },
+  "workspace_search_24": {
+    "zh": "开启",
+    "en": "On"
+  },
+  "workspace_search_25": {
+    "zh": "{0}：行 {1}，列 {2}",
+    "en": "{0}: line {1}, column {2}"
+  },
+  "workspace_search_26": {
+    "zh": "替换此匹配",
+    "en": "Replace This Match"
+  },
+  "workspace_search_27": {
+    "zh": "替换此文件中的匹配…",
+    "en": "Replace Matches in This File…"
+  },
+  "workspace_search_28": {
+    "zh": "替换 {0} 个匹配？",
+    "en": "Replace {0} matches?"
+  },
+  "workspace_search_29": {
+    "zh": "替换将写入编辑器缓冲区；请检查结果并使用 ⌘S 保存文件。",
+    "en": "Replacements update editor buffers. Review the results and use ⌘S to save each file."
+  },
+  "workspace_search_30": {
+    "zh": "搜索失败：{0}",
+    "en": "Search failed: {0}"
+  },
+  "workspace_search_31": {
+    "zh": "文件内容已变化，请刷新搜索结果。",
+    "en": "File contents changed. Refresh the search results."
+  },
+  "workspace_search_32": {
+    "zh": "替换失败：{0}",
+    "en": "Replace failed: {0}"
+  },
+  "workspace_search_33": {
+    "zh": "在文件中搜索…",
+    "en": "Find in Files…"
+  },
+  "merge_branch_picker": {
+    "zh": "Merge…（合并分支）",
+    "en": "Merge…"
+  },
+  "rebase_branch_picker": {
+    "zh": "Rebase…（变基）",
+    "en": "Rebase Branch…"
+  },
+  "select_branch_to_merge": {
+    "zh": "选择要合并到当前分支的分支",
+    "en": "Select a branch to merge into the current branch"
+  },
+  "select_rebase_target": {
+    "zh": "选择当前分支的变基目标",
+    "en": "Select a branch to rebase the current branch onto"
+  },
+  "merge_selected_branch_into": {
+    "zh": "将所选分支合并到当前分支 {0}。",
+    "en": "Merge the selected branch into the current branch {0}."
+  },
+  "rebase_current_branch_onto_selected": {
+    "zh": "将当前分支 {0} 变基到所选分支。",
+    "en": "Rebase the current branch {0} onto the selected branch."
+  },
+  "search_branches_or_commit_details": {
+    "zh": "搜索分支或提交信息",
+    "en": "Search branches or commit details"
+  },
+  "no_matching_eligible_branches": {
+    "zh": "没有可选择的匹配分支",
+    "en": "No matching branches available"
+  },
+  "git_operation_failed": {
+    "zh": "Git 操作失败",
+    "en": "Git operation failed"
+  },
+  "git_refresh_failed": {
+    "zh": "刷新 Git 状态失败",
+    "en": "Failed to refresh Git status"
+  },
+  "git_scan_failed": {
+    "zh": "扫描 Git 仓库失败",
+    "en": "Failed to scan Git repositories"
+  },
+  "git_fetch_failed_notice": {
+    "zh": "获取远程状态失败，保留上次结果",
+    "en": "Unable to fetch remote status. Previous results kept."
+  },
+  "git_notifications": {
+    "zh": "Git 通知",
+    "en": "Git Notifications"
+  },
+  "git_notice_counts": {
+    "zh": "Git 通知：{0} 个错误，{1} 个警告，点击查看",
+    "en": "Git notifications: {0} errors, {1} warnings. Click to view."
+  },
+  "clear_all_notifications": {
+    "zh": "清除全部",
+    "en": "Clear All"
+  },
+  "hide_notifications": {
+    "zh": "收起通知",
+    "en": "Hide Notifications"
+  },
+  "no_git_notifications": {
+    "zh": "暂无 Git 通知",
+    "en": "No Git notifications"
+  },
+  "clear_notification": {
+    "zh": "清除此通知",
+    "en": "Clear Notification"
+  },
+  "hide_error_details": {
+    "zh": "收起详情",
+    "en": "Hide Details"
+  },
+  "show_error_details": {
+    "zh": "查看详情",
+    "en": "Show Details"
+  },
+  "copy_error_details": {
+    "zh": "复制错误详情",
+    "en": "Copy Error Details"
+  },
+  "service_working_directory": {
+    "zh": "运行目录",
+    "en": "Working Directory"
+  },
+  "service_directory_placeholder": {
+    "zh": "留空使用工作区目录，例如 apps/server",
+    "en": "Leave empty for workspace directory, e.g. apps/server"
+  },
+  "choose_service_directory": {
+    "zh": "选择目录…",
+    "en": "Choose Directory…"
+  },
+  "service_directory_hint": {
+    "zh": "服务在指定目录中后台运行；相对路径以工作区目录为起点。",
+    "en": "Runs in the specified directory in the background. Relative paths start from the workspace directory."
+  },
+  "view_service_logs": {
+    "zh": "查看日志",
+    "en": "View Logs"
+  },
+  "start_all_services": {
+    "zh": "一键启动",
+    "en": "Start All"
+  },
+  "start_all_services_help": {
+    "zh": "启动当前工作区所有未运行的服务",
+    "en": "Start all services that are not running in this workspace"
+  },
+  "service_no_logs": {
+    "zh": "暂无日志，启动服务后显示输出。",
+    "en": "No logs yet. Start the service to see its output."
+  },
+  "service_scroll_to_top": {
+    "zh": "滚动到顶部",
+    "en": "Scroll to Top"
+  },
+  "service_scroll_to_bottom": {
+    "zh": "滚动到底部",
+    "en": "Scroll to Bottom"
+  },
+  "service_directory_log": {
+    "zh": "运行目录：{0}",
+    "en": "Working directory: {0}"
+  },
+  "service_missing_directory": {
+    "zh": "运行目录不存在：{0}",
+    "en": "Working directory does not exist: {0}"
+  },
+  "increase_font_size": {
+    "zh": "增大字号",
+    "en": "Increase Font Size"
+  },
+  "decrease_font_size": {
+    "zh": "减小字号",
+    "en": "Decrease Font Size"
+  },
+  "settings_general": {
+    "zh": "通用",
+    "en": "General"
+  },
+  "keyboard_shortcuts": {
+    "zh": "快捷键",
+    "en": "Keyboard Shortcuts"
+  },
+  "shortcut_unassigned": {
+    "zh": "未设置",
+    "en": "Not set"
+  },
+  "key_space": {
+    "zh": "空格",
+    "en": "Space"
+  },
+  "shortcut_modifier_required": {
+    "zh": "请使用 Command、Control 或 Option 加一个按键。",
+    "en": "Use Command, Control, or Option together with a key."
+  },
+  "shortcut_conflict": {
+    "zh": "此快捷键已用于“{0}”，请先修改该操作。",
+    "en": "This shortcut is assigned to “{0}”. Change that action first."
+  },
+  "shortcut_recording_help": {
+    "zh": "点击快捷键后按下新的组合键。Esc 取消，Delete 清除。修改立即生效。",
+    "en": "Click a shortcut and press a new combination. Esc cancels; Delete clears. Changes apply immediately."
+  },
+  "shortcut_clear": {
+    "zh": "清除快捷键",
+    "en": "Clear Shortcut"
+  },
+  "shortcut_reset": {
+    "zh": "恢复此快捷键",
+    "en": "Reset This Shortcut"
+  },
+  "shortcut_press": {
+    "zh": "请按快捷键…",
+    "en": "Press shortcut…"
+  },
+  "save_file_shortcut": {
+    "zh": "保存当前文件（{0}）",
+    "en": "Save current file ({0})"
+  },
+  "markdown_preview_shortcut": {
+    "zh": "在右侧打开或关闭 Markdown 预览（{0}）",
+    "en": "Toggle the Markdown preview on the right ({0})"
+  },
+  "editor_hints_shortcut": {
+    "zh": "单击预览 · 双击保留标签 · 保存：{0}",
+    "en": "Click to preview · Double-click to pin · Save: {0}"
+  },
+  "find_current_content": {
+    "zh": "查找当前内容…",
+    "en": "Find Current Content…"
+  },
+  "find_current_file": {
+    "zh": "查找当前文件",
+    "en": "Find in Current File"
+  },
+  "find_query_history": {
+    "zh": "查找（↑↓ 历史记录）",
+    "en": "Find (↑↓ for history)"
+  },
+  "find_invalid_regex": {
+    "zh": "正则表达式无效",
+    "en": "Invalid regular expression"
+  },
+  "find_timeout": {
+    "zh": "查找超时，请简化表达式",
+    "en": "Search timed out; simplify the expression"
+  },
+  "find_busy": {
+    "zh": "正在查找…",
+    "en": "Searching…"
+  },
+  "find_no_results": {
+    "zh": "无结果",
+    "en": "No results"
+  },
+  "find_position": {
+    "zh": "第 {0} / {1} 项",
+    "en": "{0} of {1}"
+  },
+  "find_limit": {
+    "zh": "结果过多，请缩小范围后全部替换",
+    "en": "Too many results; narrow the search to replace all"
+  },
+  "find_selection": {
+    "zh": "在选区中查找",
+    "en": "Find in Selection"
+  },
+  "find_toggle_replace": {
+    "zh": "切换替换",
+    "en": "Toggle Replace"
+  },
+  "find_previous_enter": {
+    "zh": "上一个（Shift+Enter）",
+    "en": "Previous (Shift+Enter)"
+  },
+  "find_next_enter": {
+    "zh": "下一个（Enter）",
+    "en": "Next (Enter)"
+  },
+  "find_replace_current": {
+    "zh": "替换当前匹配",
+    "en": "Replace Current Match"
+  },
+  "find_close_escape": {
+    "zh": "关闭查找（Esc）",
+    "en": "Close Find (Esc)"
+  },
+  "find_replace_all": {
+    "zh": "全部替换",
+    "en": "Replace All"
+  },
+  "find_current_file_command": {
+    "zh": "查找当前文件…",
+    "en": "Find in Current File…"
+  }
+}

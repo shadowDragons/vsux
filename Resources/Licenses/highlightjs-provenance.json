@@ -1,0 +1,20 @@
+{
+  "package": "@highlightjs/cdn-assets",
+  "version": "11.11.1",
+  "registry": "https://registry.npmjs.org/@highlightjs/cdn-assets",
+  "tarball": "https://registry.npmjs.org/@highlightjs/cdn-assets/-/cdn-assets-11.11.1.tgz",
+  "integrity": "sha512-VEPdHzwelZ12hEX18BHduqxMZGolcUsrbeokHYxOUIm8X2+M7nx5QPtPeQgRxR9XjhdLv4/7DD5BWOlSrJ3k7Q==",
+  "license": "BSD-3-Clause",
+  "files": [
+    {
+      "path": "Sources/CmuxClone/Highlighting/core.js",
+      "upstreamMember": "package/highlight.min.js",
+      "sha256": "c4a399dd6f488bc97a3546e3476747b3e714c99c57b9473154c6fb8d259b9381"
+    },
+    {
+      "path": "Sources/CmuxClone/Highlighting/dockerfile.js",
+      "upstreamMember": "package/languages/dockerfile.min.js",
+      "sha256": "7b11edef6889d2bf9dd30799ce2212bae9b469cbb1793d4d216b65c274c96079"
+    }
+  ]
+}

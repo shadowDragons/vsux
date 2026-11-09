@@ -1,0 +1,14 @@
+.DS_Store
+.build/
+.swiftpm/
+dist/
+Vendor/GhosttyKit.xcframework/
+Vendor/GhosttyKit.tar.gz
+*.xcuserstate
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+*.mobileprovision
+videos/
