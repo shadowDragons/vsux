@@ -9,7 +9,7 @@ A native macOS terminal workspace for developers. Manage projects, terminal spli
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)
 ![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-supported-555)
 
-[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
+[Website](https://web-delta-seven-29.vercel.app/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
 
 > v0.1.2 is an Apple Silicon preview for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
 
