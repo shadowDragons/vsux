@@ -102,7 +102,7 @@ Local builds of `dist/vsux.app` are ad-hoc signed. To build a DMG and checksum, 
 
 Workspaces, terminal layouts, editor tabs, and settings are stored locally. The app does not provide accounts or cloud sync. Git network access uses each repository's configured remotes and the local Git credential helper.
 
-Workspace and command data are stored as local JSON under the macOS Application Support directory. These files have local filesystem permissions but are not encrypted. Relaunching restores workspace layouts and starts new shells; running processes, scrollback, and unsaved edits are not restored.
+Workspace and command data are stored as local JSON in `~/Library/Application Support/vsux/`. The app's bundle identifier is `local.vsux.app`. These files have local filesystem permissions but are not encrypted. Relaunching restores workspace layouts and starts new shells; running processes, scrollback, and unsaved edits are not restored.
 
 ## Security boundaries
 

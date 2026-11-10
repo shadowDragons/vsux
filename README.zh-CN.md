@@ -102,7 +102,7 @@ python3 Scripts/check-localizations.py
 
 工作区、终端布局、编辑器标签和设置保存在本机。应用不提供账号或云同步功能；Git 网络访问使用仓库配置的远程与本机 Git 凭据助手。
 
-工作区和命令数据以本地 JSON 形式保存在 macOS Application Support 目录中。相关文件设置了本机文件权限，但没有加密。关闭并重启应用会恢复工作区布局并启动新的 Shell；正在运行的进程、滚屏内容和未保存编辑不会恢复。
+工作区和命令数据以本地 JSON 形式保存在 `~/Library/Application Support/vsux/`，应用标识为 `local.vsux.app`。相关文件设置了本机文件权限，但没有加密。关闭并重启应用会恢复工作区布局并启动新的 Shell；正在运行的进程、滚屏内容和未保存编辑不会恢复。
 
 ## 安全边界
 

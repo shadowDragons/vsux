@@ -90,7 +90,7 @@ struct CodeToken: Equatable {
 enum CodeHighlighter {
     static let maximumLength = 1_000_000
     static let maximumLineLength = 20_000
-    private static let queue = DispatchQueue(label: "local.cmuxclone.highlighting", qos: .userInitiated)
+    private static let queue = DispatchQueue(label: "local.vsux.highlighting", qos: .userInitiated)
     private static let engine = Engine()
 
     static func tokens(in text: String, language: CodeLanguage) -> [CodeToken] {

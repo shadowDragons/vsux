@@ -5,6 +5,14 @@ import CGhostty
 @main
 struct VsuxMain {
     static func main() {
+        do {
+            try AppDataMigration.prepare()
+        } catch {
+            // Do not start with an empty workspace or write new state after a failed migration.
+            NSApplication.shared.setActivationPolicy(.regular)
+            NSAlert(error: error).runModal()
+            return
+        }
         // Resources belong to this app; the terminal does not depend on an installed cmux.
         let resources = Bundle.main.resourceURL?.appendingPathComponent("ghostty").path
         if let resources, FileManager.default.fileExists(atPath: resources) {

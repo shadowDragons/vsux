@@ -44,7 +44,7 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
 <key>CFBundleExecutable</key><string>vsux</string>
-<key>CFBundleIdentifier</key><string>local.cmuxclone.app</string>
+<key>CFBundleIdentifier</key><string>local.vsux.app</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundleName</key><string>vsux</string>
 <key>CFBundleDisplayName</key><string>vsux</string>

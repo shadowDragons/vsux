@@ -10,8 +10,7 @@ final class WorkspaceSession {
     private(set) var isSuspended = false
 
     init(directory: URL? = nil) {
-        let root = directory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("CmuxLocal", isDirectory: true)
+        let root = directory ?? AppDataMigration.directory
         fileURL = root.appendingPathComponent("workspaces.json")
     }
 

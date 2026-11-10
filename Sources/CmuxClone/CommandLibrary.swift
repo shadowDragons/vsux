@@ -13,8 +13,7 @@ final class CommandLibrary: ObservableObject {
     private var loadError: String?
 
     init(directory: URL? = nil) {
-        let directory = directory ?? FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("CmuxLocal", isDirectory: true)
+        let directory = directory ?? AppDataMigration.directory
         fileURL = directory.appendingPathComponent("commands.json")
         guard FileManager.default.fileExists(atPath: fileURL.path) else { return }
         do {
@@ -94,7 +93,7 @@ final class CommandLibrary: ObservableObject {
     }
 
     func exportCommands(in workspaceID: UUID) throws -> Data {
-        if let loadError { throw NSError(domain: "CmuxLocal.CommandLibrary", code: 1, userInfo: [NSLocalizedDescriptionKey: loadError]) }
+        if let loadError { throw NSError(domain: "vsux.CommandLibrary", code: 1, userInfo: [NSLocalizedDescriptionKey: loadError]) }
         return try encoder().encode(CommandArchive(commands: commands(in: workspaceID)))
     }
 
