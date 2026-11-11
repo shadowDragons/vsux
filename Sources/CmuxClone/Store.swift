@@ -270,6 +270,7 @@ final class WindowModel: ObservableObject {
     }
     func insertCommand(_ command: String) {
         guard let pane = selectedTab?.focusedPane else { error = L("请先选择一个终端。"); return }
+        tools.content = .terminal
         let view = terminal(activeTerminalID(pane))
         view.pasteText(commandForInsertion(command))
         focusTerminal()

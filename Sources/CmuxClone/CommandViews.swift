@@ -140,7 +140,7 @@ struct CommandSidebar: View {
     }
     @ViewBuilder private var commandSection: some View {
         HStack(spacing: 7) {
-            sectionTitle(L("常用命令"), subtitle: workspace.name)
+            sectionTitle(L("常用命令"))
             Spacer(minLength: 0)
             Menu {
                 Button(L("导入 JSON…")) { library.importFile(into: workspace.id) }
@@ -195,13 +195,9 @@ struct CommandSidebar: View {
             }
         }
     }
-    private func sectionTitle(_ title: String, subtitle: String? = nil) -> some View {
-        HStack(spacing: 7) {
-            Text(title).font(.system(size: 12, weight: .semibold)).lineLimit(1).fixedSize()
-            if let subtitle {
-                Text(subtitle).font(.system(size: 10)).foregroundStyle(.secondary).lineLimit(1)
-            }
-        }.frame(minHeight: 27, alignment: .leading)
+    private func sectionTitle(_ title: String) -> some View {
+        Text(title).font(.system(size: 12, weight: .semibold)).lineLimit(1).fixedSize()
+            .frame(minHeight: 27, alignment: .leading)
     }
     private func serviceRow(_ service: WorkspaceService) -> some View {
         let status = model.serviceStatuses[service.id] ?? .stopped

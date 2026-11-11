@@ -131,6 +131,7 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
     private var keyText: String?
     private var interpreting = false
     private var isShutdown = false
+    private var pendingText = ""
     private var tracking: NSTrackingArea?
     var needsConfirmation: Bool { surface.map { ghostty_surface_needs_confirm_quit($0) } ?? false }
 
@@ -164,6 +165,10 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
         if let surface { ghostty_surface_set_color_scheme(surface, Preferences.shared.effectiveTerminalSettings.theme == "dark" ? GHOSTTY_COLOR_SCHEME_DARK : GHOSTTY_COLOR_SCHEME_LIGHT) }
         free(cwd); free(commandPointer)
         layout()
+        if surface != nil, !pendingText.isEmpty {
+            let text = pendingText; pendingText = ""
+            pasteText(text)
+        }
         if surface == nil { model?.error = L("无法创建 Ghostty 终端。") }
     }
     override func becomeFirstResponder() -> Bool {
@@ -293,10 +298,15 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
     @objc func paste(_ sender: Any?) { action("paste_from_clipboard") }
     @objc override func selectAll(_ sender: Any?) { action("select_all") }
     @objc func clear(_ sender: Any?) { action("clear_screen") }
-    func pasteText(_ value: String) { if let surface { ghostty_surface_text(surface, value, UInt(value.utf8.count)) } }
+    func pasteText(_ value: String) {
+        guard !isShutdown else { return }
+        if let surface { ghostty_surface_text(surface, value, UInt(value.utf8.count)) }
+        else { pendingText += value }
+    }
     @discardableResult func action(_ value: String) -> Bool { guard let surface else { return false }; return ghostty_surface_binding_action(surface, value, UInt(value.utf8.count)) }
     func shutdown() {
         isShutdown = true
+        pendingText = ""
         guard let surface else { return }
         self.surface = nil
         GhosttyEngine.shared.actionBridge.unregister(surface: surface)

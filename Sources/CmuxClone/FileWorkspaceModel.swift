@@ -40,10 +40,17 @@ final class LocalFileDocument: ObservableObject, Identifiable {
     @Published var isPreview: Bool { didSet { if isPreview != oldValue { onSessionChange?() } } }
     @Published var externalChange = false
     @Published var markdownPreview = false { didSet { if markdownPreview != oldValue { onSessionChange?() } } }
+    @Published var markdownPreviewOnly = false { didSet { if markdownPreviewOnly != oldValue { onSessionChange?() } } }
+    @Published var markdownSyncScroll = true
+    @Published var markdownShowOutline = true
     @Published var markdownAnchor: String?
     @Published var searchSelection: EditorSelectionRequest?
     @Published var findRequest: UUID?
     let findSession = EditorFindSession()
+    // Transient view state: survives content/tab switches, never written to the session file.
+    var editorPosition: (selection: NSRange, origin: NSPoint)?
+    var handledSearchSelectionID: UUID?
+    var markdownReadingLine: Double = 1
     var diskData: Data
     var onSessionChange: (() -> Void)?
     var isDirty: Bool { text != savedText }

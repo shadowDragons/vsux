@@ -9,6 +9,7 @@ struct SyntaxEditor: NSViewRepresentable {
     var onSelection: (Int, Int) -> Void = { _, _ in }
     var onScroll: (Double) -> Void = { _ in }
     var scrollRequest: EditorScrollRequest?
+    var isEditable = true
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeNSView(context: Context) -> NSScrollView {
@@ -20,6 +21,7 @@ struct SyntaxEditor: NSViewRepresentable {
         scroll.backgroundColor = .textBackgroundColor
         let text = CodeTextView(frame: .zero)
         text.isRichText = false; text.importsGraphics = false; text.allowsUndo = true
+        text.isEditable = isEditable; text.isSelectable = isEditable
         text.font = editorFont
         text.textColor = .textColor; text.backgroundColor = .textBackgroundColor
         text.isAutomaticQuoteSubstitutionEnabled = false; text.isAutomaticDashSubstitutionEnabled = false
@@ -52,17 +54,43 @@ struct SyntaxEditor: NSViewRepresentable {
         context.coordinator.install(document.text, language: document.language)
         find.attach(to: scroll)
         context.coordinator.observeScroll(scroll)
+        let handledSelection = document.handledSearchSelectionID
+        if let position = document.editorPosition, document.searchSelection?.id == handledSelection {
+            DispatchQueue.main.async { [weak coordinator = context.coordinator] in
+                guard let coordinator, let text = coordinator.textView, let scroll = text.enclosingScrollView else { return }
+                // A fresh search navigation takes precedence over the remembered reading position.
+                guard coordinator.lastSelectionRequest == handledSelection else { return }
+                let length = (text.string as NSString).length
+                let location = min(position.selection.location, length)
+                text.setSelectedRange(NSRange(location: location, length: min(position.selection.length, length - location)))
+                text.layoutManager?.ensureLayout(for: text.textContainer!)
+                scroll.contentView.scroll(to: position.origin)
+                scroll.reflectScrolledClipView(scroll.contentView)
+                coordinator.updateSelection()
+                coordinator.didScroll()
+            }
+        }
         return scroll
+    }
+    static func dismantleNSView(_ scroll: NSScrollView, coordinator: Coordinator) {
+        guard let text = coordinator.textView else { return }
+        coordinator.parent.document.editorPosition = (text.selectedRange(), scroll.contentView.bounds.origin)
     }
     func updateNSView(_ scroll: NSScrollView, context: Context) {
         context.coordinator.parent = self
+        if let text = context.coordinator.textView {
+            text.isEditable = isEditable; text.isSelectable = isEditable
+            if !isEditable, text.window?.firstResponder === text { text.window?.makeFirstResponder(nil) }
+        }
         context.coordinator.textView?.setAccessibilityLabel(L("代码编辑器"))
         context.coordinator.applyTypography()
         if context.coordinator.textView?.string != document.text { context.coordinator.install(document.text, language: document.language) }
         else if context.coordinator.language != document.language { context.coordinator.highlight() }
         context.coordinator.reveal(scrollRequest)
-        context.coordinator.select(document.searchSelection)
-        context.coordinator.openFind(document.findRequest)
+        if isEditable {
+            context.coordinator.select(document.searchSelection)
+            context.coordinator.openFind(document.findRequest)
+        }
     }
     private var editorFont: NSFont {
         let size = CGFloat(min(40, max(9, preferences.terminal.fontSize)))
@@ -81,9 +109,12 @@ struct SyntaxEditor: NSViewRepresentable {
         private var highlightGeneration = UUID()
         private var scrollObserver: NSObjectProtocol?
         private var lastRequest: UUID?
-        private var lastSelectionRequest: UUID?
+        fileprivate var lastSelectionRequest: UUID?
         private var suppressScrollUntil: TimeInterval = 0
-        init(_ parent: SyntaxEditor) { self.parent = parent }
+        init(_ parent: SyntaxEditor) {
+            self.parent = parent
+            lastSelectionRequest = parent.document.handledSearchSelectionID
+        }
         func openFind(_ request: UUID?) {
             guard let request, request != lastFindRequest else { return }
             lastFindRequest = request; find?.open()
@@ -154,6 +185,7 @@ struct SyntaxEditor: NSViewRepresentable {
             guard let request, request.id != lastSelectionRequest, let view = textView,
                   NSMaxRange(request.range) <= (view.string as NSString).length else { return }
             lastSelectionRequest = request.id
+            parent.document.handledSearchSelectionID = request.id
             view.setSelectedRange(request.range)
             view.scrollRangeToVisible(request.range)
             view.showFindIndicator(for: request.range)

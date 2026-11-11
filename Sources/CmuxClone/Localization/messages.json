@@ -2286,5 +2286,45 @@
   "find_current_file_command": {
     "zh": "查找当前文件…",
     "en": "Find in Current File…"
+  },
+  "markdown_outline_hide": {
+    "zh": "收起目录大纲",
+    "en": "Hide Outline"
+  },
+  "markdown_outline_show": {
+    "zh": "显示目录大纲",
+    "en": "Show Outline"
+  },
+  "markdown_outline_expanded": {
+    "zh": "已展开",
+    "en": "Expanded"
+  },
+  "markdown_outline_collapsed": {
+    "zh": "已收起",
+    "en": "Collapsed"
+  },
+  "markdown_outline": {
+    "zh": "目录大纲",
+    "en": "Outline"
+  },
+  "markdown_outline_empty": {
+    "zh": "暂无标题，添加 Markdown 标题后会显示在这里。",
+    "en": "Add Markdown headings to see them here."
+  },
+  "markdown_preview_only": {
+    "zh": "仅预览",
+    "en": "Preview Only"
+  },
+  "markdown_split_editing": {
+    "zh": "分栏编辑",
+    "en": "Split Editor"
+  },
+  "markdown_show_source_preview": {
+    "zh": "显示源码和预览",
+    "en": "Show source and preview"
+  },
+  "markdown_hide_source": {
+    "zh": "隐藏源码，仅显示 Markdown 预览",
+    "en": "Hide source and show Markdown preview only"
   }
 }

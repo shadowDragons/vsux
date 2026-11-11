@@ -6,6 +6,7 @@ struct FileWorkspaceSession: Codable, Equatable {
         var path: String
         var isPreview: Bool
         var markdownPreview: Bool
+        var markdownPreviewOnly: Bool? = nil
     }
 
     var documents: [Document]
@@ -32,7 +33,7 @@ extension FileWorkspaceModel {
     var sessionSnapshot: FileWorkspaceSession {
         let saved = documents.map {
             FileWorkspaceSession.Document(path: relativePath($0.url), isPreview: $0.isPreview,
-                                          markdownPreview: $0.markdownPreview)
+                                          markdownPreview: $0.markdownPreview, markdownPreviewOnly: $0.markdownPreviewOnly)
         }
         return FileWorkspaceSession(documents: saved,
                                     selectedPath: selectedDocument.map { relativePath($0.url) } ?? saved.last?.path)
@@ -54,6 +55,7 @@ extension FileWorkspaceModel {
         for (saved, document) in restored {
             document.isPreview = saved.isPreview
             document.markdownPreview = saved.markdownPreview && document.language == .markdown
+            document.markdownPreviewOnly = (saved.markdownPreviewOnly ?? false) && document.language == .markdown
         }
         selectedDocumentID = restored.first(where: { $0.0.path == session.selectedPath })?.1.id ?? restored.last?.1.id
         if !failures.isEmpty {

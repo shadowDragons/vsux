@@ -210,6 +210,9 @@ struct FileEditorArea: View {
                     Spacer()
                     if document.isDirty { Text(L("未保存")).foregroundStyle(.secondary) }
                     if document.language == .markdown {
+                        if document.markdownPreview {
+                            MarkdownPreviewControls(document: document).padding(.trailing, 8)
+                        }
                         Button { document.markdownPreview.toggle() } label: {
                             Label(document.markdownPreview ? L("关闭预览") : L("侧边预览"), systemImage: "rectangle.split.2x1")
                                 .contentShape(Rectangle())
@@ -235,7 +238,11 @@ struct FileEditorArea: View {
                 MarkdownEditorPane(model: model, document: document, onSelection: { line = $0; column = $1 }).id(document.id)
                 Divider()
                 HStack(spacing: 15) {
-                    Text(L("行 \(line)，列 \(column)"))
+                    if document.language == .markdown && document.markdownPreview && document.markdownPreviewOnly {
+                        Text(L("仅预览"))
+                    } else {
+                        Text(L("行 \(line)，列 \(column)"))
+                    }
                     Spacer()
                     if document.text.utf16.count > 1_000_000 { Text(L("大文件：暂停高亮")) }
                     Text("UTF-8")

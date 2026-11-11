@@ -4,6 +4,46 @@ import CGhostty
 @testable import CmuxClone
 
 final class TerminalIntegrationTests: XCTestCase {
+    @MainActor func testCommandInsertionSwitchesFromEditorAndDiffAndWaitsForEnter() throws {
+        _ = NSApplication.shared
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("vsux-command-" + UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = WindowModel(workspaces: [Workspace(name: "Command test", directory: root.path)], shellCommand: "/bin/zsh -f")
+        model.tools.content = .editor
+        let controller = TerminalWindowController(model: model)
+        let window = try XCTUnwrap(controller.window)
+        window.makeKeyAndOrderFront(nil)
+        defer { model.disposeAll(); window.orderOut(nil) }
+        XCTAssertTrue(model.terminals.isEmpty, "起始编辑器页面还没有创建终端")
+        let pane = try XCTUnwrap(model.selectedTab?.focusedPane)
+        model.insertCommand("printf first > first")
+        XCTAssertEqual(model.tools.content, .terminal)
+        XCTAssertTrue(pump { model.focusedTerminal?.surface != nil && window.firstResponder === model.focusedTerminal })
+        let terminal = try XCTUnwrap(model.focusedTerminal)
+        RunLoop.current.run(until: Date().addingTimeInterval(0.2))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.appendingPathComponent("first").path))
+        func enter() {
+            terminal.keyDown(with: NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [], timestamp: 0,
+                windowNumber: window.windowNumber, context: nil, characters: "\r", charactersIgnoringModifiers: "\r", isARepeat: false, keyCode: 36)!)
+        }
+        enter()
+        XCTAssertTrue(pump { FileManager.default.fileExists(atPath: root.appendingPathComponent("first").path) })
+        XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("first"), encoding: .utf8), "first")
+        model.tools.content = .diff
+        RunLoop.current.run(until: Date().addingTimeInterval(0.1))
+        model.insertCommand("printf second > second")
+        XCTAssertEqual(model.tools.content, .terminal)
+        XCTAssertEqual(model.selectedTab?.focusedPane, pane)
+        XCTAssertTrue(model.focusedTerminal === terminal, "返回原来的终端会话")
+        XCTAssertTrue(pump { window.firstResponder === terminal })
+        RunLoop.current.run(until: Date().addingTimeInterval(0.2))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: root.appendingPathComponent("second").path))
+        enter()
+        XCTAssertTrue(pump { FileManager.default.fileExists(atPath: root.appendingPathComponent("second").path) })
+        XCTAssertEqual(try String(contentsOf: root.appendingPathComponent("second"), encoding: .utf8), "second")
+    }
+
     @MainActor func testRelaunchedWindowRestoresRenamedTabsAndStartsFreshShellInSavedDirectory() throws {
         _ = NSApplication.shared
         let root = FileManager.default.temporaryDirectory.appendingPathComponent("cmux-restore-" + UUID().uuidString)

@@ -38,17 +38,30 @@ final class EditorPersistenceTests: XCTestCase {
         let markdown = try XCTUnwrap(files.selectedDocument)
         markdown.isPreview = false // Direct UI pinning must trigger persistence.
         markdown.markdownPreview = true
+        markdown.markdownPreviewOnly = true
         files.selectedDocumentID = files.documents.first?.id
         restored = try reopen()
         XCTAssertEqual(restored.selectedDocument?.url, one)
         XCTAssertEqual(restored.documents.map(\.isPreview), [false, false])
         XCTAssertTrue(restored.documents.last?.markdownPreview == true)
+        XCTAssertTrue(restored.documents.last?.markdownPreviewOnly == true)
         try files.rename(FileTreeItem(url: one, isDirectory: false, isSymbolicLink: false), to: "renamed.txt")
         XCTAssertEqual(try reopen().selectedDocument?.url.lastPathComponent, "renamed.txt")
         XCTAssertTrue(files.close(markdown))
         XCTAssertEqual(try reopen().documents.map { $0.url.lastPathComponent }, ["renamed.txt"])
         XCTAssertTrue(files.close(try XCTUnwrap(files.selectedDocument)))
         XCTAssertTrue(try reopen().documents.isEmpty)
+    }
+
+    func testLegacyMarkdownSessionDefaultsToSplitPreview() throws {
+        let (directory, project, _, _) = try fixture()
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let data = Data(#"{"documents":[{"path":"three.md","isPreview":false,"markdownPreview":true}],"selectedPath":"three.md"}"#.utf8)
+        let saved = try JSONDecoder().decode(FileWorkspaceSession.self, from: data)
+        let files = FileWorkspaceModel(rootURL: project)
+        files.restoreSession(saved)
+        XCTAssertEqual(files.selectedDocument?.markdownPreview, true)
+        XCTAssertEqual(files.selectedDocument?.markdownPreviewOnly, false)
     }
 
     func testInactiveWorkspaceFilesSurviveLazyRestoreAndSubsequentSaves() throws {

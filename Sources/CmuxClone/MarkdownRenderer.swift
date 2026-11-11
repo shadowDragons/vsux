@@ -6,6 +6,7 @@ struct MarkdownRenderer {
     let documentURL: URL
     let rootURL: URL
     private var slugs: [String: Int] = [:]
+    private var usedSlugs: Set<String> = []
 
     init(documentURL: URL, rootURL: URL) {
         self.documentURL = documentURL
@@ -20,6 +21,7 @@ struct MarkdownRenderer {
 
     mutating func render(_ source: String) -> String {
         slugs = [:]
+        usedSlugs = []
         let document = Document(parsing: source, options: [.disableSmartOpts])
         return node(document) + "<div data-line=\"\(source.components(separatedBy: "\n").count)\"></div>"
     }
@@ -39,8 +41,10 @@ struct MarkdownRenderer {
         case let heading as Heading:
             let base = heading.plainText.lowercased().filter { $0.isLetter || $0.isNumber || $0.isWhitespace || $0 == "-" || $0 == "_" }
                 .replacingOccurrences(of: " ", with: "-")
-            let count = slugs[base, default: 0]; slugs[base] = count + 1
-            let slug = count == 0 ? base : "\(base)-\(count)"
+            var count = slugs[base, default: 0]
+            var slug = count == 0 ? base : "\(base)-\(count)"
+            while usedSlugs.contains(slug) { count += 1; slug = "\(base)-\(count)" }
+            slugs[base] = count + 1; usedSlugs.insert(slug)
             return "<h\(heading.level) id=\"\(Self.escape(slug))\"\(map)>\(children(heading))</h\(heading.level)>"
         case is Paragraph: return "<p\(map)>\(children(markup))</p>"
         case is Strong: return "<strong>\(children(markup))</strong>"
