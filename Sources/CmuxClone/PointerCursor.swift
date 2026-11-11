@@ -92,8 +92,9 @@ final class PointerCursorWindow: NSWindow {
         }
         guard attachedSheet == nil else { return false }
         if let command = ShortcutPreferences.shared.command(for: event) {
-            if command == .increaseFont { Preferences.shared.adjustFontSize(by: 1); return true }
-            if command == .decreaseFont { Preferences.shared.adjustFontSize(by: -1); return true }
+            if command == .increaseFont { Preferences.shared.adjustInterfaceZoom(by: 1); return true }
+            if command == .decreaseFont { Preferences.shared.adjustInterfaceZoom(by: -1); return true }
+            if command == .resetInterfaceZoom { Preferences.shared.setInterfaceZoomLevel(0); return true }
             if onShortcut?(command) == true { return true }
         }
         // Native text views and Ghostty have their own Command-C/V/etc.

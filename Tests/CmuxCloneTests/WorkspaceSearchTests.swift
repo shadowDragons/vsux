@@ -225,15 +225,18 @@ final class WorkspaceSearchTests: XCTestCase {
         XCTAssertEqual(item.keyEquivalentModifierMask, [.command, .shift])
     }
 
-    func testFontSizeMenuUsesControlPlusAndMinus() throws {
+    func testWorkbenchZoomMenuUsesControlPlusMinusAndZero() throws {
         _ = NSApplication.shared
         AppDelegate.shared.makeMenus()
         let view = try XCTUnwrap(NSApp.mainMenu?.items.first { $0.title == L("显示") }?.submenu)
-        let increase = try XCTUnwrap(view.items.first { $0.title == L("增大字号") })
-        let decrease = try XCTUnwrap(view.items.first { $0.title == L("减小字号") })
+        let increase = try XCTUnwrap(view.items.first { $0.title == L("放大界面") })
+        let decrease = try XCTUnwrap(view.items.first { $0.title == L("缩小界面") })
+        let reset = try XCTUnwrap(view.items.first { $0.title == L("重置界面缩放") })
         XCTAssertEqual(increase.keyEquivalent, "+")
         XCTAssertEqual(increase.keyEquivalentModifierMask, [.control])
         XCTAssertEqual(decrease.keyEquivalent, "-")
         XCTAssertEqual(decrease.keyEquivalentModifierMask, [.control])
+        XCTAssertEqual(reset.keyEquivalent, "0")
+        XCTAssertEqual(reset.keyEquivalentModifierMask, [.control])
     }
 }

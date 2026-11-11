@@ -80,6 +80,18 @@ final class KeyboardShortcutTests: XCTestCase {
         XCTAssertNil(settings.reset(.findFile))
     }
 
+    func testExistingControlZeroOverrideSurvivesNewResetZoomCommand() throws {
+        let suite = "vsux.Shortcuts.\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let custom = KeyBinding("0", .control)
+        defaults.set(try JSONEncoder().encode(["quickOpen": custom]), forKey: "keyboardShortcuts")
+        let settings = ShortcutPreferences(defaults: defaults)
+        XCTAssertEqual(settings.binding(for: .quickOpen), custom)
+        XCTAssertTrue(settings.binding(for: .resetInterfaceZoom).isDisabled)
+        XCTAssertNotNil(settings.reset(.resetInterfaceZoom))
+    }
+
     func testRemappingRoutesNewKeysToOwningWindowAndUpdatesMenus() async throws {
         _ = NSApplication.shared
         let shortcuts = ShortcutPreferences.shared

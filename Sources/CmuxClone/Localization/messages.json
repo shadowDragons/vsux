@@ -2326,5 +2326,29 @@
   "markdown_hide_source": {
     "zh": "隐藏源码，仅显示 Markdown 预览",
     "en": "Hide source and show Markdown preview only"
+  },
+  "zoom_in": {
+    "zh": "放大界面",
+    "en": "Zoom In"
+  },
+  "zoom_out": {
+    "zh": "缩小界面",
+    "en": "Zoom Out"
+  },
+  "zoom_reset": {
+    "zh": "重置界面缩放",
+    "en": "Reset Zoom"
+  },
+  "interface_zoom": {
+    "zh": "界面缩放  {0}%",
+    "en": "Interface zoom  {0}%"
+  },
+  "interface_zoom_help": {
+    "zh": "缩放整个界面的文字、图标和布局。",
+    "en": "Scale text, icons and layout throughout the interface."
+  },
+  "content_font_size": {
+    "zh": "终端与编辑器字号  {0} pt",
+    "en": "Terminal and editor font size  {0} pt"
   }
 }

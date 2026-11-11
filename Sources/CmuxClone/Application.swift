@@ -135,8 +135,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     }
     @objc func quickOpen(_ sender: Any?) { current?.showQuickOpen = true }
     @objc func settings(_ sender: Any?) { current?.showSettings = true }
-    @objc func increaseFontSize(_ sender: Any?) { Preferences.shared.adjustFontSize(by: 1) }
-    @objc func decreaseFontSize(_ sender: Any?) { Preferences.shared.adjustFontSize(by: -1) }
+    @objc func increaseFontSize(_ sender: Any?) { Preferences.shared.adjustInterfaceZoom(by: 1) }
+    @objc func decreaseFontSize(_ sender: Any?) { Preferences.shared.adjustInterfaceZoom(by: -1) }
+    @objc func resetInterfaceZoom(_ sender: Any?) { Preferences.shared.setInterfaceZoomLevel(0) }
     @objc func sidebar(_ sender: Any?) { current?.showSidebar.toggle() }
     @objc func commands(_ sender: Any?) { current?.showCommands.toggle() }
     @objc func toggleMarkdownPreview(_ sender: Any?) {
@@ -187,8 +188,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
             guard model.tools.content == .editor, let workspace = model.workspace,
                   let document = model.tools.files(workspace).selectedDocument, document.language == .markdown else { return false }
             document.markdownPreview.toggle()
-        case .increaseFont: Preferences.shared.adjustFontSize(by: 1)
-        case .decreaseFont: Preferences.shared.adjustFontSize(by: -1)
+        case .increaseFont: Preferences.shared.adjustInterfaceZoom(by: 1)
+        case .decreaseFont: Preferences.shared.adjustInterfaceZoom(by: -1)
+        case .resetInterfaceZoom: Preferences.shared.setInterfaceZoomLevel(0)
         case .sidebar: model.showSidebar.toggle()
         case .commands: model.showCommands.toggle()
         case .closeWindow: window.performClose(nil)
@@ -261,8 +263,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         add(view, L("均分分屏"), #selector(equalize(_:)), target: self)
         view.addItem(.separator())
         add(view, L("Markdown 侧边预览"), #selector(toggleMarkdownPreview(_:)), "v", [.command, .shift], target: self)
-        add(view, L("增大字号"), #selector(increaseFontSize(_:)), "+", [.control], target: self)
-        add(view, L("减小字号"), #selector(decreaseFontSize(_:)), "-", [.control], target: self)
+        add(view, L("放大界面"), #selector(increaseFontSize(_:)), "+", [.control], target: self)
+        add(view, L("缩小界面"), #selector(decreaseFontSize(_:)), "-", [.control], target: self)
+        add(view, L("重置界面缩放"), #selector(resetInterfaceZoom(_:)), "0", [.control], target: self)
         add(view, L("显示 / 隐藏工作区"), #selector(sidebar(_:)), target: self)
         add(view, L("显示 / 隐藏常用命令"), #selector(commands(_:)), target: self)
         add(view, L("进入全屏幕"), #selector(NSWindow.toggleFullScreen(_:)), "f", [.command, .control])
@@ -288,7 +291,8 @@ final class TerminalWindowController: NSWindowController, NSWindowDelegate {
         window.title = model.title; window.minSize = NSSize(width: 940, height: 560)
         window.tabbingMode = .disallowed; window.isReleasedWhenClosed = false
         window.center(); window.delegate = self; model.window = window
-        window.contentView = NSHostingView(rootView: RootView(model: model))
+        window.contentView = WorkbenchHostingView(rootView: RootView(model: model))
+        window.contentView?.layoutSubtreeIfNeeded()
         window.titlebarAppearsTransparent = true
         window.isOpaque = Preferences.shared.terminal.opacity >= 1
     }

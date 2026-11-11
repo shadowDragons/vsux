@@ -192,9 +192,14 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
     override func viewDidChangeBackingProperties() { super.viewDidChangeBackingProperties(); layout() }
     override func layout() {
         super.layout(); guard let surface else { return }
-        let scale = window?.backingScaleFactor ?? 2
-        ghostty_surface_set_content_scale(surface, scale, scale)
-        ghostty_surface_set_size(surface, UInt32(max(1, bounds.width * scale)), UInt32(max(1, bounds.height * scale)))
+        let pixels = convertToBacking(bounds).size
+        let scaleX = pixels.width / max(1, bounds.width)
+        let scaleY = pixels.height / max(1, bounds.height)
+        // Ghostty allocates its IOSurface using the native layer density. Match
+        // it to the grid density so AppKit does not magnify the glyphs twice.
+        layer?.contentsScale = scaleX
+        ghostty_surface_set_content_scale(surface, scaleX, scaleY)
+        ghostty_surface_set_size(surface, UInt32(max(1, pixels.width)), UInt32(max(1, pixels.height)))
     }
     func mods(_ flags: NSEvent.ModifierFlags) -> ghostty_input_mods_e {
         var value: UInt32 = 0

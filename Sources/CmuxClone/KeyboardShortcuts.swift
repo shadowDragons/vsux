@@ -5,7 +5,7 @@ import SwiftUI
 enum AppCommand: String, CaseIterable, Identifiable, Codable {
     case settings, hide, quit, newWindow, newWorkspace, quickOpen, newTab, closePane, closeWindow
     case saveFile, undo, redo, cut, copy, paste, selectAll, find, findFile, findInFiles
-    case splitRight, splitBelow, equalize, markdownPreview, increaseFont, decreaseFont
+    case splitRight, splitBelow, equalize, markdownPreview, increaseFont, decreaseFont, resetInterfaceZoom
     case sidebar, commands, fullScreen, minimize, zoom
     var id: String { rawValue }
 
@@ -34,8 +34,9 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .splitBelow: return L("向下分屏")
         case .equalize: return L("均分分屏")
         case .markdownPreview: return L("Markdown 侧边预览")
-        case .increaseFont: return L("增大字号")
-        case .decreaseFont: return L("减小字号")
+        case .increaseFont: return L("放大界面")
+        case .decreaseFont: return L("缩小界面")
+        case .resetInterfaceZoom: return L("重置界面缩放")
         case .sidebar: return L("显示 / 隐藏工作区")
         case .commands: return L("显示 / 隐藏常用命令")
         case .fullScreen: return L("进入全屏幕")
@@ -71,6 +72,7 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .markdownPreview: return #selector(AppDelegate.toggleMarkdownPreview(_:))
         case .increaseFont: return #selector(AppDelegate.increaseFontSize(_:))
         case .decreaseFont: return #selector(AppDelegate.decreaseFontSize(_:))
+        case .resetInterfaceZoom: return #selector(AppDelegate.resetInterfaceZoom(_:))
         case .sidebar: return #selector(AppDelegate.sidebar(_:))
         case .commands: return #selector(AppDelegate.commands(_:))
         case .fullScreen: return #selector(NSWindow.toggleFullScreen(_:))
@@ -105,6 +107,7 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .markdownPreview: return KeyBinding("v", [.command, .shift])
         case .increaseFont: return KeyBinding("+", .control)
         case .decreaseFont: return KeyBinding("-", .control)
+        case .resetInterfaceZoom: return KeyBinding("0", .control)
         case .fullScreen: return KeyBinding("f", [.command, .control])
         case .minimize: return KeyBinding("m", .command)
         case .equalize, .sidebar, .commands, .zoom: return .disabled
@@ -183,6 +186,12 @@ final class ShortcutPreferences: ObservableObject {
             // Invalid/colliding archives fall back as a whole, so defaults and
             // overrides can never silently assign one combination twice.
             var known = saved.filter { AppCommand(rawValue: $0.key) != nil }
+            if known[AppCommand.resetInterfaceZoom.rawValue] == nil,
+               AppCommand.allCases.contains(where: {
+                   $0 != .resetInterfaceZoom && (known[$0.rawValue] ?? $0.defaultBinding).overlaps(AppCommand.resetInterfaceZoom.defaultBinding)
+               }) {
+                known[AppCommand.resetInterfaceZoom.rawValue] = .disabled
+            }
             // Existing users may already own Ctrl+F. Adding a command must not
             // invalidate their complete shortcut archive or steal that binding.
             if known[AppCommand.findFile.rawValue] == nil,

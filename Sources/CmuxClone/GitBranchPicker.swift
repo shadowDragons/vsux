@@ -164,7 +164,7 @@ struct GitBranchPicker: View {
                     Text(L("↑↓ 选择  ↩ 确认")).font(.caption).foregroundStyle(.tertiary)
                 }.padding(12)
             }
-        }.frame(width: 720, height: 560)
+        }.frame(width: 720, height: 560).workbenchSheetZoom()
             .background(Color(nsColor: .windowBackgroundColor))
             .task { await load(); inputFocused = true }
             .onChange(of: query) { _, _ in selectedID = items.first?.id }

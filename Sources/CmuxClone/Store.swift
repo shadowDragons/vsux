@@ -8,6 +8,9 @@ final class Preferences: ObservableObject {
     private let defaults: UserDefaults
     private var appearanceObservation: NSKeyValueObservation?
     private var lastAppliedDark: Bool?
+    @Published private(set) var interfaceZoomLevel: Int
+    var zoomFactor: CGFloat { WorkbenchZoom.factor(for: interfaceZoomLevel) }
+    var zoomPercentage: Int { Int((zoomFactor * 100).rounded()) }
     @Published var appearance: AppAppearance {
         didSet {
             defaults.set(appearance.rawValue, forKey: "appAppearance")
@@ -23,6 +26,7 @@ final class Preferences: ObservableObject {
     }
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
+        interfaceZoomLevel = WorkbenchZoom.clamped(defaults.integer(forKey: "interfaceZoomLevel"))
         let settings = defaults.data(forKey: "terminalSettings").flatMap { try? JSONDecoder().decode(TerminalSettings.self, from: $0) } ?? TerminalSettings()
         terminal = settings
         // Retain an explicit dark terminal choice from older versions.
@@ -36,11 +40,13 @@ final class Preferences: ObservableObject {
         settings.theme = appearance.isDark(systemAppearance: systemAppearance) ? "dark" : (terminal.theme == "paper" ? "paper" : "light")
         return settings
     }
-    func adjustFontSize(by delta: Double) {
-        let size = min(40, max(9, terminal.fontSize + delta))
-        guard size != terminal.fontSize else { return }
-        terminal.fontSize = size
+    func setInterfaceZoomLevel(_ level: Int) {
+        let level = WorkbenchZoom.clamped(level)
+        guard level != interfaceZoomLevel else { return }
+        interfaceZoomLevel = level
+        defaults.set(level, forKey: "interfaceZoomLevel")
     }
+    func adjustInterfaceZoom(by delta: Int) { setInterfaceZoomLevel(interfaceZoomLevel + delta) }
     func applyApplicationAppearance() { NSApp.appearance = appearance.nativeAppearance }
     func observeSystemAppearance() {
         applyApplicationAppearance()

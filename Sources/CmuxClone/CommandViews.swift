@@ -287,7 +287,7 @@ private struct CloudflaredInstallSheet: View {
                 Button(L("取消")) { dismiss() }.pointingHandCursor()
                 Button(L("重新检测")) { onCheckAgain() }.buttonStyle(.borderedProminent).pointingHandCursor()
             }
-        }.padding(22).frame(width: 390)
+        }.padding(22).frame(width: 390).workbenchSheetZoom()
     }
 }
 
@@ -338,7 +338,7 @@ struct ServiceEditor: View {
                 if draft.isNew { model.addService(draft.service, to: draft.workspaceID) } else { model.updateService(draft.service, in: draft.workspaceID) }
                 dismiss()
             }.pointingHandCursor().keyboardShortcut(.defaultAction).disabled(draft.service.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || draft.service.command.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) }
-        }.padding(24).frame(width: 480)
+        }.padding(24).frame(width: 480).workbenchSheetZoom()
     }
 }
 
@@ -367,7 +367,7 @@ struct ServiceLogView: View {
                     Spacer()
                     Button(L("完成")) { dismiss() }.keyboardShortcut(.cancelAction).pointingHandCursor()
                 }
-            }.padding(20).frame(width: 720, height: 480)
+            }.padding(20).frame(width: 720, height: 480).workbenchSheetZoom()
                 .onAppear {
                     // Wait for the sheet's scroll content to finish its initial layout.
                     DispatchQueue.main.async { proxy.scrollTo(ServiceLogScrollTarget.output, anchor: .bottomLeading) }
@@ -414,7 +414,7 @@ struct CommandEditor: View {
                 }.pointingHandCursor().keyboardShortcut(.defaultAction)
                     .disabled(draft.command.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || draft.command.command.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
-        }.padding(24).frame(width: 480)
+        }.padding(24).frame(width: 480).workbenchSheetZoom()
     }
 }
 
@@ -441,8 +441,12 @@ struct SettingsView: View {
                     Picker(L("应用外观"), selection: $preferences.appearance) {
                         ForEach(AppAppearance.allCases) { mode in Text(mode.title).tag(mode) }
                     }.pointingHandCursor()
+                    Stepper(L("界面缩放  \(preferences.zoomPercentage)%"), value: Binding(
+                        get: { preferences.interfaceZoomLevel }, set: { preferences.setInterfaceZoomLevel($0) }
+                    ), in: WorkbenchZoom.levels).pointingHandCursor()
+                    Text(L("缩放整个界面的文字、图标和布局。")).font(.caption).foregroundStyle(.secondary)
                     TextField(L("字体名称"), text: $preferences.terminal.fontName)
-                    Stepper(L("字号  \(Int(preferences.terminal.fontSize)) pt"), value: $preferences.terminal.fontSize, in: 9...40).pointingHandCursor()
+                    Stepper(L("终端与编辑器字号  \(Int(preferences.terminal.fontSize)) pt"), value: $preferences.terminal.fontSize, in: 9...40).pointingHandCursor()
                     Picker(L("光标"), selection: $preferences.terminal.cursor) { Text(L("方块")).tag("block"); Text(L("竖线")).tag("bar"); Text(L("下划线")).tag("underline") }.pointingHandCursor()
                     Toggle(L("光标闪烁"), isOn: $preferences.terminal.cursorBlink).pointingHandCursor()
                     Stepper(L("终端边距  \(preferences.terminal.padding) pt"), value: $preferences.terminal.padding, in: 0...40).pointingHandCursor()
@@ -453,7 +457,8 @@ struct SettingsView: View {
                 }.formStyle(.grouped).tabItem { Text(L("通用")) }.tag(0)
                 ShortcutSettingsView(shortcuts: shortcuts).tabItem { Text(L("快捷键")) }.tag(1)
             }
-            HStack { Button(L("恢复默认")) { if selectedTab == 1 { shortcuts.resetAll() } else { preferences.terminal = TerminalSettings(); preferences.appearance = .system } }.pointingHandCursor(); Spacer(); Button(L("完成")) { dismiss() }.pointingHandCursor().keyboardShortcut(.defaultAction) }
+            HStack { Button(L("恢复默认")) { if selectedTab == 1 { shortcuts.resetAll() } else { preferences.terminal = TerminalSettings(); preferences.appearance = .system; preferences.setInterfaceZoomLevel(0) } }.pointingHandCursor(); Spacer(); Button(L("完成")) { dismiss() }.pointingHandCursor().keyboardShortcut(.defaultAction) }
         }.padding(24).frame(width: 610, height: 700)
+            .modifier(ZoomedSheetContent(preferences: preferences))
     }
 }

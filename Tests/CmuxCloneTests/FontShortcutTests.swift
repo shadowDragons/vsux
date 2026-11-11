@@ -12,6 +12,8 @@ final class FontShortcutTests: XCTestCase {
         AppDelegate.shared.makeMenus()
         let preferences = Preferences.shared
         let original = preferences.terminal
+        let originalZoom = preferences.interfaceZoomLevel
+        preferences.setInterfaceZoomLevel(0)
         preferences.terminal.fontSize = 14
         let source = "# Heading\n\nUnchanged body\n"
         let document = LocalFileDocument(url: URL(fileURLWithPath: "/tmp/font-shortcuts.md"), text: source, data: Data(source.utf8), isPreview: false)
@@ -21,7 +23,7 @@ final class FontShortcutTests: XCTestCase {
             MarkdownPreview(source: source, documentURL: document.url, rootURL: URL(fileURLWithPath: "/tmp"))
         })
         window.contentView = host; window.makeKeyAndOrderFront(nil)
-        defer { window.orderOut(nil); preferences.terminal = original }
+        defer { window.orderOut(nil); preferences.terminal = original; preferences.setInterfaceZoomLevel(originalZoom) }
         try await wait { self.find(CodeTextView.self, in: host) != nil && self.find(WKWebView.self, in: host) != nil }
         let editor = try XCTUnwrap(find(CodeTextView.self, in: host))
         let preview = try XCTUnwrap(find(WKWebView.self, in: host))
@@ -29,25 +31,26 @@ final class FontShortcutTests: XCTestCase {
         editor.setSelectedRange(NSRange(location: 3, length: 0))
         // Real Control events can contain a control character rather than '+'.
         press(window, code: 24, characters: "=", ignoring: "=", flags: [.control])
-        XCTAssertEqual(preferences.terminal.fontSize, 15, "Ctrl+= must reach the app before NSTextView")
-        try await wait { editor.font?.pointSize == 15 }
+        XCTAssertEqual(preferences.interfaceZoomLevel, 1, "Ctrl+= must reach the app before NSTextView")
         press(window, code: 24, characters: "+", ignoring: "+", flags: [.control, .shift])
-        XCTAssertEqual(preferences.terminal.fontSize, 16, "Ctrl+Shift+= must also increase")
+        XCTAssertEqual(preferences.interfaceZoomLevel, 2, "Ctrl+Shift+= must also increase")
         press(window, code: 27, characters: "\u{1f}", ignoring: "-", flags: [.control])
-        XCTAssertEqual(preferences.terminal.fontSize, 15)
-        try await wait { (try? await preview.evaluateJavaScript("getComputedStyle(document.body).fontSize")) as? String == "15px" }
+        XCTAssertEqual(preferences.interfaceZoomLevel, 1)
+        XCTAssertEqual(preferences.terminal.fontSize, 14, "Workbench zoom must preserve the independent content font preference")
         XCTAssertEqual(document.text, source)
         XCTAssertFalse(document.isDirty)
         XCTAssertEqual(editor.selectedRange(), NSRange(location: 3, length: 0))
         window.makeFirstResponder(preview)
         press(window, code: 27, characters: "\u{1f}", ignoring: "-", flags: [.control])
-        XCTAssertEqual(preferences.terminal.fontSize, 14, "Preview focus must not swallow the shortcut")
+        XCTAssertEqual(preferences.interfaceZoomLevel, 0, "Preview focus must not swallow the shortcut")
     }
 
     func testTerminalSettingsOverrideNativeZoomAndKeepShellAndGrid() async throws {
         _ = NSApplication.shared
         let preferences = Preferences.shared
         let original = preferences.terminal
+        let originalZoom = preferences.interfaceZoomLevel
+        preferences.setInterfaceZoomLevel(0)
         preferences.terminal.fontSize = 14
         let controller = TerminalWindowController(model: WindowModel(shellCommand: "/bin/zsh -f"))
         AppDelegate.shared.windows.append(controller)
@@ -57,6 +60,7 @@ final class FontShortcutTests: XCTestCase {
             controller.model.disposeAll(); window.orderOut(nil)
             AppDelegate.shared.windows.removeAll { $0 === controller }
             preferences.terminal = original
+            preferences.setInterfaceZoomLevel(originalZoom)
         }
         try await wait { controller.model.focusedTerminal?.surface != nil }
         let terminal = try XCTUnwrap(controller.model.focusedTerminal)
@@ -69,8 +73,8 @@ final class FontShortcutTests: XCTestCase {
         let process = ghostty_surface_foreground_pid(surface)
         window.makeFirstResponder(terminal)
         press(window, code: 24, characters: "=", ignoring: "=", flags: [.control])
-        XCTAssertEqual(preferences.terminal.fontSize, 15)
-        try await wait { ghostty_surface_font_size(surface) == 15 }
+        XCTAssertEqual(preferences.interfaceZoomLevel, 1)
+        XCTAssertEqual(preferences.terminal.fontSize, 14)
         preferences.terminal.fontSize = 14
         XCTAssertTrue(terminal.action("increase_font_size:3"))
         XCTAssertEqual(ghostty_surface_font_size(surface), 17)
