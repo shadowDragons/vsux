@@ -58,12 +58,13 @@
       "file": "assets/story/project-tools-zh.png",
       "source": "assets/workspace-zh.webp",
       "crop": [
-        2060,
-        85,
-        480,
-        770
+        2062,
+        238,
+        470,
+        764
       ],
-      "kind": "Actual native UI crop; fictional demo project"
+      "kind": "Actual native UI crop; fictional demo project",
+      "captured": "2026-11-12; current source 9b74832; balanced sidebar inset"
     },
     {
       "file": "assets/story/parallel-en.png",
@@ -121,12 +122,13 @@
       "file": "assets/story/project-tools-en.png",
       "source": "assets/workspace-en.webp",
       "crop": [
-        2060,
-        85,
-        480,
-        770
+        2062,
+        238,
+        470,
+        764
       ],
-      "kind": "Actual native UI crop; fictional demo project"
+      "kind": "Actual native UI crop; fictional demo project",
+      "captured": "2026-11-12; current source 9b74832; balanced sidebar inset"
     }
   ],
   "github": {

@@ -24,7 +24,7 @@ The page and article follow the approved product ad: a complete editor is useful
 
 `python3 scripts/export-ad-frames.py` regenerates these assets when the local approved Cinecode composition exists at `../广告/vsux-30s/film.html`. It uses that project's still-render tools. English versions preserve the scene geometry/state and translate visible labels, with a small type-size adjustment for fit. It never changes the approved film. All exported image assets are checked into this web project; the local film project is not required to build or serve the site.
 
-Native screenshots (`workspace-{zh,en}.webp`, `editor-{zh,en}.webp`) are actual app captures with fictional Orbit Studio fixtures. The native sidebar image is only cropped, with no UI alteration. `scripts/make-demo-app.py` builds the isolated screenshot fixture; it does not load personal sessions or modify native product sources. The logo comes from the app's resources.
+Native screenshots (`workspace-{zh,en}.webp`, `editor-{zh,en}.webp`, `markdown-{zh,en}.webp`, `git-{zh,en}.webp`) are actual app captures with fictional Orbit Studio fixtures. The native sidebar image is only cropped, with no UI alteration. `scripts/make-demo-app.py` builds the isolated screenshot fixture; it does not load personal sessions or modify native product sources. The logo comes from the app's resources. These eight images were recaptured from source commit `9b74832` on November 12, 2026. The title bar with the system capture badge is cropped; the remaining UI is unaltered. The service/command crop uses `[2062, 238, 470, 764]` with symmetric horizontal insets.
 
 Downloads retain the existing `v0.1.2` Apple Silicon DMG URL. The source-build links target the appropriate language README.
 
@@ -46,3 +46,7 @@ Local verification outputs are ignored under `design/screenshots/`.
 The repository is public at `https://github.com/shadowDragons/vsux`. The article includes the launch invitation: MIT/open source, Stars, AI-assisted source customization, macOS 14+ on Apple Silicon, and Issues feedback. `github-public.jpg` is an actual signed-out public-repository capture from November 12, 2026; provenance records its crop. The v0.1.2 DMG and checksum are published as an Apple Silicon prerelease. The app remains ad-hoc signed and not notarized.
 
 The release section was checked in both languages at 390 and 1440 px, including the GitHub image dialog and exact repository/Issues links. No runtime errors, failed images or horizontal overflow were found.
+
+## Article width correction
+
+Desktop titles use up to 1100px and reading/footer content up to 960px; figures retain the wider page width. Chinese desktop title lines follow phrase boundaries. Small screens retain fluid margins without a fixed minimum width.

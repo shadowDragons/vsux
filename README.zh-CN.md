@@ -2,7 +2,9 @@
 
 **语言：简体中文 | [English](README.md)**
 
-一个面向开发者的原生 macOS 终端工作区：在同一窗口管理多个项目、终端分屏、文件编辑和 Git。界面由 SwiftUI / AppKit 构建，终端渲染与 PTY 由 Ghostty 提供。
+一个免费开源的 macOS 多项目终端工作区。继续使用你习惯的 AI 编程工具，把终端分屏、文件、Git、常用命令和后台服务按项目放在一起。
+
+使用 SwiftUI / AppKit 构建原生界面，终端渲染与 PTY 由 Ghostty 提供。代码采用 MIT 协议。**仅支持 macOS 14+ 和 Apple Silicon。**
 
 [![Latest release](https://img.shields.io/github/v/release/shadowDragons/vsux?include_prereleases&label=release)](https://github.com/shadowDragons/vsux/releases)
 [![License](https://img.shields.io/github/license/shadowDragons/vsux)](LICENSE)
@@ -12,6 +14,16 @@
 [官网](https://web-delta-seven-29.vercel.app/) · [下载 macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [查看所有 Release](https://github.com/shadowDragons/vsux/releases) · [报告问题](https://github.com/shadowDragons/vsux/issues)
 
 > v0.1.2 是 Apple Silicon 预览版，支持 macOS 14 或更新版本。安装包采用临时签名，未经 Apple 公证；下载前请阅读[安装说明](#安装)和[安全边界](#安全边界)。
+
+如果它适合你的工作习惯，欢迎[点个 Star](https://github.com/shadowDragons/vsux)。你也可以基于源码，让 AI 帮你添加需要的功能、删掉用不到的功能，再构建自己的版本。遇到问题、有功能需求或改进建议，都欢迎到 [Issues](https://github.com/shadowDragons/vsux/issues) 提出来。
+
+## 为什么做 vsux
+
+我越来越经常同时推进几个项目：一个让 AI 改页面，一个跑测试，还有一个服务开着，等我检查效果。我想把仍然需要自己接手的终端、文件、差异检查、命令和服务，放到同一个工作区里。
+
+vsux 没有内置 AI Agent，继续在终端里使用你习惯的编程工具即可。编辑器提供文本编辑和语法着色；需要补全、代码导航或调试时，可以按实际需求选择完整 IDE。
+
+查看[图文介绍](https://web-delta-seven-29.vercel.app/?view=story)。
 
 ## 目录
 
@@ -47,6 +59,16 @@
 **文件树、语法高亮与代码编辑，右侧管理项目服务**
 
 ![vsux 文件树、代码编辑器与项目服务](web/public/assets/editor-zh.webp)
+
+**Markdown 源码、实时预览与目录大纲**
+
+![vsux Markdown 源码、实时预览与目录大纲](web/public/assets/markdown-zh.webp)
+
+**先检查文件差异，再暂存和提交**
+
+![vsux Git 更改列表、暂存入口与文件差异](web/public/assets/git-zh.webp)
+
+截图于 2026 年 11 月 12 日，来自当前原生应用。Orbit Studio 为虚构演示项目，终端输出为示例内容，不是性能测试结果。
 
 ## 安装
 
@@ -116,7 +138,7 @@ Markdown 预览会将原始 HTML 显示为文本，阻止远程资源和工作�
 
 ## 参与贡献
 
-欢迎通过 [Issues](https://github.com/shadowDragons/vsux/issues) 报告问题或讨论改进，也欢迎提交 Pull Request。提交前请运行：
+欢迎通过 [Issues](https://github.com/shadowDragons/vsux/issues) 报告问题、提出功能需求或讨论改进，也欢迎提交 Pull Request。你可以 Fork 采用 MIT 协议的源码，让自己的 AI 编程工具协助修改；使用或分享构建产物前，请检查改动并运行验证。提交前请运行：
 
 ```sh
 Scripts/bootstrap-ghostty.sh

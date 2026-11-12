@@ -2,7 +2,9 @@
 
 **Languages: [English](README.md) | [简体中文](README.zh-CN.md)**
 
-A native macOS terminal workspace for developers. Manage projects, terminal splits, files, and Git in one window. The interface is built with SwiftUI and AppKit; Ghostty provides terminal rendering and PTY support.
+A free, open-source macOS workspace for working on several projects with your own AI coding tools. Keep split terminals, files, Git, saved commands, and background services together, organized by project.
+
+Built with SwiftUI and AppKit, with terminal rendering and PTY support from Ghostty. MIT licensed. **macOS 14+ on Apple Silicon only.**
 
 [![Latest release](https://img.shields.io/github/v/release/shadowDragons/vsux?include_prereleases&label=release)](https://github.com/shadowDragons/vsux/releases)
 [![License](https://img.shields.io/github/license/shadowDragons/vsux)](LICENSE)
@@ -12,6 +14,16 @@ A native macOS terminal workspace for developers. Manage projects, terminal spli
 [Website](https://web-delta-seven-29.vercel.app/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
 
 > v0.1.2 is an Apple Silicon preview for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
+
+If vsux fits your workflow, [give it a Star](https://github.com/shadowDragons/vsux). You can also use your AI coding tools to add features you need or remove ones you do not, then build your own version from source. Feedback and feature requests are welcome in [Issues](https://github.com/shadowDragons/vsux/issues).
+
+## Why vsux
+
+I increasingly work on several projects at once: AI edits a page in one, tests run in another, and a service stays running while I review the result. I wanted a single workspace for the tasks I still handle myself: terminals, files, diffs, commands, and services.
+
+vsux has no built-in AI agent. Keep using the coding tools you already use in the terminal. It provides text editing and syntax highlighting; choose a full IDE when you need completion, navigation, or debugging.
+
+Read the [illustrated product story](https://web-delta-seven-29.vercel.app/?view=story).
 
 ## Contents
 
@@ -47,6 +59,16 @@ The app has no cloud account, sync, embedded browser, or AI agent. Git commands 
 **File tree, syntax highlighting, and editing alongside project services**
 
 ![vsux file tree, code editor, and project services](web/public/assets/editor-en.webp)
+
+**Markdown source and live preview with a document outline**
+
+![vsux Markdown source, live preview, and document outline](web/public/assets/markdown-en.webp)
+
+**Review a file diff before staging and committing**
+
+![vsux Git changes, staging controls, and file diff](web/public/assets/git-en.webp)
+
+Captured from the current native app on November 12, 2026. Orbit Studio is a fictional sample project; terminal output is illustrative demo data, not benchmark results.
 
 ## Installation
 
@@ -116,7 +138,7 @@ The editor provides text editing and syntax highlighting, but not language serve
 
 ## Contributing
 
-Use [GitHub Issues](https://github.com/shadowDragons/vsux/issues) to report bugs or discuss improvements. Pull requests are welcome. Before submitting, run:
+Use [GitHub Issues](https://github.com/shadowDragons/vsux/issues) to report bugs, suggest features, or discuss improvements. Pull requests are welcome. You can fork the MIT-licensed source and ask your own AI coding tool to help change it; review the changes and run the checks before using or sharing your build. Before submitting, run:
 
 ```sh
 Scripts/bootstrap-ghostty.sh

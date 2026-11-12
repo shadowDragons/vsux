@@ -20,7 +20,7 @@ The owner describes vsux as an AI-era editor with only the essential Git, text e
 
 The owner authorized public release on 2026-11-12, superseding the earlier prepare-only decision. The public history uses GitHub noreply addresses; the original history remains private. The article uses a new actual signed-out Public/Star 0 capture. Source customization refers to AI editing the repository, not built-in AI. Platform requirement: macOS 14+ and Apple Silicon only.
 
-All four product images were captured from the actual native UI using a separate temporary app bundle (`local.vsux.marketing-demo`). It never restores workspace sessions; command storage is redirected to its own temporary directory. Code, project names, command labels and terminal output are newly authored fictional fixtures. Terminal transcripts are illustrative, not executed build/test output or product performance measurements. OCR checks found none of the known personal usernames, home paths, hostnames, or original project identifiers in the final images.
+All eight current product images were captured from the actual native UI using a separate temporary app bundle (`local.vsux.marketing-demo`). It never restores workspace sessions; command storage is redirected to its own temporary directory. Code, project names, command labels and terminal output are newly authored fictional fixtures. Terminal transcripts are illustrative, not executed build/test output or product performance measurements. OCR checks found none of the known personal usernames, home paths, hostnames, or original project identifiers in the final images.
 
 ## Owner's origin story, 2026-10-29
 
@@ -32,10 +32,14 @@ Each workspace can configure local shell services with a name, command and optio
 
 ## Ad-aligned copy, 2026-11-12
 
-The user accepted the faster multi-project-focused ad and requested its copy and shots be applied to the article and landing page. Current copy positively acknowledges full editors for one project, frames memory/window/plugin pressure as the author's experience, and emphasizes project workspaces/terminals/commands/services. File/Git copy is brief. It avoids numerical memory claims, competitor names and an assertion that builds/checks are unnecessary. No claim of public repository availability is added; the existing source/download destinations are retained.
+The user accepted the faster multi-project-focused ad and requested its copy and shots be applied to the article and landing page. Current copy positively acknowledges full editors for one project, frames memory/window/plugin pressure as the author's experience, and emphasizes project workspaces/terminals/commands/services. File/Git copy is brief. It avoids numerical memory claims, competitor names and an assertion that builds/checks are unnecessary. The subsequent authorized public launch adds the verified open-source invitation; source/download destinations are retained.
 
 Illustrations come from the accepted Cinecode composition. They are not product screenshots or performance measurements. Native app evidence uses the already verified fictional fixture screenshots; the services/commands image only crops the actual sidebar.
 
 ## Project development method, 2026-11-12
 
 The owner's final title is “花了 200 亿 Token，我做了一个多项目终端工作区 vsux，欢迎体验”, with an English equivalent. The 20-billion-token figure is owner-provided; no currency cost or percentage of AI-written code is claimed. Vibe Coding attribution was cancelled. The approved video narration stays intact; source customization, open-source status, platform limits and feedback invitation appear in the formal ending visuals.
+
+## Current README imagery, 2026-11-12
+
+Rebuilt the isolated demonstration app from source commit 9b74832 and recaptured Chinese/English workspace, editor, Markdown preview/outline and Git diff views. Eight actual captures, title-bar crop only, 2560px WebP quality 94, metadata stripped. Fictional Git history uses demo@example.invalid. OCR on all eight found no personal-home paths, usernames, credential patterns or private IPs. Services/commands sidebar is cropped with balanced insets; no controls are redrawn. README introduction now follows the open-source multi-project positioning and invites Star, AI-assisted source customization and Issues feedback.

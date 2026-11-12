@@ -6,6 +6,7 @@ import subprocess
 ROOT = Path(__file__).resolve().parents[2]
 FILM = ROOT / '广告/vsux-30s'
 OUT = ROOT / 'web/public/assets/story'
+existing_provenance = json.loads((OUT / 'provenance.json').read_text()) if (OUT / 'provenance.json').exists() else {}
 SHOTS = [('parallel', 12.5), ('overhead', 40.5), ('comparison', 49.8), ('essentials', 53.5)]
 LABELS = {
     '界面示意': 'Illustration',
@@ -61,11 +62,11 @@ for language in ('zh', 'en'):
         subprocess.run([
             'ffmpeg', '-hide_banner', '-loglevel', 'error', '-y',
             '-i', str(ROOT / f'web/public/assets/workspace-{language}.webp'),
-            '-vf', 'crop=480:770:2060:85', '-frames:v', '1', '-map_metadata', '-1', str(target),
+            '-vf', 'crop=470:764:2062:238', '-frames:v', '1', '-map_metadata', '-1', str(target),
         ], check=True)
         records.append({'file': target.relative_to(ROOT / 'web/public').as_posix(),
                         'source': f'assets/workspace-{language}.webp',
-                        'crop': [2060, 85, 480, 770],
+                        'crop': [2062, 238, 470, 764],
                         'kind': 'Actual native UI crop; fictional demo project'})
         print(f'{language}: exported {len(SHOTS)} approved shots and a native UI crop')
     finally:
@@ -74,4 +75,5 @@ for language in ('zh', 'en'):
     'source': 'Approved vsux-focus v16 Cinecode composition',
     'modifications': 'Caption/header crop; English labels localized in the same composition. No AI-generated images.',
     'images': records,
+    **({'github': existing_provenance['github']} if 'github' in existing_provenance else {}),
 }, ensure_ascii=False, indent=2) + '\n')

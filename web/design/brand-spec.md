@@ -9,7 +9,7 @@ Collected 2026-10-28. Identity comes from existing project assets.
 - Background: #101214; surface: #191C1F; border: #2C3035; ink: #F3F4F5; muted: #9BA1A9. These are proposed marketing colors, not claims of existing brand guidelines.
 - Display / body: DM Sans + Noto Sans SC; local sans-serif fallback.
 - Character: local, focused, technical, restrained.
-- Product images: `/assets/workspace-zh.webp`, `/assets/workspace-en.webp`, `/assets/editor-zh.webp`, `/assets/editor-en.webp`. Real native UI captured using isolated, synthetic Orbit Studio project data, including a fictional local Docs preview service. No existing user sessions were loaded. The title bar containing the system capture badge is cropped; UI content is otherwise unaltered. Each image is 2560 px wide, WebP quality 92; metadata is stripped.
+- Product images: `/assets/workspace-zh.webp`, `/assets/workspace-en.webp`, `/assets/editor-zh.webp`, `/assets/editor-en.webp`. Real native UI captured using isolated, synthetic Orbit Studio project data, including a fictional local Docs preview service. No existing user sessions were loaded. The title bar containing the system capture badge is cropped; UI content is otherwise unaltered. Each image is 2560 px wide, WebP quality 94; metadata is stripped.
 - Image selection: workspace pair 9/10 for showing multi-project workflow, terminals and commands; editor pair 9/10 for showing real file tree, code editing and syntax highlighting. These first-party captures directly match the product; unrelated stock imagery is omitted.
 - No invented statistics, testimonials, download numbers, performance metrics, or release versions.
 

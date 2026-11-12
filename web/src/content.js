@@ -131,6 +131,7 @@ export const copy = {
 export const stories = {
   zh: {
     title: '花了 200 亿 Token，我做了一个多项目终端工作区 vsux，欢迎体验',
+    titleLines: ['花了 200 亿 Token，我做了一个', '多项目终端工作区 vsux，欢迎体验'],
     release: {
       title: '免费开源，欢迎 Star，也欢迎提意见。',
       paragraphs: [
