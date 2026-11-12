@@ -61,6 +61,12 @@ REA 成功解析三个片段、566 个 AST 节点，无解析失败。属性追�
 - Markdown 工具栏的拆分编辑、大纲、关闭预览：相同倍率范围，并调整窗口宽度，验证文档预览状态。
 - 顶部终端 / 编辑器切换：相同倍率范围，验证当前内容模式。
 
+### 日志弹窗右侧裁切的回归修复（2026-11-12）
+
+实际 sheet 测试复现了日志画布为 720×480、弹窗却保留默认 610×700 的情况：100% 时“完成”按钮右边界为 700，超出弹窗宽度 610；放大后两者差距同步扩大。原先跨视图传递的尺寸 preference 在日志的 ScrollViewReader 场景中未更新缩放容器。
+
+测量视图现在直接在出现及尺寸变化时更新容器状态，避免依赖外层 preference 观察。回归测试在 83%、100%、120%、144%、173% 检查实际弹窗宽高、右边缘和底部按钮的可见范围，并发送真实鼠标事件验证“完成”关闭弹窗。
+
 `WorkbenchZoomTests` 使用实际 NSWindow、SwiftUI、Ghostty 和 WKWebView：
 
 - 设置持久化、边界、100% 重置，且独立内容字号保持不变。
@@ -70,4 +76,4 @@ REA 成功解析三个片段、566 个 AST 节点，无解析失败。属性追�
 - 设置在 100%、120% 和最大倍率下不超出屏幕高度。
 - 生成 `.build/workbench-zoom-{0,1,2,-1}.png` 及 `.build/workbench-zoom-settings.png` 供视觉复核。
 
-最终验证：`swift test` 共 205 项测试全部通过（0 failures）；`python3 Scripts/check-localizations.py` 通过（588 条双语文案）；`git diff --check` 通过。`Scripts/build.sh debug` 已构建并签名 `dist/vsux.app`。现有运行实例不重启，避免中断用户正在运行的服务；新代码由 XCTest 创建的独立原生窗口验证。
+最终验证（2026-11-12）：`swift test` 共 206 项测试全部通过（0 failures）；`python3 Scripts/check-localizations.py` 通过（588 条双语文案）；`git diff --check` 通过。`VERSION=0.1.3 Scripts/build.sh release` 构建并签名 `dist/vsux.app`。现有运行实例不重启，避免中断用户正在运行的服务；新代码由 XCTest 创建的独立原生窗口验证。

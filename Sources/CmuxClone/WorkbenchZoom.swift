@@ -74,19 +74,17 @@ struct ZoomedSheetContent: ViewModifier {
         ScrollView([.horizontal, .vertical]) {
             content.fixedSize()
                 .background(GeometryReader { geometry in
-                    Color.clear.preference(key: SheetCanvasSize.self, value: geometry.size)
+                    // Update locally: a surrounding ScrollViewReader can prevent
+                    // size preferences from reaching an outer change observer.
+                    Color.clear
+                        .onAppear { canvasSize = geometry.size }
+                        .onChange(of: geometry.size) { _, size in canvasSize = size }
                 })
                 .scaleEffect(factor, anchor: .topLeading)
                 .frame(width: canvasSize.width * factor, height: canvasSize.height * factor, alignment: .topLeading)
         }
-        .onPreferenceChange(SheetCanvasSize.self) { canvasSize = $0 }
         .frame(width: min(canvasSize.width * factor, screen.width - 80), height: min(canvasSize.height * factor, screen.height - 100))
     }
-}
-
-private struct SheetCanvasSize: PreferenceKey {
-    static var defaultValue = CGSize(width: 610, height: 700)
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { value = nextValue() }
 }
 
 extension View {

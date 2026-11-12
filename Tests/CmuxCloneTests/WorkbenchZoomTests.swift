@@ -5,8 +5,59 @@ import CGhostty
 import WebKit
 @testable import CmuxClone
 
+private struct ServiceLogSheetFixture: View {
+    let model: WindowModel
+    let service: WorkspaceService
+    @State private var presented = true
+    var body: some View {
+        Color.clear.sheet(isPresented: $presented) {
+            ServiceLogView(model: model, service: service)
+        }
+    }
+}
+
 @MainActor
 final class WorkbenchZoomTests: XCTestCase {
+    func testServiceLogSheetKeepsRightEdgeAndFooterVisibleAfterZoom() async throws {
+        _ = NSApplication.shared
+        let preferences = Preferences.shared
+        let original = preferences.interfaceZoomLevel
+        preferences.setInterfaceZoomLevel(0)
+        let model = WindowModel(shellCommand: "/bin/zsh -f")
+        let service = WorkspaceService(name: "Log layout fixture", command: "true")
+        let window = PointerCursorWindow(contentRect: NSRect(x: 0, y: 0, width: 1280, height: 800), styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView = NSHostingView(rootView: ServiceLogSheetFixture(model: model, service: service))
+        window.makeKeyAndOrderFront(nil)
+        defer {
+            if let sheet = window.attachedSheet { window.endSheet(sheet) }
+            model.disposeAll(); window.orderOut(nil)
+            preferences.setInterfaceZoomLevel(original)
+        }
+        for level in [0, 1, 2, 3, -1] {
+            preferences.setInterfaceZoomLevel(level)
+            try await settle()
+            let sheet = try XCTUnwrap(window.attachedSheet)
+            let content = try XCTUnwrap(sheet.contentView)
+            let controls = regions(in: content).sorted { $0.convert($0.bounds, to: nil).minX < $1.convert($1.bounds, to: nil).minX }
+            XCTAssertEqual(controls.count, 3)
+            let done = try XCTUnwrap(controls.last)
+            let rect = done.convert(done.bounds, to: content)
+            XCTAssertEqual(content.bounds.width, 720 * preferences.zoomFactor, accuracy: 1)
+            XCTAssertEqual(content.bounds.height, 480 * preferences.zoomFactor, accuracy: 1)
+            XCTAssertLessThanOrEqual(rect.maxX, content.bounds.maxX, "Done must remain inside the log sheet at level \(level)")
+            XCTAssertGreaterThanOrEqual(rect.minY, content.bounds.minY, "Footer must remain inside the log sheet")
+            XCTAssertLessThanOrEqual(rect.maxY, content.bounds.maxY, "Footer must remain inside the log sheet")
+        }
+        let sheet = try XCTUnwrap(window.attachedSheet)
+        let content = try XCTUnwrap(sheet.contentView)
+        let done = try XCTUnwrap(regions(in: content).max {
+            $0.convert($0.bounds, to: nil).minX < $1.convert($1.bounds, to: nil).minX
+        })
+        try click(done, in: sheet)
+        try await settle()
+        XCTAssertNil(window.attachedSheet, "The visible Done button must dismiss the log sheet")
+    }
+
     func testEditorToolbarButtonsCanBeClickedAfterZoomAndResize() async throws {
         _ = NSApplication.shared
         let preferences = Preferences.shared
