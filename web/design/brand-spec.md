@@ -24,3 +24,11 @@ AI-era editor focused on six essentials: Git, text editing, syntax highlighting,
 ## Motion direction
 
 Owner requested more dramatic effects. Keep the real product capture as the focal point: blue particle links and a perspective grid suggest parallel workspaces, a staggered title introduces the page, and a narrow orbiting border frames the product. Pointer tilt stays within 2 degrees so screenshots remain readable. Lower sections reveal once on scroll; buttons use a single hover light sweep. Mobile uses static particles without tilt. Respect system reduced-motion preferences and suspend canvas work offscreen or in hidden tabs. All animated content is decorative and uses no workspace data.
+
+## Approved ad adaptation, 2026-11-12
+
+Keep the centered hero, native charcoal/blue identity and existing effects. Lead with parallel AI projects rather than a generic six-feature pitch. Put the author's changed workflow, repeated editor/plugin burden and personal trade-offs before the tools. Full editors remain useful for single-project work; build/check execution and human review remain necessary.
+
+The four ad shots (parallel projects, repeated environment overhead, full-setup comparison, removed-module result) are reused as explicitly labelled diagrams. English versions use the identical composition/state with localized labels. Actual native app screenshots and cropped services/commands sidebar remain separate evidence. Images have click-to-enlarge, and comparison states can be switched. No generated stock assets, performance statistics or invented UI states are introduced.
+
+The bilingual illustrated article is available at `/?view=story` and shares the same story and images. Source/provenance: `public/assets/story/provenance.json`.

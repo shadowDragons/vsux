@@ -92,7 +92,7 @@ export function usePageEffects(root) {
     const fine = matchMedia('(hover: hover) and (pointer: fine) and (min-width: 801px)');
     const stage = site.querySelector('.product-stage');
     let frame = 0;
-    const revealTargets = site.querySelectorAll('.friction > div, .features > .eyebrow, .features > h2, .features > .section-intro, .feature-grid article, .service-feature, .workflow-extras article, .philosophy > div, .open-source > div, .start > *');
+    const revealTargets = site.querySelectorAll('.friction > div, .features > .eyebrow, .features > h2, .features > .section-intro, .feature-grid article, .project-tools, .service-feature, .philosophy > div, .fit-workflow, .start > *');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); observer.unobserve(entry.target); }
@@ -105,8 +105,8 @@ export function usePageEffects(root) {
     });
     function reset() {
       cancelAnimationFrame(frame); frame = 0;
-      stage.style.setProperty('--tilt-x', '0deg'); stage.style.setProperty('--tilt-y', '0deg');
-      stage.style.setProperty('--shine-opacity', '0');
+      stage?.style.setProperty('--tilt-x', '0deg'); stage?.style.setProperty('--tilt-y', '0deg');
+      stage?.style.setProperty('--shine-opacity', '0');
     }
     function move(event) {
       if (motion.matches || !fine.matches || event.pointerType === 'touch') return;
@@ -122,12 +122,12 @@ export function usePageEffects(root) {
         stage.style.setProperty('--shine-opacity', '1');
       });
     }
-    stage.addEventListener('pointermove', move, { passive: true });
-    stage.addEventListener('pointerleave', reset);
+    stage?.addEventListener('pointermove', move, { passive: true });
+    stage?.addEventListener('pointerleave', reset);
     motion.addEventListener('change', reset); fine.addEventListener('change', reset);
     return () => {
       observer.disconnect(); reset();
-      stage.removeEventListener('pointermove', move); stage.removeEventListener('pointerleave', reset);
+      stage?.removeEventListener('pointermove', move); stage?.removeEventListener('pointerleave', reset);
       motion.removeEventListener('change', reset); fine.removeEventListener('change', reset);
       revealTargets.forEach(element => element.classList.remove('reveal', 'is-revealed'));
     };

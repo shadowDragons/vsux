@@ -10,5 +10,10 @@ Vendor/GhosttyKit.tar.gz
 !.env.example
 *.p12
 *.pfx
+*.pem
+*.key
 *.mobileprovision
+.vercel/
 videos/
+
+广告/

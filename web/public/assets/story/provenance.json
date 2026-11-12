@@ -1,0 +1,144 @@
+{
+  "source": "Approved vsux-focus v16 Cinecode composition",
+  "modifications": "Caption/header crop; English labels localized in the same composition. No AI-generated images.",
+  "images": [
+    {
+      "file": "assets/story/parallel-zh.png",
+      "time": 12.5,
+      "frame": 300,
+      "language": "zh",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/overhead-zh.png",
+      "time": 40.5,
+      "frame": 972,
+      "language": "zh",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/comparison-zh.png",
+      "time": 49.8,
+      "frame": 1195,
+      "language": "zh",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/essentials-zh.png",
+      "time": 53.5,
+      "frame": 1284,
+      "language": "zh",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/project-tools-zh.png",
+      "source": "assets/workspace-zh.webp",
+      "crop": [
+        2060,
+        85,
+        480,
+        770
+      ],
+      "kind": "Actual native UI crop; fictional demo project"
+    },
+    {
+      "file": "assets/story/parallel-en.png",
+      "time": 12.5,
+      "frame": 300,
+      "language": "en",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/overhead-en.png",
+      "time": 40.5,
+      "frame": 972,
+      "language": "en",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/comparison-en.png",
+      "time": 49.8,
+      "frame": 1195,
+      "language": "en",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/essentials-en.png",
+      "time": 53.5,
+      "frame": 1284,
+      "language": "en",
+      "kind": "Workflow illustration from approved ad",
+      "crop": [
+        100,
+        310,
+        1720,
+        568
+      ]
+    },
+    {
+      "file": "assets/story/project-tools-en.png",
+      "source": "assets/workspace-en.webp",
+      "crop": [
+        2060,
+        85,
+        480,
+        770
+      ],
+      "kind": "Actual native UI crop; fictional demo project"
+    }
+  ],
+  "github": {
+    "file": "assets/story/github-public.jpg",
+    "source": "Actual signed-out public GitHub repository capture, 2026-11-12",
+    "url": "https://github.com/shadowDragons/vsux",
+    "crop": [
+      16,
+      166,
+      1220,
+      850
+    ],
+    "state": "PUBLIC; Star 0 at capture; no UI alterations"
+  }
+}

@@ -25,10 +25,10 @@ account. Never commit signing keys or notarization credentials to the repo.
 
 ## Clean source repository
 
-The current development repository contains research evidence and local paths
-throughout its history. Keep it private. Do not fork it for publication, push
-its existing branches/tags to the new repository, or assume deleting the files
-in a new commit erases their history.
+The public repository contains reviewed source and an anonymized commit
+history. Private research, local notes, credentials, build products and user
+workspace data must stay out of it. Review every branch, tag and asset before
+publication; deleting a file in a new commit does not erase older versions.
 
 ```sh
 python3 Scripts/prepare-open-source.py
@@ -41,15 +41,14 @@ Git configuration. It refuses to overwrite a prior export. It copies current
 working files, including uncommitted fixes: review and commit the intended
 release changes before tagging. Re-scan this export before uploading.
 
-Create a fresh repository from this folder, with a single initial commit. Use a
-GitHub noreply address if the current author email should remain private. Set
-the public repository URL in `web/src/main.jsx`, `web/README.md` and
-`web/design/product-facts.md` if its name differs from `shadowDragons/vsux`.
-These instructions do not change repository visibility or create a remote.
+For a separate source export, create a fresh repository from that folder. Use a
+GitHub noreply address for author and committer metadata. Project and download
+links are maintained in `web/src/content.js`; update them if the destination
+changes. The export script does not create a remote or change visibility.
 
-Create the GitHub repository as **private** during preparation. Keep it private
-until the owner changes its visibility. A Release draft remains unpublished;
-publishing a draft and making the repository public are separate actions.
+Prepare new repositories privately until the owner authorizes publication.
+A Release draft remains unpublished until explicitly released. The current
+`shadowDragons/vsux` repository is public; v0.1.2 is an available prerelease.
 
 ## GitHub Release
 

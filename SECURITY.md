@@ -24,7 +24,7 @@ virtual machine when investigating untrusted repositories or executables.
   external diff drivers and text conversion programs. These restrictions do not
   make all other Git operations safe for untrusted local configuration.
 - Saved commands and workspace metadata live under
-  `~/Library/Application Support/CmuxLocal/`. They are stored as local JSON,
+  `~/Library/Application Support/vsux/` (older versions used `CmuxLocal/`). They are stored as local JSON,
   with private directory/file permissions; they are not encrypted. Exported
   command libraries may contain credentials you entered. Review before sharing.
 - Markdown preview escapes raw HTML, blocks remote resources and limits local

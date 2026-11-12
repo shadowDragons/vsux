@@ -1,44 +1,48 @@
-# vsux landing page
+# vsux landing page and illustrated story
 
-Independent React + Vite web project. Run commands from this directory:
+Independent React + Vite project, with Chinese and English copy.
 
 ```sh
 npm ci
 npm run dev
-```
-
-The local development URL defaults to http://127.0.0.1:5173/.
-
-```sh
 npm run build
-npm run preview
 ```
 
-The static production output is in `dist/`.
+Vite prints the local URL (normally `http://127.0.0.1:5173/`). Build output is `dist/`.
 
-## Page behavior
+- `/` is the product landing page.
+- `/?view=story` is the illustrated origin article. A query parameter keeps direct navigation compatible with static hosting, without a client router or rewrite rules.
+- The language button switches all copy, diagram labels and native screenshots, and remembers the choice locally.
 
-The production page uses the approved classic centered hero: centered title and actions, followed by a full-width product screenshot. Design variant controls and unused layouts have been removed. The header language button switches Chinese / English and remembers the selection locally. Page copy follows the owner's AI-era editor positioning and six essential tools.
+## Narrative and imagery
 
-The positioning section contrasts full-editor overhead and terminal-tool workflow gaps. It presents the owner's qualitative experience without performance metrics or claiming every terminal lacks these features. Three deliberately omitted IDE capabilities (integrated builds, intelligent completion, code/symbol navigation) use red crosses and strike-through text, with their CLI/AI alternatives explained. All copy is available in Chinese and English.
+The page and article follow the approved product ad: a complete editor is useful for one project; AI enables several projects at once; repeated environments, language services and extensions burden the author's workflow; vsux focuses on project workspaces, terminals and everyday handoffs. This is a first-person motivation, with no memory benchmark, savings figure, competitor comparison or built-in AI claim. File/Git coverage is concise; project commands and services stay prominent. Build and check scripts still run in the terminal.
 
-Port forwarding is presented alongside background services: enter a local HTTP port, create a temporary public link with Cloudflare Quick Tunnel, copy the address, and stop the tunnel when finished. The page notes the `cloudflared` prerequisite and public access. Its English-only diagram uses the reserved `.example` domain as a fictional, non-interactive illustration; it does not create a tunnel or expose any local service. Existing native screenshots remain unchanged.
+`src/content.js` contains the bilingual landing copy and full article. `src/main.jsx`, `src/Story.jsx` and `src/SceneFigure.jsx` render them; shared native styles and article/narrative styles live in `styles.css` and `story.css`.
 
-The product gallery switches between native terminal/workspace and code-editor screenshots. Images change with the language, support click-to-enlarge and Escape to close, and scroll horizontally on small screens. Screenshot fixtures use English project names, files, code, service names, commands, and terminal output. The app UI switches Chinese / English while demo content stays English. All image content comes from newly authored, fictional Orbit Studio fixtures; existing personal workspaces and shell output are never used. The workspace capture includes a synthetic local Docs preview service served only from the fixture folder on loopback. The isolated app process and local service are stopped after captures. Logos are copied from the actual macOS app resources.
+`public/assets/story/` contains four approved ad scenes in both languages and two native sidebar crops. `provenance.json` records the scene timestamps, source and crops. Diagrams are explicitly labelled illustrations; native UI captures are separately labelled. The comparison can switch between the original full setup and the state after unused editor modules have been removed. Figures open in a shared image dialog, close on Escape or backdrop click, and have localized alt text.
 
-`scripts/make-demo-app.py` builds the isolated screenshot fixture in `/tmp/vsux-marketing-demo/` from copies of native sources and local Swift dependencies. It uses a distinct bundle identifier, disables session persistence and redirects its command library. It does not modify native product sources or the installed app. `VSUX_DEMO_LANGUAGE=en` selects English; `VSUX_DEMO_SCENE=editor` opens the sample code. Capture only the Orbit Studio window using CUA or manual screenshots. Final WebP images crop the top 56 px system title bar and retain the original UI, with no image metadata.
+`python3 scripts/export-ad-frames.py` regenerates these assets when the local approved Cinecode composition exists at `../广告/vsux-30s/film.html`. It uses that project's still-render tools. English versions preserve the scene geometry/state and translate visible labels, with a small type-size adjustment for fit. It never changes the approved film. All exported image assets are checked into this web project; the local film project is not required to build or serve the site.
 
-The download action points to the Apple Silicon DMG in the `v0.1.2` GitHub Release. Source-build instructions remain available in the project README.
+Native screenshots (`workspace-{zh,en}.webp`, `editor-{zh,en}.webp`) are actual app captures with fictional Orbit Studio fixtures. The native sidebar image is only cropped, with no UI alteration. `scripts/make-demo-app.py` builds the isolated screenshot fixture; it does not load personal sessions or modify native product sources. The logo comes from the app's resources.
 
-`src/main.jsx` contains copy and layout; `src/styles.css` contains shared design tokens and responsive styles. Google Fonts supplies DM Sans and Noto Sans SC, with local sans-serif fallback. `design/` records facts and design assumptions.
+Downloads retain the existing `v0.1.2` Apple Silicon DMG URL. The source-build links target the appropriate language README.
 
-`src/effects.jsx` and `src/effects.css` add a staggered hero entrance, blue particle connections, a perspective grid, traveling signals, an orbiting screenshot border, pointer-driven product tilt, scroll reveals and a terminal cursor. The canvas stops animating when offscreen or the tab is hidden. Small screens use a static particle field and disable tilt; the system's reduced-motion preference disables entrances, tilt and looping CSS motion while keeping all content visible. Effects use native browser APIs with no extra animation dependency.
+## Motion and verification
 
-## Verified
+The existing hero particles, perspective grid, pointer tilt, screenshot border, entrances and scroll reveals are retained. Reduced-motion preferences disable motion while preserving content. Article pages support the same effects hook without requiring a hero screenshot.
 
-- Production build succeeds; dependency audit has no known vulnerabilities.
-- Playwright verifies both languages, both screenshot scenes, mobile/tablet/desktop layouts, language persistence, screenshot zoom and Escape, and source-build navigation.
-- No runtime page errors or horizontal document overflow in those checks.
-- The selected layout is checked at mobile/tablet/desktop widths, including language persistence, both gallery scenes, screenshot zoom, navigation, pointer tilt/reset and system reduced-motion behavior.
-- Screenshots are stored locally in the ignored `design/screenshots/` directory for review.
-- Product assets in `public/assets/` have been visually inspected and checked with local OCR for personal usernames, paths, hostnames and the original project name.
+Verified after the narrative/image update:
+
+- `npm ci` completed with zero known dependency vulnerabilities; production build succeeds.
+- Chinese and English landing/article views were checked at 390, 768 and 1440 px widths: no runtime errors, broken visible images or horizontal document overflow.
+- Both gallery scenes, before/after comparison images, image dialogs and Escape were exercised; language selection persists when opening the article.
+- Desktop and mobile screenshots, comparison diagrams, article typography and the native sidebar crop were visually inspected.
+
+Local verification outputs are ignored under `design/screenshots/`.
+
+## Open-source launch
+
+The repository is public at `https://github.com/shadowDragons/vsux`. The article includes the launch invitation: MIT/open source, Stars, AI-assisted source customization, macOS 14+ on Apple Silicon, and Issues feedback. `github-public.jpg` is an actual signed-out public-repository capture from November 12, 2026; provenance records its crop. The v0.1.2 DMG and checksum are published as an Apple Silicon prerelease. The app remains ad-hoc signed and not notarized.
+
+The release section was checked in both languages at 390 and 1440 px, including the GitHub image dialog and exact repository/Issues links. No runtime errors, failed images or horizontal overflow were found.

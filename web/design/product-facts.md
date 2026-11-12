@@ -9,7 +9,7 @@ Verified 2026-11-03 from repository README, Sources, Resources, and the running 
 - Workspace layouts persist; running processes and terminal scrollback do not survive restart.
 - No bundled AI agent, cloud account, embedded browser, or third-party extension compatibility claim.
 - Source: https://github.com/shadowDragons/vsux (verified against Git remote).
-- The prepared `v0.1.2` Release draft targets an ad-hoc signed, not notarized Apple Silicon DMG for macOS 14+. The repository stays private until the owner makes it public.
+- The public `v0.1.2` prerelease provides an ad-hoc signed, not notarized Apple Silicon DMG for macOS 14+. The repository became public with the owner's authorization on 2026-11-12.
 - Visual reference inspected live: a popular editor's product homepage. The page uses a centered title, platform CTA, and large product demonstration without borrowing third-party product copy or claims.
 
 ## Owner's positioning, 2026-10-28
@@ -17,6 +17,8 @@ Verified 2026-11-03 from repository README, Sources, Resources, and the running 
 The owner describes vsux as an AI-era editor with only the essential Git, text editing, syntax highlighting, file tree, terminal and multi-project tools. Open source enables users to add their own features with AI-assisted source changes. This is customization of source, not a claim of a plugin SDK or embedded AI integration. Comparisons of editor weight/terminal quality are motivation, not benchmark results, and are not published as measured claims.
 
 ## Screenshot provenance
+
+The owner authorized public release on 2026-11-12, superseding the earlier prepare-only decision. The public history uses GitHub noreply addresses; the original history remains private. The article uses a new actual signed-out Public/Star 0 capture. Source customization refers to AI editing the repository, not built-in AI. Platform requirement: macOS 14+ and Apple Silicon only.
 
 All four product images were captured from the actual native UI using a separate temporary app bundle (`local.vsux.marketing-demo`). It never restores workspace sessions; command storage is redirected to its own temporary directory. Code, project names, command labels and terminal output are newly authored fictional fixtures. Terminal transcripts are illustrative, not executed build/test output or product performance measurements. OCR checks found none of the known personal usernames, home paths, hostnames, or original project identifiers in the final images.
 
@@ -27,3 +29,13 @@ After a year of vibe coding, parallel projects became routine. The owner found t
 ## Workspace services, 2026-11-02
 
 Each workspace can configure local shell services with a name, command and optional working directory. Services run in the background without creating a terminal; the current workspace can start all stopped services, or start/stop/restart one service and inspect its recent bounded output. Switching workspaces leaves running processes alive; closing a workspace/window stops its services, and processes do not auto-restore after app restart. Screenshots use English fictional fixture data for all workspace, file, source, command, and terminal content, regardless of UI language. They show a fictional Orbit Studio `Docs preview` service rooted in its synthetic `docs/` fixture. It serves only local static files on loopback port 43281 and is stopped after capture.
+
+## Ad-aligned copy, 2026-11-12
+
+The user accepted the faster multi-project-focused ad and requested its copy and shots be applied to the article and landing page. Current copy positively acknowledges full editors for one project, frames memory/window/plugin pressure as the author's experience, and emphasizes project workspaces/terminals/commands/services. File/Git copy is brief. It avoids numerical memory claims, competitor names and an assertion that builds/checks are unnecessary. No claim of public repository availability is added; the existing source/download destinations are retained.
+
+Illustrations come from the accepted Cinecode composition. They are not product screenshots or performance measurements. Native app evidence uses the already verified fictional fixture screenshots; the services/commands image only crops the actual sidebar.
+
+## Project development method, 2026-11-12
+
+The owner's final title is “花了 200 亿 Token，我做了一个多项目终端工作区 vsux，欢迎体验”, with an English equivalent. The 20-billion-token figure is owner-provided; no currency cost or percentage of AI-written code is claimed. Vibe Coding attribution was cancelled. The approved video narration stays intact; source customization, open-source status, platform limits and feedback invitation appear in the formal ending visuals.
