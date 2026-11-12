@@ -40,6 +40,7 @@
 .story-heading { max-width: 1100px; margin-inline: auto; padding-bottom: 10px; }
 .story-heading > .eyebrow { margin-top: 60px; }
 .story-heading h1 { font-size: clamp(34px, 4.2vw, 58px); line-height: 1.4; letter-spacing: -.035em; font-weight: 550; margin: 22px 0; text-wrap: balance; }
+.story-heading h1 .story-title-line { color: inherit; }
 .story-lead { color: #b9c3cc; font-size: 18px; line-height: 1.95; }
 .story-section { margin-top: 65px; }
 .story-prose { position: relative; max-width: var(--story-reading-width); margin-inline: auto; }
