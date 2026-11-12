@@ -1,4 +1,4 @@
-export const siteOrigin = 'https://web-delta-seven-29.vercel.app';
+export const siteOrigin = 'https://vsux.sphrag.com';
 
 export const shareCopy = {
   zh: {

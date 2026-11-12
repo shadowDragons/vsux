@@ -11,7 +11,7 @@ Built with SwiftUI and AppKit, with terminal rendering and PTY support from Ghos
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)
 ![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-supported-555)
 
-[Website](https://web-delta-seven-29.vercel.app/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
+[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
 
 > v0.1.2 is an Apple Silicon preview for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
 
@@ -23,7 +23,7 @@ I increasingly work on several projects at once: AI edits a page in one, tests r
 
 vsux has no built-in AI agent. Keep using the coding tools you already use in the terminal. It provides text editing and syntax highlighting; choose a full IDE when you need completion, navigation, or debugging.
 
-Read the [illustrated product story](https://web-delta-seven-29.vercel.app/?view=story).
+Read the [illustrated product story](https://vsux.sphrag.com/?view=story).
 
 ## Contents
 

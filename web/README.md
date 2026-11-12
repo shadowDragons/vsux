@@ -67,3 +67,5 @@ The generator uses bundled DM Sans and a subset of Noto Sans SC in `scripts/font
 `src/share-meta.js` owns localized share copy, image URLs and the public site origin. After `npm run build`, `scripts/build-share-pages.mjs` writes `/zh/` and `/en/` as static HTML with localized title, description, Open Graph, Twitter, canonical and alternate-language tags, readable by crawlers without running JavaScript. The root HTML defaults to Chinese metadata. Update `siteOrigin` before deploying to a different public origin.
 
 Public product naming is “vsux，一款轻量编辑器” / “vsux, a lightweight editor”. Parallel projects and the terminal core remain explanatory features. The bilingual article, landing introduction, README and OG cards share this category.
+
+The production site is https://vsux.sphrag.com/ . Chinese and English share routes, canonical links and OG image URLs use this domain.
