@@ -49,4 +49,4 @@ The release section was checked in both languages at 390 and 1440 px, including 
 
 ## Article width correction
 
-Desktop titles use up to 1100px and reading/footer content up to 960px; figures retain the wider page width. Chinese desktop title lines follow phrase boundaries. Small screens retain fluid margins without a fixed minimum width.
+The article uses one column up to 1100px wide. Its title, paragraphs, full-width figures, captions, release links and footer share the same edges. The narrower portrait sidebar capture starts at the same left edge, without enlarging the native UI. Chinese desktop title lines follow phrase boundaries. Small screens retain fluid margins without a fixed minimum width.
