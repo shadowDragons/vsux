@@ -12,7 +12,7 @@ Vite prints the local URL (normally `http://127.0.0.1:5173/`). Build output is `
 
 - `/` is the product landing page.
 - `/?view=story` is the illustrated origin article. A query parameter keeps direct navigation compatible with static hosting, without a client router or rewrite rules.
-- The language button switches all copy, diagram labels and native screenshots, and remembers the choice locally.
+- `/zh/` and `/en/` select Chinese and English explicitly, overriding the remembered language preference. The language button navigates between them, preserving the query string and hash, and remembers the choice locally.
 
 ## Narrative and imagery
 
@@ -50,3 +50,18 @@ The release section was checked in both languages at 390 and 1440 px, including 
 ## Article width correction
 
 The article uses one column up to 1100px wide. Its title, paragraphs, full-width figures, captions, release links and footer share the same edges. The narrower portrait sidebar capture starts at the same left edge, without enlarging the native UI. Chinese desktop title lines follow phrase boundaries. Small screens retain fluid margins without a fixed minimum width.
+
+## Localized share previews
+
+`public/assets/og-zh.png` and `public/assets/og-en.png` are 1200×630 Open Graph cards. They extend the existing dark background and blue accent identity, using the app logo and the corresponding real localized `workspace-{zh,en}.webp` screenshot described above. Each PNG embeds a `Source` text field recording the generator, screenshot, logo and font provenance.
+
+From this directory, regenerate both cards with Pillow installed:
+
+```sh
+python3 -m pip install Pillow
+python3 scripts/generate-og.py
+```
+
+The generator uses bundled DM Sans and a subset of Noto Sans SC in `scripts/fonts/`, with their included OFL licenses. Originals come from Google Fonts: [DM Sans](https://github.com/google/fonts/tree/main/ofl/dmsans) and [Noto Sans SC](https://github.com/google/fonts/tree/main/ofl/notosanssc). The Noto subset was created with fontTools from the text in the generator plus ASCII and the middle dot (`·`); extend the subset when adding Chinese characters to the cards.
+
+`src/share-meta.js` owns localized share copy, image URLs and the public site origin. After `npm run build`, `scripts/build-share-pages.mjs` writes `/zh/` and `/en/` as static HTML with localized title, description, Open Graph, Twitter, canonical and alternate-language tags, readable by crawlers without running JavaScript. The root HTML defaults to Chinese metadata. Update `siteOrigin` before deploying to a different public origin.
