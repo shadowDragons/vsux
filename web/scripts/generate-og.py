@@ -30,7 +30,7 @@ def render(lang):
     text(140, 60, 'vsux', 44, weight=650)
     text(64, 167, '多个项目，' if zh else 'More projects.', 54 if zh else 50, weight=650, chinese=zh)
     text(64, 241, '一个工作区。' if zh else 'One workspace.', 54 if zh else 50, color='#59BAFF', weight=650, chinese=zh)
-    text(64, 343, '多项目终端工作区' if zh else 'A terminal workspace', 23, chinese=zh)
+    text(64, 343, '一款轻量编辑器' if zh else 'A lightweight editor', 23, chinese=zh)
     text(64, 379, '围绕终端，留下日常所需。' if zh else 'for parallel projects on macOS.', 19, '#AAB1BA', chinese=zh)
 
     # The current real app capture is shown without a fabricated window frame.

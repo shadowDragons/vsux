@@ -2,7 +2,7 @@
 
 **Languages: [English](README.md) | [简体中文](README.zh-CN.md)**
 
-A free, open-source macOS workspace for working on several projects with your own AI coding tools. Keep split terminals, files, Git, saved commands, and background services together, organized by project.
+A free, open-source lightweight editor for macOS. Built around the terminal, vsux keeps parallel projects in one window while you use your own AI coding tools. Keep split terminals, files, Git, saved commands, and background services together, organized by project.
 
 Built with SwiftUI and AppKit, with terminal rendering and PTY support from Ghostty. MIT licensed. **macOS 14+ on Apple Silicon only.**
 

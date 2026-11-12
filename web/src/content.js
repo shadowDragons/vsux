@@ -4,7 +4,7 @@ export const dmgRelease = `${repository}/releases/download/v0.1.2/vsux-0.1.2-mac
 export const copy = {
   zh: {
     nav: ['为什么做', '日常功能', '宣传文章'], lang: 'EN', langLabel: 'Switch to English', skip: '跳至主要内容',
-    eyebrow: '原生 macOS 终端工作区 · 为多项目并行而做',
+    eyebrow: '原生 macOS 轻量编辑器 · 为多项目并行而做',
     title: ['AI 同时推进几个项目，', '工作环境也该轻一点。'],
     description: '一个窗口，管理多个项目。\n围绕终端，把文件、Git、命令和后台服务放在手边。',
     primary: '下载 DMG', secondary: '查看源代码', platform: 'macOS 14+ · Apple Silicon',
@@ -66,7 +66,7 @@ export const copy = {
   },
   en: {
     nav: ['Why vsux', 'Everyday tools', 'The story'], lang: '中文', langLabel: '切换为中文', skip: 'Skip to content',
-    eyebrow: 'NATIVE macOS WORKSPACE · FOR PARALLEL PROJECTS',
+    eyebrow: 'A LIGHTWEIGHT macOS EDITOR · FOR PARALLEL PROJECTS',
     title: ['More projects with AI.', 'Less to carry.'],
     description: 'Multiple projects. One window.\nTerminals, files, Git, commands, and background services, close at hand.',
     primary: 'Download DMG', secondary: 'View source', platform: 'macOS 14+ · Apple Silicon',
@@ -130,8 +130,8 @@ export const copy = {
 
 export const stories = {
   zh: {
-    title: '花了 200 亿 Token，我做了一个多项目终端工作区 vsux，欢迎体验',
-    titleLines: ['花了 200 亿 Token，我做了一个', '多项目终端工作区 vsux，欢迎体验'],
+    title: '花了 200 亿 Token，我做了一款轻量编辑器 vsux，欢迎体验',
+    titleLines: ['花了 200 亿 Token，我做了一款', '轻量编辑器 vsux，欢迎体验'],
     release: {
       title: '免费开源，欢迎 Star，也欢迎提意见。',
       paragraphs: [
@@ -145,7 +145,7 @@ export const stories = {
       star: '前往 GitHub，给项目 Star', feedback: '提问题、建议或功能需求',
       project: '项目地址', issues: '反馈地址',
     },
-    lead: '我做了 vsux。围绕多项目与终端，把每天接手的事情放在手边。',
+    lead: '我做了 vsux，一款轻量编辑器。以终端为核心，在一个窗口里同时推进多个项目，把每天接手的事情放在手边。',
     sections: [
       { title: '以前，一个完整编辑器就很好。', paragraphs: [
         '做一个项目，打开一个完整编辑器，没什么问题。编译、代码跳转、语法检查，能力都很齐全。自己写代码时，这些功能也确实方便。',
@@ -162,7 +162,7 @@ export const stories = {
         '只用终端，项目和分屏可以安排好；但改文件、看文档、检查 Git，又经常要切出去。项目命令和运行中的服务，也还得自己管理。',
       ], image: 'comparison' },
       { title: '所以，我做了 vsux。', paragraphs: [
-        '它是一个原生 macOS 终端工作区，把多个项目放在一个窗口里管理。每个项目有自己的工作区，终端、文件、命令和服务跟着项目走。',
+        '它是一款原生 macOS 轻量编辑器，以终端为核心，把多个项目放在一个窗口里管理。每个项目有自己的工作区，终端、文件、命令和服务跟着项目走。',
         '工作区可以命名、排序和置顶；终端支持多个标签和上下左右分屏。一边让 AI 工作，一边运行测试。布局和目录保存在本机，下次接着用。',
       ], image: 'workspace', actual: true },
       { title: '命令与服务，各自有地方放。', paragraphs: [
@@ -181,7 +181,7 @@ export const stories = {
     ],
   },
   en: {
-    title: '20 billion tokens later, I built vsux: a terminal workspace for parallel projects. Give it a try.',
+    title: '20 billion tokens later, I built vsux, a lightweight editor. Give it a try.',
     release: {
       title: 'Free and open source. Stars and feedback welcome.',
       paragraphs: [
@@ -195,7 +195,7 @@ export const stories = {
       star: 'Visit GitHub and Star the project', feedback: 'Report a bug, suggestion, or feature request',
       project: 'Project', issues: 'Feedback',
     },
-    lead: 'I made vsux: a native macOS workspace built around projects, terminals, and the work I still take over.',
+    lead: 'I made vsux, a lightweight editor for macOS. Built around the terminal, it keeps parallel projects and everyday tasks in one window.',
     sections: [
       { title: 'For one project, a full editor worked well.', paragraphs: [
         'Builds, code navigation, language checks: a full editor has useful capabilities. When I wrote the code myself and worked on one project, opening that environment made sense.',
@@ -212,7 +212,7 @@ export const stories = {
         'Terminal tools help organise projects and splits. But editing files, reading documents, and reviewing Git can mean switching elsewhere. Project commands and running services still need managing.',
       ], image: 'comparison' },
       { title: 'That is why I made vsux.', paragraphs: [
-        'A native macOS terminal workspace that manages several projects in one window. Each project has its own workspace, with terminals, files, commands, and services that belong to it.',
+        'A lightweight native macOS editor built around the terminal, with several projects in one window. Each project has its own workspace, with terminals, files, commands, and services that belong to it.',
         'Name, sort, and pin workspaces. Use terminal tabs and splits in four directions. Let AI work in one pane while tests run in another. Layouts and directories are saved locally for next time.',
       ], image: 'workspace', actual: true },
       { title: 'Commands and services each have a place.', paragraphs: [

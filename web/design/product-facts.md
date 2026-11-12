@@ -38,8 +38,12 @@ Illustrations come from the accepted Cinecode composition. They are not product 
 
 ## Project development method, 2026-11-12
 
-The owner's final title is “花了 200 亿 Token，我做了一个多项目终端工作区 vsux，欢迎体验”, with an English equivalent. The 20-billion-token figure is owner-provided; no currency cost or percentage of AI-written code is claimed. Vibe Coding attribution was cancelled. The approved video narration stays intact; source customization, open-source status, platform limits and feedback invitation appear in the formal ending visuals.
+The owner's final title is “花了 200 亿 Token，我做了一款轻量编辑器 vsux，欢迎体验”, with an English equivalent. The 20-billion-token figure is owner-provided; no currency cost or percentage of AI-written code is claimed. Vibe Coding attribution was cancelled. The approved video narration stays intact; source customization, open-source status, platform limits and feedback invitation appear in the formal ending visuals.
 
 ## Current README imagery, 2026-11-12
 
 Rebuilt the isolated demonstration app from source commit 9b74832 and recaptured Chinese/English workspace, editor, Markdown preview/outline and Git diff views. Eight actual captures, title-bar crop only, 2560px WebP quality 94, metadata stripped. Fictional Git history uses demo@example.invalid. OCR on all eight found no personal-home paths, usernames, credential patterns or private IPs. Services/commands sidebar is cropped with balanced insets; no controls are redrawn. README introduction now follows the open-source multi-project positioning and invites Star, AI-assisted source customization and Issues feedback.
+
+## Product naming, 2026-11-12
+
+The owner confirmed the public category as “vsux，一款轻量编辑器” / “vsux, a lightweight editor”. The terminal core and parallel projects remain feature explanations, not the product name. Article, landing introduction, README and OG metadata/artwork use this wording. The video introduction and closing visuals identify the lightweight editor; its existing intact narration never used the previous category name and remains unchanged. The 20-billion-token title and open-source/platform facts remain.
