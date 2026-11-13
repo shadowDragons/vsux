@@ -40,6 +40,7 @@ jobs:
           swift --version
           Scripts/bootstrap-ghostty.sh
           python3 Scripts/check-localizations.py
+          python3 -m unittest discover -s Tests/Scripts -p 'test_*.py'
       - name: Test application and security behavior
         run: |
           swift test

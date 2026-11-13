@@ -24,14 +24,23 @@ files = {
     "SECURITY.md", "THIRD_PARTY_NOTICES.md", "Vendor/Ghostty-LICENSE",
     "Scripts/bootstrap-ghostty.sh", "Scripts/build.sh", "Scripts/release.sh",
     "Scripts/check-localizations.py", "Scripts/make-icon.swift",
-    "Scripts/prepare-open-source.py", ".github/workflows/release.yml",
+    "Scripts/prepare-open-source.py", ".github/workflows/release.yml", ".github/dependabot.yml",
     "docs/RELEASING.md",
 }
 for folder in ["Sources", "Tests", "Resources", "web"]:
     tracked = subprocess.check_output(
-        ["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z", "--", folder], cwd=root
+        ["git", "ls-files", "--cached", "-z", "--", folder], cwd=root
     ).decode().split("\0")
     files.update(p for p in tracked if p)
+
+# Untracked files may be private local notes or credentials. Only explicitly
+# named files and tracked source-tree files are eligible for this export.
+credential_names = {
+    ".npmrc", ".pypirc", ".netrc", ".git-credentials",
+    "credentials.json", "application_default_credentials.json",
+    "id_rsa", "id_dsa", "id_ecdsa", "id_ed25519",
+}
+credential_directories = {".ssh", ".aws", ".azure", ".gnupg"}
 
 # Reject symlinks and unexpected generated/credential paths, even if tracked.
 for name in files:
@@ -39,7 +48,10 @@ for name in files:
     if any(part in {".git", "node_modules", "dist", ".build", ".swiftpm", "__pycache__"}
            for part in relative.parts):
         raise SystemExit(f"Unexpected generated path: {name}")
-    if relative.name.startswith(".env") or relative.suffix in {".p12", ".pfx", ".pem", ".key", ".mobileprovision"}:
+    if (relative.name.lower().startswith(".env")
+            or relative.name.lower() in credential_names
+            or any(part.lower() in credential_directories for part in relative.parts)
+            or relative.suffix.lower() in {".p12", ".pfx", ".pem", ".key", ".mobileprovision"}):
         raise SystemExit(f"Unexpected credential path: {name}")
     source = root / relative
     if not source.is_file() or source.is_symlink() or root not in source.resolve().parents:

@@ -35,11 +35,21 @@ python3 Scripts/prepare-open-source.py
 ```
 
 Review `dist/open-source/vsux/`, including the README and MIT license. The script
-copies only named source/documentation paths and tracked website assets; it
-excludes research, local notes, build products, dependencies, Git history and
-Git configuration. It refuses to overwrite a prior export. It copies current
-working files, including uncommitted fixes: review and commit the intended
-release changes before tagging. Re-scan this export before uploading.
+copies only named source/documentation paths and Git-tracked files under
+Sources, Tests, Resources and web. Untracked files are excluded; add intended
+new source files to Git only after reviewing them. Credential configuration
+files and directories are rejected even if tracked. Build products,
+dependencies, Git history and local Git configuration are excluded.
+It refuses to overwrite a prior export. It copies current working versions of
+eligible files, including uncommitted fixes: review and commit the intended
+release changes before tagging. Re-scan this export before uploading; tracked
+files can still contain private information.
+
+Run the export boundary regression tests with:
+
+```sh
+python3 -m unittest discover -s Tests/Scripts -p 'test_*.py'
+```
 
 For a separate source export, create a fresh repository from that folder. Use a
 GitHub noreply address for author and committer metadata. Project and download

@@ -1,6 +1,8 @@
 .DS_Store
 .build/
 .swiftpm/
+__pycache__/
+*.py[cod]
 dist/
 Vendor/GhosttyKit.xcframework/
 Vendor/GhosttyKit.tar.gz
@@ -13,6 +15,14 @@ Vendor/GhosttyKit.tar.gz
 *.pem
 *.key
 *.mobileprovision
+.npmrc
+.pypirc
+.netrc
+.git-credentials
+.ssh/
+.aws/
+.azure/
+.gnupg/
 .vercel/
 videos/
 
