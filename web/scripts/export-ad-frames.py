@@ -1,10 +1,11 @@
 """Export approved Cinecode shots; only crop and translate labels for the website."""
 from pathlib import Path
 import json
+import os
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-FILM = ROOT / '广告/vsux-30s'
+FILM = Path(os.environ.get('VSUX_FILM_DIR', ROOT.parent / 'vsux-宣传素材/广告/vsux-30s')).expanduser().resolve()
 OUT = ROOT / 'web/public/assets/story'
 existing_provenance = json.loads((OUT / 'provenance.json').read_text()) if (OUT / 'provenance.json').exists() else {}
 SHOTS = [('parallel', 12.5), ('overhead', 40.5), ('comparison', 49.8), ('essentials', 53.5)]
