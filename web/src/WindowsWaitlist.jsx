@@ -28,10 +28,11 @@ export function WindowsWaitlist({ lang, t, open, onClose }) {
     const timeout = setTimeout(() => controller.abort(), 12000);
     try {
       const form = new FormData(event.currentTarget);
+      // Submitting the clearly labeled waitlist form opts in to the launch notification.
       const response = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim(), language: lang, consent: form.get('consent') === 'on', website: form.get('website') }),
+        body: JSON.stringify({ email: email.trim(), language: lang, consent: true, website: form.get('website') }),
         signal: controller.signal,
       });
       const result = await response.json();
@@ -61,10 +62,8 @@ export function WindowsWaitlist({ lang, t, open, onClose }) {
     <p id="waitlist-description" className="waitlist-description">{t.description}</p>
     {state === 'success' ? <p className="waitlist-success" role="status">{t.success}</p> : <form onSubmit={submit} aria-busy={state === 'loading'}>
       <label htmlFor="waitlist-email">{t.email}</label>
-      <div className="waitlist-input-row"><input ref={input} id="waitlist-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required maxLength={254} value={email} onChange={event => setEmail(event.target.value)} aria-describedby="waitlist-privacy waitlist-status" disabled={state === 'loading'} /><button className="button" type="submit" disabled={state === 'loading'}>{state === 'loading' ? t.saving : t.submit}</button></div>
+      <div className="waitlist-input-row"><input ref={input} id="waitlist-email" name="email" type="email" autoComplete="email" placeholder="you@example.com" required maxLength={254} value={email} onChange={event => setEmail(event.target.value)} aria-describedby="waitlist-status" disabled={state === 'loading'} /><button className="button" type="submit" disabled={state === 'loading'}>{state === 'loading' ? t.saving : t.submit}</button></div>
       <div className="waitlist-trap" aria-hidden="true"><label htmlFor="waitlist-website">Website</label><input id="waitlist-website" name="website" tabIndex={-1} autoComplete="off" /></div>
-      <label className="waitlist-consent"><input name="consent" type="checkbox" required disabled={state === 'loading'} /><span>{t.consent}</span></label>
-      <p id="waitlist-privacy" className="waitlist-privacy">{t.privacy}</p>
       <p id="waitlist-status" className="waitlist-error" role="status">{error}</p>
     </form>}
   </dialog>;

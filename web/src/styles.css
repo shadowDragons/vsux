@@ -63,9 +63,6 @@ h1 span { color: var(--brand-primary); }
 .waitlist-input-row input::placeholder { color: var(--brand-muted); }
 .windows-waitlist input:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 3px; }
 .windows-waitlist button:disabled, .windows-waitlist input:disabled { opacity: .6; cursor: wait; transform: none; }
-.waitlist-consent { display: flex; align-items: flex-start; gap: 9px; margin-top: 16px; font-size: 14px; line-height: 1.7; }
-.waitlist-consent input { width: 16px; height: 16px; flex-shrink: 0; margin: 4px 0 0; accent-color: var(--brand-primary); }
-.waitlist-privacy { margin-top: 10px; font-size: 12px; line-height: 1.8; color: var(--brand-muted); }
 .waitlist-error { color: #ffb7ad; font-size: 14px; line-height: 1.7; margin-top: 12px; }
 .waitlist-error:empty { display: none; }
 .waitlist-success { font-size: 15px; line-height: 1.8; color: var(--brand-primary); }

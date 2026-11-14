@@ -35,7 +35,8 @@ addresses are not stored by this code. Expired counters are cleaned during later
 signups; if traffic stops they remain until the next signup or admin cleanup.
 Vercel/Supabase infrastructure may retain their own access logs under your plan.
 
-The form records permission for a Windows launch notification only. It does not
+Submitting the “Join the waitlist” form opts in to a Windows launch notification,
+as explained above the email field. No separate checkbox is required. It does not
 send email, verify address ownership, or enroll people into general marketing.
 Treat addresses as unverified before any future mailing; add verification and a
 withdrawal/unsubscribe flow when implementing email delivery. To honor a deletion
