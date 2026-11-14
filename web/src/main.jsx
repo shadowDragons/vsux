@@ -7,6 +7,7 @@ import { copy, stories, repository, dmgRelease } from './content';
 import { SceneFigure, shotSource } from './SceneFigure';
 import { Story } from './Story';
 import { shareTags } from './share-meta';
+import { WindowsWaitlist } from './WindowsWaitlist';
 
 function App() {
   const [lang] = useState(() => {
@@ -16,6 +17,8 @@ function App() {
   const [scene, setScene] = useState(0);
   const [comparison, setComparison] = useState(0);
   const [preview, setPreview] = useState(null);
+  const [waitlistOpen, setWaitlistOpen] = useState(false);
+  const waitlistButton = useRef(null);
   const isArticle = new URLSearchParams(location.search).get('view') === 'story';
   const dialog = useRef(null);
   const site = useRef(null);
@@ -68,8 +71,9 @@ function App() {
           <p className="eyebrow"><span />{t.eyebrow}</p>
           <h1><span className="hero-line"><span>{t.title[0]}</span></span><span className="hero-line hero-line-accent"><span>{t.title[1]}</span></span></h1>
           <p className="hero-description">{t.description}</p>
-          <div className="hero-actions"><a className="button" href={dmgRelease}><span aria-hidden="true">↓</span>{t.primary}</a><a className="button button-secondary" href={repository} target="_blank" rel="noreferrer">{t.secondary}<span aria-hidden="true">↗</span></a></div>
+          <div className="hero-actions"><a className="button" href={dmgRelease}><span aria-hidden="true">↓</span>{t.primary}</a><button ref={waitlistButton} className="button button-secondary" type="button" aria-expanded={waitlistOpen} aria-controls="windows-waitlist" onClick={() => setWaitlistOpen(value => !value)}>{t.waitlist.action}</button></div>
           <p className="platform">{t.platform}</p>
+          <a className="hero-source text-link" href={repository} target="_blank" rel="noreferrer">{t.secondary}<span aria-hidden="true"> ↗</span></a>
         </div>
         <figure className="product-stage" id="workflow">
           <div className="stage-meta"><span>vsux / workspace</span><span>JUST ENOUGH. ALL YOURS.</span></div>
@@ -115,6 +119,7 @@ function App() {
       <section id="start" className="start wrap"><div><p className="eyebrow">HELLO, VSUX.</p><h2>{t.start}</h2><p>{t.buildNote}</p><a href={`${repository}/${lang === 'en' ? 'blob/main/README.md#build-from-source' : 'blob/main/README.zh-CN.md#从源码构建'}`} target="_blank" rel="noreferrer" className="text-link">{t.build} ↗</a></div><pre><code>./Scripts/build.sh{'\n'}open "dist/vsux.app"</code></pre></section>
       </>}
     </main>
+    <WindowsWaitlist lang={lang} t={t.waitlist} open={waitlistOpen} onClose={() => { setWaitlistOpen(false); waitlistButton.current?.focus(); }} />
     <footer className="wrap"><a className="brand" href={languagePath}><img src="/assets/vsux-logo.png" alt="" />vsux</a><span>{t.footer}</span><a href={repository} target="_blank" rel="noreferrer">GitHub ↗</a></footer>
     <dialog ref={dialog} className="image-dialog" aria-label={preview?.title || t.gallery} onClose={() => setPreview(null)} onClick={event => { if (event.target === dialog.current) dialog.current.close(); }}>
       <div className="dialog-toolbar"><span>{preview?.title}</span><button type="button" onClick={() => dialog.current.close()} aria-label={t.close}>×</button></div>
