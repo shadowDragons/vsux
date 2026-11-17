@@ -9,7 +9,7 @@ Verified 2026-11-03 from repository README, Sources, Resources, and the running 
 - Workspace layouts persist; running processes and terminal scrollback do not survive restart.
 - No bundled AI agent, cloud account, embedded browser, or third-party extension compatibility claim.
 - Source: https://github.com/shadowDragons/vsux (verified against Git remote).
-- The public `v0.1.2` prerelease provides an ad-hoc signed, not notarized Apple Silicon DMG for macOS 14+. The repository became public with the owner's authorization on 2026-11-12.
+- The `v1.0.0` release provides an ad-hoc signed, not notarized Apple Silicon DMG for macOS 14+. The repository became public with the owner's authorization on 2026-11-12.
 - Visual reference inspected live: a popular editor's product homepage. The page uses a centered title, platform CTA, and large product demonstration without borrowing third-party product copy or claims.
 
 ## Owner's positioning, 2026-10-28

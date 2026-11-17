@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-version=${1:-0.1.0}
+version=${1:-1.0.0}
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   printf 'Usage: %s X.Y.Z\n' "$0" >&2
   exit 1
@@ -26,7 +26,7 @@ vsux — Apple Silicon, macOS 14+
 
 Drag vsux.app to Applications, then eject this disk image.
 
-This preview uses an ad-hoc signature and is not notarized by Apple.
+This build uses an ad-hoc signature and is not notarized by Apple.
 After verifying the download source and SHA-256, if macOS blocks launch,
 use System Settings > Privacy & Security > Open Anyway.
 Do not disable Gatekeeper globally.

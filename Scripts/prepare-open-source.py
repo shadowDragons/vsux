@@ -41,6 +41,9 @@ credential_names = {
     "id_rsa", "id_dsa", "id_ecdsa", "id_ed25519",
 }
 credential_directories = {".ssh", ".aws", ".azure", ".gnupg"}
+# This checked-in template contains only public placeholders and empty secrets.
+# Other environment files, including examples at unreviewed paths, remain rejected.
+public_environment_templates = {"web/.env.example"}
 
 # Reject symlinks and unexpected generated/credential paths, even if tracked.
 for name in files:
@@ -48,7 +51,7 @@ for name in files:
     if any(part in {".git", "node_modules", "dist", ".build", ".swiftpm", "__pycache__"}
            for part in relative.parts):
         raise SystemExit(f"Unexpected generated path: {name}")
-    if (relative.name.lower().startswith(".env")
+    if ((relative.name.lower().startswith(".env") and name not in public_environment_templates)
             or relative.name.lower() in credential_names
             or any(part.lower() in credential_directories for part in relative.parts)
             or relative.suffix.lower() in {".p12", ".pfx", ".pem", ".key", ".mobileprovision"}):

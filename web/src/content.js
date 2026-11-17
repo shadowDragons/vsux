@@ -1,5 +1,5 @@
 export const repository = 'https://github.com/shadowDragons/vsux';
-export const dmgRelease = `${repository}/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg`;
+export const dmgRelease = `${repository}/releases/download/v1.0.0/vsux-1.0.0-macos-arm64.dmg`;
 
 export const copy = {
   zh: {

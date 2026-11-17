@@ -11,9 +11,9 @@ Built with SwiftUI and AppKit, with terminal rendering and PTY support from Ghos
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)
 ![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-supported-555)
 
-[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v0.1.2/vsux-0.1.2-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
+[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v1.0.0/vsux-1.0.0-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
 
-> v0.1.2 is an Apple Silicon preview for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
+> v1.0.0 is an Apple Silicon release for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
 
 If vsux fits your workflow, [give it a Star](https://github.com/shadowDragons/vsux). You can also use your AI coding tools to add features you need or remove ones you do not, then build your own version from source. Feedback and feature requests are welcome in [Issues](https://github.com/shadowDragons/vsux/issues).
 
@@ -72,15 +72,15 @@ Captured from the current native app on November 12, 2026. Orbit Studio is a fic
 
 ## Installation
 
-1. Download `vsux-0.1.2-macos-arm64.dmg` from the [v0.1.2 release](https://github.com/shadowDragons/vsux/releases/tag/v0.1.2).
+1. Download `vsux-1.0.0-macos-arm64.dmg` from the [v1.0.0 release](https://github.com/shadowDragons/vsux/releases/tag/v1.0.0).
 2. Open the disk image and drag `vsux.app` to `Applications`.
 3. Optionally download the `.dmg.sha256` file from the same release and verify the image:
 
    ```sh
-   shasum -a 256 -c vsux-0.1.2-macos-arm64.dmg.sha256
+   shasum -a 256 -c vsux-1.0.0-macos-arm64.dmg.sha256
    ```
 
-This preview does not have an Apple Developer ID signature or notarization. If macOS blocks the app, first verify the download source and checksum, then follow the prompt in System Settings under Privacy & Security. Do not disable Gatekeeper globally.
+This build does not have an Apple Developer ID signature or notarization. If macOS blocks the app, first verify the download source and checksum, then follow the prompt in System Settings under Privacy & Security. Do not disable Gatekeeper globally.
 
 ## Getting started
 
@@ -118,7 +118,7 @@ swift test
 python3 Scripts/check-localizations.py
 ```
 
-Local builds of `dist/vsux.app` are ad-hoc signed. To build a DMG and checksum, run `Scripts/release.sh 0.1.2`; the outputs are written to `dist/`. See the [release guide](docs/RELEASING.md) for the full process.
+Local builds of `dist/vsux.app` are ad-hoc signed. To build a DMG and checksum, run `Scripts/release.sh 1.0.0`; the outputs are written to `dist/`. See the [release guide](docs/RELEASING.md) for the full process.
 
 ## Data and privacy
 

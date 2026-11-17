@@ -68,6 +68,7 @@ class SourceExportTests(unittest.TestCase):
 
     def test_tracked_credentials_are_rejected_before_any_export(self):
         for name in ["web/.npmrc", "web/.NPMRC", "web/.pypirc", "web/.netrc",
+                     "web/.env", "web/.env.local", "Resources/.env.example",
                      "Resources/.aws/config", "Resources/.ssh/config",
                      "web/credentials.json", "Resources/private.PEM"]:
             with self.subTest(name=name):
@@ -78,6 +79,14 @@ class SourceExportTests(unittest.TestCase):
                 self.assertIn("Unexpected credential path", result.stderr)
                 self.assertFalse(self.destination.exists())
                 self.git("rm", "--force", "--", name)
+
+    def test_reviewed_website_environment_example_is_exported(self):
+        example = "SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co\nSUPABASE_SERVICE_ROLE_KEY=\n"
+        self.write("web/.env.example", example)
+        self.git("add", "--force", "web/.env.example")
+        result = self.export()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.destination / "web/.env.example").read_text(), example)
 
     def test_tracked_source_uses_current_working_version(self):
         self.write("web/src/main.js", "export const publicValue = 2;\n")
