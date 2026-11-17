@@ -17,6 +17,10 @@ The image contains vsux.app, an Applications shortcut and installation notes.
 Builds start from an empty app staging directory and validate code signatures,
 DMG integrity and executable architecture. No user preferences, workspace JSON,
 local command libraries, `.git` directory or development logs are bundled.
+The assembled executable also checks its installed English catalog and syntax
+highlighting resources before any user-data migration or UI startup, using
+`--verify-bundled-resources`. This catches packaging differences between the
+native SwiftPM and Xcode build drivers.
 
 These builds are ad-hoc signed and not notarized. Developer ID signing,
 hardened runtime, Apple notarization and stapling are not implemented by this

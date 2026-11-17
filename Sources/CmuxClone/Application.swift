@@ -5,6 +5,18 @@ import CGhostty
 @main
 struct VsuxMain {
     static func main() {
+        // Exercise the installed resource paths before migration or UI startup.
+        if CommandLine.arguments.dropFirst().elementsEqual(["--verify-bundled-resources"]) {
+            guard let packaged = AppResources.packagedBundle(in: Bundle.main.resourceURL),
+                  packaged.bundleURL == AppResources.bundle.bundleURL,
+                  Localization.render("设置", language: .english) == "Settings",
+                  !CodeHighlighter.tokens(in: "let value = 1", language: .swift).isEmpty else {
+                fputs("Bundled resource verification failed\n", stderr)
+                exit(1)
+            }
+            print("Bundled localization and syntax highlighting verified")
+            return
+        }
         do {
             try AppDataMigration.prepare()
         } catch {

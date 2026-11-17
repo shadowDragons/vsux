@@ -69,7 +69,7 @@ enum Localization {
         let en: String
     }
     static let messages: [String: Entry] = {
-        guard let url = Bundle.module.url(forResource: "messages", withExtension: "json", subdirectory: "Localization"),
+        guard let url = AppResources.bundle.url(forResource: "messages", withExtension: "json", subdirectory: "Localization"),
               let data = try? Data(contentsOf: url),
               let catalog = try? JSONDecoder().decode([String: Entry].self, from: data) else {
             assertionFailure("Missing bundled localization catalog")

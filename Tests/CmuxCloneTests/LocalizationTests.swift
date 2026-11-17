@@ -5,6 +5,28 @@ import XCTest
 @testable import CmuxClone
 
 final class LocalizationTests: XCTestCase {
+    func testInstalledResourceLookupSupportsNativeAndXcodeBundleLayouts() throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("vsux-resources-\(UUID())")
+        defer { try? FileManager.default.removeItem(at: root) }
+        for layout in ["native", "xcode"] {
+            let resources = root.appendingPathComponent(layout)
+            let bundleRoot = resources.appendingPathComponent("CmuxClone_CmuxClone.bundle")
+            let content = layout == "xcode" ? bundleRoot.appendingPathComponent("Contents/Resources") : bundleRoot
+            let catalog = content.appendingPathComponent("Localization/messages.json")
+            try FileManager.default.createDirectory(at: catalog.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try Data("{\"installed\":true}".utf8).write(to: catalog)
+            if layout == "xcode" {
+                let info = ["CFBundleIdentifier": "test.vsux.resources", "CFBundlePackageType": "BNDL"]
+                try PropertyListSerialization.data(fromPropertyList: info, format: .xml, options: 0)
+                    .write(to: bundleRoot.appendingPathComponent("Contents/Info.plist"))
+            }
+            let bundle = try XCTUnwrap(AppResources.packagedBundle(in: resources))
+            let url = try XCTUnwrap(bundle.url(forResource: "messages", withExtension: "json", subdirectory: "Localization"))
+            XCTAssertEqual(try Data(contentsOf: url), try Data(contentsOf: catalog))
+        }
+        XCTAssertNil(AppResources.packagedBundle(in: root.appendingPathComponent("missing")))
+    }
+
     func testCatalogContainsBothLanguagesAndMatchingParameters() throws {
         XCTAssertGreaterThan(Localization.messages.count, 400)
         XCTAssertEqual(Set(Localization.messages.values.map(\.zh)).count, Localization.messages.count)

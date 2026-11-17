@@ -23,8 +23,7 @@ cp "$bin_path/CmuxClone" "$app/Contents/MacOS/vsux"
 if [[ "$configuration" == release ]]; then
   xcrun strip -S "$app/Contents/MacOS/vsux"
 fi
-# Bundle.module resolves this location with the Xcode SwiftPM driver; the parser
-# also checks this explicit packaged location for the native SwiftPM driver.
+# AppResources resolves this installed location with either SwiftPM driver.
 resource_bundle="$bin_path/CmuxClone_CmuxClone.bundle"
 test -d "$resource_bundle"
 rm -rf "$app/Contents/Resources/CmuxClone_CmuxClone.bundle"
@@ -63,6 +62,7 @@ PLIST
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $build_number" "$app/Contents/Info.plist"
 codesign --force --deep --sign - "$app"
 codesign --verify --deep --strict "$app"
+"$app/Contents/MacOS/vsux" --verify-bundled-resources
 rm -rf dist/vsux.app
 mv "$app" dist/vsux.app
 app="dist/vsux.app"

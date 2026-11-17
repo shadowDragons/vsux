@@ -111,8 +111,7 @@ enum CodeHighlighter {
         private let context: JSContext?
         init() {
             context = JSContext()
-            let packaged = Bundle.main.resourceURL?.appendingPathComponent("CmuxClone_CmuxClone.bundle")
-            let bundle = packaged.flatMap(Bundle.init(url:)) ?? Bundle.module
+            let bundle = AppResources.bundle
             for name in ["core", "dockerfile", "bridge"] {
                 guard let url = bundle.url(forResource: name, withExtension: "js", subdirectory: "Highlighting"),
                       let script = try? String(contentsOf: url, encoding: .utf8) else { continue }
