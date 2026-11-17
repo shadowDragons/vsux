@@ -33,7 +33,7 @@ final class WorkbenchZoomTests: XCTestCase {
             model.disposeAll(); window.orderOut(nil)
             preferences.setInterfaceZoomLevel(original)
         }
-        for level in [0, 1, 2, 3, -1] {
+        for level in [0, 1, 2, 3, 8, -1] {
             preferences.setInterfaceZoomLevel(level)
             try await settle()
             let sheet = try XCTUnwrap(window.attachedSheet)
@@ -41,9 +41,14 @@ final class WorkbenchZoomTests: XCTestCase {
             let controls = regions(in: content).sorted { $0.convert($0.bounds, to: nil).minX < $1.convert($1.bounds, to: nil).minX }
             XCTAssertEqual(controls.count, 3)
             let done = try XCTUnwrap(controls.last)
+            let screen = try XCTUnwrap(sheet.screen).visibleFrame.size
+            XCTAssertEqual(content.bounds.width, min(720 * preferences.zoomFactor, screen.width - 80), accuracy: 1)
+            XCTAssertEqual(content.bounds.height, min(480 * preferences.zoomFactor, screen.height - 100), accuracy: 1)
+            // A small display intentionally caps the sheet and lets its canvas
+            // scroll. The footer must be reachable within that viewport.
+            done.scrollToVisible(done.bounds)
+            try await settle()
             let rect = done.convert(done.bounds, to: content)
-            XCTAssertEqual(content.bounds.width, 720 * preferences.zoomFactor, accuracy: 1)
-            XCTAssertEqual(content.bounds.height, 480 * preferences.zoomFactor, accuracy: 1)
             XCTAssertLessThanOrEqual(rect.maxX, content.bounds.maxX, "Done must remain inside the log sheet at level \(level)")
             XCTAssertGreaterThanOrEqual(rect.minY, content.bounds.minY, "Footer must remain inside the log sheet")
             XCTAssertLessThanOrEqual(rect.maxY, content.bounds.maxY, "Footer must remain inside the log sheet")

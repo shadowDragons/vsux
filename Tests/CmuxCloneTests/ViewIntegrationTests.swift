@@ -48,7 +48,13 @@ final class ViewIntegrationTests: XCTestCase {
         ] {
             preferences.language = language
             settle(); host.layoutSubtreeIfNeeded()
-            let bitmap = try XCTUnwrap(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+            // CI displays may use 1x backing. Render the native view at a fixed
+            // 2x density so small Chinese glyphs remain legible to Vision.
+            let bitmap = try XCTUnwrap(NSBitmapImageRep(bitmapDataPlanes: nil,
+                pixelsWide: Int(host.bounds.width * 2), pixelsHigh: Int(host.bounds.height * 2),
+                bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0))
+            bitmap.size = host.bounds.size
             host.cacheDisplay(in: host.bounds, to: bitmap)
             let image = try XCTUnwrap(bitmap.cgImage)
             let request = VNRecognizeTextRequest()
