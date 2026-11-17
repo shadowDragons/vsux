@@ -49,7 +49,9 @@ h1 { font-size: clamp(48px, 5.1vw, 70px); font-weight: 600; line-height: 1.25; l
 h1 span { color: var(--brand-primary); }
 .hero-description { white-space: pre-line; color: var(--brand-muted); font-size: 14px; line-height: 1.9; letter-spacing: .2px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 27px; }
-.hero-source { display: inline-block; margin-top: 12px; }
+.hero-star { gap: 10px; background: var(--brand-stage); border-color: var(--brand-primary); color: var(--brand-ink); }
+.hero-star .star-icon { color: var(--brand-primary); }
+.hero-star:hover { background: #2c3c4a; }
 .windows-waitlist { position: fixed; width: min(560px, calc(100% - 32px)); max-width: none; max-height: calc(100dvh - 32px); margin: auto; padding: 24px; overflow-y: auto; color: var(--brand-ink); background: var(--brand-surface); border: 1px solid var(--brand-border); border-radius: 12px; text-align: left; scrollbar-color: #69737e var(--brand-surface); }
 .windows-waitlist::backdrop { background: #05080cd9; }
 .waitlist-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }

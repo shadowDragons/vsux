@@ -71,9 +71,14 @@ function App() {
           <p className="eyebrow"><span />{t.eyebrow}</p>
           <h1><span className="hero-line"><span>{t.title[0]}</span></span><span className="hero-line hero-line-accent"><span>{t.title[1]}</span></span></h1>
           <p className="hero-description">{t.description}</p>
-          <div className="hero-actions"><a className="button" href={dmgRelease}><span aria-hidden="true">↓</span>{t.primary}</a><button ref={waitlistButton} className="button button-secondary" type="button" aria-expanded={waitlistOpen} aria-controls="windows-waitlist" onClick={() => setWaitlistOpen(value => !value)}>{t.waitlist.action}</button></div>
+          <div className="hero-actions"><a className="button" href={dmgRelease}><span aria-hidden="true">↓</span>{t.primary}</a><button ref={waitlistButton} className="button button-secondary" type="button" aria-expanded={waitlistOpen} aria-controls="windows-waitlist" onClick={() => setWaitlistOpen(value => !value)}>{t.waitlist.action}</button>
+            <a className="button hero-star" href={repository} target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.558 21.922c.562.104.768-.244.768-.542 0-.267-.01-.975-.015-1.914-3.13.68-3.79-1.508-3.79-1.508-.512-1.3-1.25-1.646-1.25-1.646-1.023-.7.077-.686.077-.686 1.13.08 1.725 1.16 1.725 1.16 1.005 1.722 2.637 1.225 3.278.937.102-.728.393-1.225.715-1.507-2.498-.284-5.124-1.25-5.124-5.565 0-1.23.44-2.235 1.16-3.022-.116-.285-.503-1.43.11-2.98 0 0 .945-.302 3.094 1.155a10.8 10.8 0 0 1 5.63 0c2.148-1.457 3.092-1.155 3.092-1.155.614 1.55.227 2.695.112 2.98.72.787 1.158 1.792 1.158 3.022 0 4.327-2.63 5.278-5.136 5.557.404.35.765 1.042.765 2.1 0 1.516-.014 2.74-.014 3.112 0 .3.202.65.774.54A11.25 11.25 0 0 0 12 .75Z" /></svg>
+              {t.secondary}
+              <svg className="star-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m12 3 2.78 5.63L21 9.54l-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 1.06-6.2L3 9.54l6.22-.91L12 3Z" /></svg>
+            </a>
+          </div>
           <p className="platform">{t.platform}</p>
-          <a className="hero-source text-link" href={repository} target="_blank" rel="noreferrer">{t.secondary}<span aria-hidden="true"> ↗</span></a>
         </div>
         <figure className="product-stage" id="workflow">
           <div className="stage-meta"><span>vsux / workspace</span><span>JUST ENOUGH. ALL YOURS.</span></div>
