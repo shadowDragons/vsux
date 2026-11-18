@@ -148,6 +148,10 @@ python3 Scripts/check-localizations.py
 
 涉及网站时，再从 `web/` 运行 `npm ci`、`npm audit` 和 `npm run build`。请勿提交个人路径、凭据、签名密钥或真实工作区数据；安全问题请按 [SECURITY.md](SECURITY.md) 中的方式私下报告。
 
+## 社区
+
+[LINUX DO](https://linux.do/)
+
 ## 许可证与鸣谢
 
 vsux 原创代码采用 [MIT License](LICENSE)。项目依赖及各自的版权和许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)；其中包括由 [Ghostty](https://github.com/ghostty-org/ghostty) 提供的终端渲染与 PTY 能力。

@@ -148,6 +148,10 @@ python3 Scripts/check-localizations.py
 
 For website changes, also run `npm ci`, `npm audit`, and `npm run build` from `web/`. Do not commit personal paths, credentials, signing keys, or real workspace data. Report security issues privately using the process in [SECURITY.md](SECURITY.md).
 
+## Community
+
+[LINUX DO](https://linux.do/)
+
 ## License and acknowledgements
 
 Original vsux code is licensed under the [MIT License](LICENSE). Third-party dependencies and their respective notices are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Terminal rendering and PTY support are provided by [Ghostty](https://github.com/ghostty-org/ghostty).
