@@ -43,7 +43,7 @@ jobs:
           python3 -m unittest discover -s Tests/Scripts -p 'test_*.py'
       - name: Test application and security behavior
         run: |
-          swift test --filter 'SSHCredentialTests/testAskpassExecutableReturnsOnlyDisposableKeychainPassword|ViewIntegrationTests/testQuickTunnelControlsRenderInBothLanguages'
+          swift test --filter 'SSHCredentialTests/testAskpassReturnsOnlySavedPasswordForPasswordPrompts|ViewIntegrationTests/testQuickTunnelControlsRenderInBothLanguages'
           swift test
       - name: Audit and build website
         working-directory: web

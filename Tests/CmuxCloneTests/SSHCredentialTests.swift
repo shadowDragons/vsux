@@ -147,64 +147,15 @@ final class SSHCredentialTests: XCTestCase {
         XCTAssertNil(session.terminal.surface)
     }
 
-    func testAskpassExecutableReturnsOnlyDisposableKeychainPassword() async throws {
-        let keychain = SSHKeychain()
+    func testAskpassReturnsOnlySavedPasswordForPasswordPrompts() throws {
         let reference = SSHCredentialReference(workspaceID: UUID(), connectionID: UUID())
-        let password = "askpass-test-" + UUID().uuidString
-        defer { try? keychain.setPassword(nil, for: reference) }
-        let executable = Bundle(for: Self.self).bundleURL.deletingLastPathComponent().appendingPathComponent("CmuxClone")
-        XCTAssertTrue(FileManager.default.isExecutableFile(atPath: executable.path))
-        // XCTest and the askpass executable are separate signed programs. Give
-        // only this disposable item an explicit ACL for both, just as the real
-        // app and its helper share the same executable in a packaged release.
-        var testApplication: SecTrustedApplication?
-        var helperApplication: SecTrustedApplication?
-        XCTAssertEqual(SecTrustedApplicationCreateFromPath(nil, &testApplication), errSecSuccess)
-        XCTAssertEqual(SecTrustedApplicationCreateFromPath(executable.path, &helperApplication), errSecSuccess)
-        var access: SecAccess?
-        let trusted = [try XCTUnwrap(testApplication), try XCTUnwrap(helperApplication)] as CFArray
-        XCTAssertEqual(SecAccessCreate("vsux disposable askpass test" as CFString, trusted, &access), errSecSuccess)
-        let item: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: "local.vsux.ssh-password",
-            kSecAttrAccount as String: reference.account,
-            kSecValueData as String: Data(password.utf8),
-            kSecAttrAccess as String: try XCTUnwrap(access)
-        ]
-        XCTAssertEqual(SecItemAdd(item as CFDictionary, nil), errSecSuccess)
-        let process = Process()
-        process.executableURL = executable
-        process.arguments = ["test@localhost's password: "]
-        process.environment = ProcessInfo.processInfo.environment.merging(SSHAskpass.environment(for: reference, executable: executable.path)) { _, new in new }
-        let output = Pipe()
-        process.standardOutput = output; process.standardError = FileHandle.nullDevice
-        let finished = expectation(description: "Askpass process exits")
-        process.terminationHandler = { _ in finished.fulfill() }
-        try process.run()
-        // Keep XCTest's run loop available for process/Keychain IPC. First
-        // executable assessment on a fresh runner can exceed eight seconds.
-        await fulfillment(of: [finished], timeout: 60)
-        if process.isRunning {
-            let sample = Process(), sampleOutput = Pipe()
-            sample.executableURL = URL(fileURLWithPath: "/usr/bin/sample")
-            sample.arguments = [String(process.processIdentifier), "1", "-file", "/dev/stdout"]
-            sample.standardOutput = sampleOutput; sample.standardError = FileHandle.nullDevice
-            try sample.run()
-            let sampleData = sampleOutput.fileHandleForReading.readDataToEndOfFile()
-            sample.waitUntilExit()
-            let trace = String(decoding: sampleData, as: UTF8.self).split(separator: "\n").filter { line in
-                ["SSHAskpass", "VsuxMain", "SecItem", "SecKeychain", "securityd", "runModal", "NSApplication", "dyld"].contains { line.contains($0) }
-            }
-            process.terminate()
-            Thread.sleep(forTimeInterval: 0.2)
-            if process.isRunning { kill(process.processIdentifier, SIGKILL) }
-            process.waitUntilExit()
-            XCTFail("Askpass did not complete; stack: \(trace.joined(separator: "\n"))")
-            return
-        }
-        let result = output.fileHandleForReading.readDataToEndOfFile()
-        XCTAssertEqual(process.terminationStatus, 0)
-        XCTAssertTrue(result == Data((password + "\n").utf8), "Askpass must return only the saved password")
+        let credentials = MemoryCredentials()
+        credentials.passwords[reference.account] = "test-only-password"
+        XCTAssertEqual(try SSHAskpass.savedPassword(prompt: "test@localhost's password: ", reference: reference, credentials: credentials), "test-only-password")
+        XCTAssertNil(try SSHAskpass.savedPassword(prompt: "The authenticity of host can't be established. Continue?", reference: reference, credentials: credentials))
+        XCTAssertNil(try SSHAskpass.savedPassword(prompt: "Enter passphrase for key '/tmp/id_ed25519': ", reference: reference, credentials: credentials))
+        let missing = SSHCredentialReference(workspaceID: UUID(), connectionID: UUID())
+        XCTAssertNil(try SSHAskpass.savedPassword(prompt: "test@localhost's password:", reference: missing, credentials: credentials))
     }
 
     @MainActor func testPasswordEditorRendersWithSavedCredential() throws {

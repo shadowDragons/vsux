@@ -65,15 +65,25 @@ enum SSHAskpass {
          "VSUX_SSH_CONNECTION": reference.connectionID.uuidString]
     }
 
+    static func savedPassword(prompt: String, reference: SSHCredentialReference,
+                              credentials: SSHCredentialStore) throws -> String? {
+        let isPasswordPrompt = prompt.trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased().hasSuffix("password:")
+        guard isPasswordPrompt else { return nil }
+        return try credentials.password(for: reference)
+    }
+
     @MainActor static func runIfRequested() -> Bool {
         let environment = ProcessInfo.processInfo.environment
         guard environment["VSUX_SSH_ASKPASS"] == "1" else { return false }
         guard let workspace = environment["VSUX_SSH_WORKSPACE"].flatMap(UUID.init(uuidString:)),
               let connection = environment["VSUX_SSH_CONNECTION"].flatMap(UUID.init(uuidString:)) else { exit(1) }
         let prompt = CommandLine.arguments.dropFirst().joined(separator: " ")
-        if environment["SSH_ASKPASS_PROMPT"] != "confirm", prompt.trimmingCharacters(in: .whitespacesAndNewlines).lowercased().hasSuffix("password:") {
+        if environment["SSH_ASKPASS_PROMPT"] != "confirm" {
             do {
-                if let password = try SSHKeychain().password(for: SSHCredentialReference(workspaceID: workspace, connectionID: connection)) {
+                if let password = try savedPassword(prompt: prompt,
+                    reference: SSHCredentialReference(workspaceID: workspace, connectionID: connection),
+                    credentials: SSHKeychain()) {
                     FileHandle.standardOutput.write(Data((password + "\n").utf8))
                     return true
                 }
