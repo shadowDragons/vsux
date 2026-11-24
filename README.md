@@ -11,9 +11,9 @@ Built with SwiftUI and AppKit, with terminal rendering and PTY support from Ghos
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)
 ![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-supported-555)
 
-[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v1.0.0/vsux-1.0.0-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
+[Website](https://vsux.sphrag.com/) · [Download the macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v1.1.0/vsux-1.1.0-macos-arm64.dmg) · [All releases](https://github.com/shadowDragons/vsux/releases) · [Report an issue](https://github.com/shadowDragons/vsux/issues)
 
-> v1.0.0 is an Apple Silicon release for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
+> v1.1.0 is an Apple Silicon release for macOS 14 or later. The app is ad-hoc signed and not notarized by Apple. Read [Installation](#installation) and [Security boundaries](#security-boundaries) before downloading.
 
 If vsux fits your workflow, [give it a Star](https://github.com/shadowDragons/vsux). You can also use your AI coding tools to add features you need or remove ones you do not, then build your own version from source. Feedback and feature requests are welcome in [Issues](https://github.com/shadowDragons/vsux/issues).
 
@@ -43,6 +43,7 @@ Read the [illustrated product story](https://vsux.sphrag.com/?view=story).
 - **Project workspaces:** Switch between local directories. Name, reorder, pin, or move workspaces to separate windows.
 - **Terminals and splits:** Keep multiple terminal tabs in each workspace and split panes in four directions. Layouts, working directories, and appearance settings are saved locally.
 - **Commands and services:** Save commands per workspace, run development services in the background, and inspect recent output.
+- **Project SSH (new in v1.1.0):** The SSH section in the right sidebar manages servers per project; sessions open as tabs in the main terminal area, with password, SSH Agent, and private key authentication. Switch sessions, disconnect, or reconnect. Switching projects keeps sessions open; closing a project disconnects them. Reconnect manually after relaunch.
 - **Quick Tunnel:** Share a local HTTP port through a temporary Cloudflare URL. Requires a separately installed `cloudflared`; starting a tunnel asks for confirmation because anyone with the link can access the service.
 - **File tools:** Browse, search, edit, and replace text within a workspace. Includes line numbers, syntax highlighting, and live Markdown preview.
 - **Git:** Inspect repository status and diffs, stage and commit changes, switch branches, and use common remote, stash, tag, and worktree operations.
@@ -72,15 +73,17 @@ Captured from the current native app on November 12, 2026. Orbit Studio is a fic
 
 ## Installation
 
-1. Download `vsux-1.0.0-macos-arm64.dmg` from the [v1.0.0 release](https://github.com/shadowDragons/vsux/releases/tag/v1.0.0).
+1. Download `vsux-1.1.0-macos-arm64.dmg` from the [v1.1.0 release](https://github.com/shadowDragons/vsux/releases/tag/v1.1.0).
 2. Open the disk image and drag `vsux.app` to `Applications`.
 3. Optionally download the `.dmg.sha256` file from the same release and verify the image:
 
    ```sh
-   shasum -a 256 -c vsux-1.0.0-macos-arm64.dmg.sha256
+   shasum -a 256 -c vsux-1.1.0-macos-arm64.dmg.sha256
    ```
 
 This build does not have an Apple Developer ID signature or notarization. If macOS blocks the app, first verify the download source and checksum, then follow the prompt in System Settings under Privacy & Security. Do not disable Gatekeeper globally.
+
+Starting with v1.1.0, signed releases offer **vsux → Check for Updates…** and a Software Updates section in Settings. Updates are hosted on GitHub Releases and use a delta when available, with a full download as fallback. Automatic checks are off by default and can be enabled in Settings. **v1.0.0 users must manually install an updater-enabled release once.** Source builds have in-app updates disabled unless configured; see [Releasing](docs/RELEASING.md#in-app-updates-and-delta-releases).
 
 ## Getting started
 
@@ -88,6 +91,8 @@ This build does not have an Apple Developer ID signature or notarization. If mac
 2. Click the middle `+` to add a terminal. Use the terminal toolbar's split menu to divide a pane.
 3. Select the file or Git icon to open those tools. Press `⌘S` to save file edits.
 4. Add frequently used commands in the right sidebar. **Fill Terminal** inserts a command into the terminal; review it and press Return yourself to run it.
+
+5. Find the `SSH` section alongside tunnels, services, and commands in the right sidebar, add a host, port, username, and authentication method, then select **Connect**. Optionally remember passwords in macOS Keychain, scoped by project and connection. Project settings store only a credential reference. Unsaved passwords and key passphrases are entered in the terminal; with a saved password, host fingerprint confirmation appears in a dialog. Connections use system OpenSSH without loading `~/.ssh/config`; host fingerprints use the system `known_hosts` file.
 
 Common shortcuts:
 
@@ -118,7 +123,7 @@ swift test
 python3 Scripts/check-localizations.py
 ```
 
-Local builds of `dist/vsux.app` are ad-hoc signed. To build a DMG and checksum, run `Scripts/release.sh 1.0.0`; the outputs are written to `dist/`. See the [release guide](docs/RELEASING.md) for the full process.
+Local builds of `dist/vsux.app` are ad-hoc signed. To build a DMG and checksum, run `Scripts/release.sh 1.1.0`; the outputs are written to `dist/`. See the [release guide](docs/RELEASING.md) for the full process.
 
 ## Data and privacy
 

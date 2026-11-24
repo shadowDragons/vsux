@@ -24,6 +24,7 @@ files = {
     "SECURITY.md", "THIRD_PARTY_NOTICES.md", "Vendor/Ghostty-LICENSE",
     "Scripts/bootstrap-ghostty.sh", "Scripts/build.sh", "Scripts/release.sh",
     "Scripts/check-localizations.py", "Scripts/make-icon.swift",
+    "Scripts/updates.py",
     "Scripts/prepare-open-source.py", ".github/workflows/release.yml", ".github/dependabot.yml",
     "docs/RELEASING.md",
 }

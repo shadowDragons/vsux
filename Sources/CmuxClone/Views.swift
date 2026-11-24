@@ -108,7 +108,7 @@ struct RootView: View {
                     Button(L("均分分屏")) { model.equalize() }
                 } label: { Image(systemName: "rectangle.split.2x1").frame(width: 28) }.menuStyle(.borderlessButton).pointingHandCursor().fixedSize().help(L("分屏"))
                 IconButton(symbol: "magnifyingglass", help: L("查找终端内容")) { model.showFind.toggle() }
-                IconButton(symbol: "sidebar.right", help: L("显示 / 隐藏常用命令")) { model.showCommands.toggle() }
+                IconButton(symbol: "sidebar.right", help: L("显示 / 隐藏项目工具")) { model.showCommands.toggle() }
             }.padding(.horizontal, 12).frame(height: 40).background(.bar)
             Divider()
             GeometryReader { geometry in
@@ -145,16 +145,17 @@ struct RootView: View {
                     Group {
                         if let workspace = model.workspace {
                             switch tools.content {
-                            case .terminal: TerminalArea(model: model)
+                            case .terminal: TerminalArea(model: model).id(workspace.id)
                             case .editor: FileEditorArea(model: tools.files(workspace))
                             case .diff: LocalDiffArea(model: tools.git(workspace), showTerminal: { tools.content = .terminal; model.focusTerminal() })
                             }
                         }
                     }.frame(minWidth: 320, maxWidth: .infinity, maxHeight: .infinity).layoutPriority(1)
                     if model.showCommands, let workspace = model.workspace {
-                        PanelDivider(width: $commandsWidth, maximum: min(420, geometry.size.width - (model.showSidebar ? displayedSidebarWidth : 0) - 370), minimum: 240, direction: -1)
+                        let maximum = max(240, min(900, geometry.size.width - (model.showSidebar ? displayedSidebarWidth : 0) - 370))
+                        PanelDivider(width: $commandsWidth, maximum: maximum, minimum: 240, direction: -1)
                         CommandSidebar(model: model, library: library, workspace: workspace)
-                            .id(workspace.id).frame(width: commandsWidth)
+                            .id(workspace.id).frame(width: min(commandsWidth, maximum))
                     }
                 }
                 .onChange(of: geometry.size.width) { _, width in
@@ -268,6 +269,11 @@ struct WorkspaceSidebar: View {
 }
 
 struct TerminalArea: View {
+    @ObservedObject var ssh: SSHWorkspaceRuntime
+    init(model: WindowModel) {
+        self.model = model
+        self.ssh = model.sshRuntime(for: model.selectedWorkspaceID)
+    }
     @ObservedObject private var languagePreferences = LanguagePreferences.shared
     @ObservedObject var model: WindowModel
     var body: some View {
@@ -282,8 +288,8 @@ struct TerminalArea: View {
                                 Text(tab.displayTitle).lineLimit(1).frame(maxWidth: 155, alignment: .leading)
                                 Button { model.closeTab(tab.id) } label: { Image(systemName: "xmark").font(.system(size: 9)).padding(4).contentShape(Rectangle()) }.buttonStyle(.plain).pointingHandCursor().help(L("关闭终端"))
                             }.font(.system(size: 12)).padding(.horizontal, 12).frame(height: 38)
-                                .background(model.workspace?.selectedTabID == tab.id ? Color(nsColor: .textBackgroundColor) : Color.clear)
-                                .overlay(alignment: .bottom) { if model.workspace?.selectedTabID == tab.id { Rectangle().fill(.blue).frame(height: 2).allowsHitTesting(false) } }
+                                .background(!ssh.isPresented && model.workspace?.selectedTabID == tab.id ? Color(nsColor: .textBackgroundColor) : Color.clear)
+                                .overlay(alignment: .bottom) { if !ssh.isPresented && model.workspace?.selectedTabID == tab.id { Rectangle().fill(.blue).frame(height: 2).allowsHitTesting(false) } }
                                 .contentShape(Rectangle()).pointingHandCursor().onTapGesture { model.selectTab(tab.id) }
                                 .onDrag { NSItemProvider(object: ("tab:" + tab.id.uuidString) as NSString) }
                                 .onDrop(of: [.text], isTargeted: nil) { providers in loadDrop(providers, prefix: "tab:") { model.moveTab($0, to: tab.id) } }
@@ -298,6 +304,21 @@ struct TerminalArea: View {
                                         }
                                     }.disabled(model.workspaces.count < 2)
                                     Divider(); Button(L("关闭")) { model.closeTab(tab.id) }
+                                }
+                        }
+                        ForEach(ssh.sessions) { session in
+                            HStack(spacing: 7) {
+                                Button {
+                                    ssh.select(session.id); model.showFind = false; model.focusTerminal()
+                                } label: {
+                                    Label("SSH · " + session.connection.name, systemImage: "network")
+                                        .lineLimit(1).frame(maxWidth: 180, alignment: .leading)
+                                }.buttonStyle(.plain).pointingHandCursor()
+                                IconButton(symbol: "xmark", help: L("关闭 SSH 会话")) { ssh.close(session.id) }
+                            }.font(.system(size: 12)).padding(.horizontal, 12).frame(height: 38)
+                                .background(ssh.isPresented && ssh.selectedSessionID == session.id ? Color(nsColor: .textBackgroundColor) : .clear)
+                                .overlay(alignment: .bottom) {
+                                    if ssh.isPresented && ssh.selectedSessionID == session.id { Rectangle().fill(.blue).frame(height: 2) }
                                 }
                         }
                     }
@@ -316,7 +337,9 @@ struct TerminalArea: View {
                 }.padding(7)
                 Divider()
             }
-            if let tab = model.selectedTab, !model.isDisposed {
+            if let session = ssh.presentedSession, let workspace = model.workspace, !model.isDisposed {
+                SSHSessionContent(runtime: ssh, session: session, workspace: workspace)
+            } else if let tab = model.selectedTab, !model.isDisposed {
                 PaneTree(layout: tab.zoomedPane.map { .leaf($0) } ?? tab.layout, model: model).id(tab.id)
             }
         }

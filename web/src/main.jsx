@@ -99,6 +99,10 @@ function App() {
         <p className="eyebrow">EVERYDAY TOOLS / 02</p><h2>{t.features}</h2><p className="section-intro">{t.featureIntro}</p>
         <div className="feature-grid">{t.cards.map(([title, body], i) => <article key={title}><span className="feature-index">0{i + 1} /</span><h3>{title}</h3><p>{body}</p></article>)}</div>
         <article className="project-tools"><div><span className="feature-index">COMMANDS + SERVICES</span><h3>{t.toolsTitle}</h3><p>{t.toolsBody}</p></div><SceneFigure src={shotSource('project-tools', lang)} alt={t.toolsAlt} caption={t.sample} actual label={t.zoom} onImage={openImage} width={470} height={764} /></article>
+        <article className="service-feature" aria-labelledby="ssh-title">
+          <span className="feature-index">PROJECT SSH /</span>
+          <div><h3 id="ssh-title">{t.sshTitle}</h3><p>{t.sshBody}</p><span className="extra-detail">{t.sshNote}</span></div>
+        </article>
         <article className="service-feature tunnel-feature" aria-labelledby="tunnel-title">
           <span className="feature-index">PORT FORWARDING /</span>
           <div>
@@ -114,6 +118,10 @@ function App() {
             </figure>
             <span className="extra-detail">{t.tunnelNote}</span>
           </div>
+        </article>
+        <article className="service-feature" aria-labelledby="updates-title">
+          <span className="feature-index">APP UPDATES /</span>
+          <div><h3 id="updates-title">{t.updatesTitle}</h3><p>{t.updatesBody}</p><span className="extra-detail">{t.updatesNote}</span></div>
         </article>
       </section>
       <section id="philosophy" className="philosophy wrap">

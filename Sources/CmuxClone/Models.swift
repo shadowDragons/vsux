@@ -202,6 +202,7 @@ struct Workspace: Identifiable, Equatable {
     var isPinned = false
     var directory: String
     var services: [WorkspaceService] = []
+    var sshConnections: [SSHConnection] = []
     var tabs: [TerminalTab]
     var selectedTabID: UUID
 

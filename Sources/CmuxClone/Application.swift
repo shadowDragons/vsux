@@ -4,7 +4,8 @@ import CGhostty
 
 @main
 struct VsuxMain {
-    static func main() {
+    @MainActor static func main() {
+        if SSHAskpass.runIfRequested() { return }
         // Exercise the installed resource paths before migration or UI startup.
         if CommandLine.arguments.dropFirst().elementsEqual(["--verify-bundled-resources"]) {
             guard let packaged = AppResources.packagedBundle(in: Bundle.main.resourceURL),
@@ -60,6 +61,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         workspacePersistenceEnabled = true
         newWindow(nil)
         NSApp.activate(ignoringOtherApps: true)
+        AppUpdater.shared.start()
     }
     @objc func newWindow(_ sender: Any?) {
         let restored = workspacePersistenceEnabled && windows.isEmpty ? workspaceSession.restore() : []
@@ -94,6 +96,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         let workspace = source.workspaces[index]
         let destination = WindowModel(workspaces: [workspace], shellCommand: source.shellCommandOverride)
         source.transferServices(in: workspace.id, to: destination)
+        source.transferSSH(in: workspace.id, to: destination)
         source.transferQuickTunnel(in: workspace.id, to: destination)
         source.workspaces.remove(at: index)
         source.tools.transferFiles(for: workspace.id, to: destination.tools)
@@ -119,7 +122,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     }
     @objc func newWorkspace(_ sender: Any?) { current?.addWorkspace() }
     @objc func newTab(_ sender: Any?) { current?.addTab() }
-    @objc func closePane(_ sender: Any?) { if let model = current, let pane = model.selectedTab?.focusedPane { model.closeLocalTab(model.activeTerminalID(pane), pane: pane) } }
+    @objc func closePane(_ sender: Any?) {
+        guard let model = current else { return }
+        if model.closeFocusedSSHSession() { return }
+        if let pane = model.selectedTab?.focusedPane { model.closeLocalTab(model.activeTerminalID(pane), pane: pane) }
+    }
     @objc func splitRight(_ sender: Any?) { current?.split(.horizontal) }
     @objc func splitBelow(_ sender: Any?) { current?.split(.vertical) }
     @objc func equalize(_ sender: Any?) { current?.equalize() }
@@ -147,6 +154,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     }
     @objc func quickOpen(_ sender: Any?) { current?.showQuickOpen = true }
     @objc func settings(_ sender: Any?) { current?.showSettings = true }
+    @objc func checkForUpdates(_ sender: Any?) { AppUpdater.shared.checkForUpdates(sender) }
     @objc func increaseFontSize(_ sender: Any?) { Preferences.shared.adjustInterfaceZoom(by: 1) }
     @objc func decreaseFontSize(_ sender: Any?) { Preferences.shared.adjustInterfaceZoom(by: -1) }
     @objc func resetInterfaceZoom(_ sender: Any?) { Preferences.shared.setInterfaceZoomLevel(0) }
@@ -158,6 +166,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         document.markdownPreview.toggle()
     }
     func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+        if menuItem.action == #selector(checkForUpdates(_:)) {
+            return !AppUpdater.shared.isConfigured || AppUpdater.shared.canCheckForUpdates
+        }
         if menuItem.action == #selector(findFile(_:)) {
             guard let model = current, model.tools.content == .editor, let workspace = model.workspace else { return false }
             return model.tools.files(workspace).selectedDocument != nil
@@ -182,6 +193,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         case .newWorkspace: model.addWorkspace()
         case .newTab: model.addTab()
         case .closePane:
+            if model.closeFocusedSSHSession() { return true }
             if let pane = model.selectedTab?.focusedPane { model.closeLocalTab(model.activeTerminalID(pane), pane: pane) }
         case .saveFile:
             guard model.tools.content == .editor, let workspace = model.workspace,
@@ -237,6 +249,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         }
         let app = submenu("vsux")
         add(app, L("关于 vsux"), #selector(NSApplication.orderFrontStandardAboutPanel(_:)), target: NSApp)
+        add(app, L("检查更新…"), #selector(checkForUpdates(_:)), target: self)
         add(app, L("设置…"), #selector(settings(_:)), ",", target: self)
         let languageItem = NSMenuItem(title: L("界面语言"), action: nil, keyEquivalent: "")
         let languages = NSMenu(title: L("界面语言"))
