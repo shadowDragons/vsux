@@ -1,6 +1,7 @@
 import AppKit
 import XCTest
 import SwiftUI
+import Security
 @testable import CmuxClone
 
 private final class MemoryCredentials: SSHCredentialStore {
@@ -151,9 +152,26 @@ final class SSHCredentialTests: XCTestCase {
         let reference = SSHCredentialReference(workspaceID: UUID(), connectionID: UUID())
         let password = "askpass-test-" + UUID().uuidString
         defer { try? keychain.setPassword(nil, for: reference) }
-        try keychain.setPassword(password, for: reference)
         let executable = Bundle(for: Self.self).bundleURL.deletingLastPathComponent().appendingPathComponent("CmuxClone")
         XCTAssertTrue(FileManager.default.isExecutableFile(atPath: executable.path))
+        // XCTest and the askpass executable are separate signed programs. Give
+        // only this disposable item an explicit ACL for both, just as the real
+        // app and its helper share the same executable in a packaged release.
+        var testApplication: SecTrustedApplication?
+        var helperApplication: SecTrustedApplication?
+        XCTAssertEqual(SecTrustedApplicationCreateFromPath(nil, &testApplication), errSecSuccess)
+        XCTAssertEqual(SecTrustedApplicationCreateFromPath(executable.path, &helperApplication), errSecSuccess)
+        var access: SecAccess?
+        let trusted = [try XCTUnwrap(testApplication), try XCTUnwrap(helperApplication)] as CFArray
+        XCTAssertEqual(SecAccessCreate("vsux disposable askpass test" as CFString, trusted, &access), errSecSuccess)
+        let item: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: "local.vsux.ssh-password",
+            kSecAttrAccount as String: reference.account,
+            kSecValueData as String: Data(password.utf8),
+            kSecAttrAccess as String: try XCTUnwrap(access)
+        ]
+        XCTAssertEqual(SecItemAdd(item as CFDictionary, nil), errSecSuccess)
         let process = Process()
         process.executableURL = executable
         process.arguments = ["test@localhost's password: "]

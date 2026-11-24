@@ -59,6 +59,12 @@ final class ViewIntegrationTests: XCTestCase {
             let image = try XCTUnwrap(bitmap.cgImage)
             let request = VNRecognizeTextRequest()
             request.recognitionLevel = .accurate
+            // These are product terms, not ordinary prose. Give Vision the
+            // vocabulary so CI's OS model does not rewrite small Chinese glyphs
+            // (for example, 公开端口 into 公开始口). Assertions still require the
+            // words to be recognized from the actual rendered image.
+            request.customWords = expected
+            request.usesLanguageCorrection = true
             request.recognitionLanguages = language == .chinese ? ["zh-Hans", "en-US"] : ["en-US"]
             try VNImageRequestHandler(cgImage: image).perform([request])
             let rendered = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: " ")
