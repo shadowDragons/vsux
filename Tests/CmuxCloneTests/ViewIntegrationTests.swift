@@ -36,8 +36,12 @@ final class ViewIntegrationTests: XCTestCase {
 
         let model = WindowModel()
         let workspace = try XCTUnwrap(model.workspace)
-        let host = NSHostingView(rootView: CommandSidebar(model: model, library: .shared, workspace: workspace))
-        let window = PointerCursorWindow(contentRect: NSRect(x: 0, y: 0, width: 280, height: 520), styleMask: [.titled], backing: .buffered, defer: false)
+        // Scale the rendered view, not only the destination bitmap: a larger
+        // bitmap alone reuses 1x backing glyphs on the hosted CI display.
+        let host = NSHostingView(rootView: CommandSidebar(model: model, library: .shared, workspace: workspace)
+            .frame(width: 280, height: 520).scaleEffect(2, anchor: .topLeading)
+            .frame(width: 560, height: 1040, alignment: .topLeading))
+        let window = PointerCursorWindow(contentRect: NSRect(x: 0, y: 0, width: 560, height: 1040), styleMask: [.titled], backing: .buffered, defer: false)
         window.contentView = host
         window.makeKeyAndOrderFront(nil)
         defer { model.disposeAll(); window.orderOut(nil) }

@@ -147,7 +147,7 @@ final class SSHCredentialTests: XCTestCase {
         XCTAssertNil(session.terminal.surface)
     }
 
-    func testAskpassExecutableReturnsOnlyDisposableKeychainPassword() throws {
+    func testAskpassExecutableReturnsOnlyDisposableKeychainPassword() async throws {
         let keychain = SSHKeychain()
         let reference = SSHCredentialReference(workspaceID: UUID(), connectionID: UUID())
         let password = "askpass-test-" + UUID().uuidString
@@ -176,11 +176,32 @@ final class SSHCredentialTests: XCTestCase {
         process.executableURL = executable
         process.arguments = ["test@localhost's password: "]
         process.environment = ProcessInfo.processInfo.environment.merging(SSHAskpass.environment(for: reference, executable: executable.path)) { _, new in new }
-        let output = Pipe(); process.standardOutput = output; process.standardError = FileHandle.nullDevice
+        let output = Pipe()
+        process.standardOutput = output; process.standardError = FileHandle.nullDevice
+        let finished = expectation(description: "Askpass process exits")
+        process.terminationHandler = { _ in finished.fulfill() }
         try process.run()
-        let deadline = Date().addingTimeInterval(8)
-        while process.isRunning && Date() < deadline { Thread.sleep(forTimeInterval: 0.02) }
-        if process.isRunning { process.terminate(); XCTFail("Askpass did not complete"); return }
+        // Keep XCTest's run loop available for process/Keychain IPC. First
+        // executable assessment on a fresh runner can exceed eight seconds.
+        await fulfillment(of: [finished], timeout: 60)
+        if process.isRunning {
+            let sample = Process(), sampleOutput = Pipe()
+            sample.executableURL = URL(fileURLWithPath: "/usr/bin/sample")
+            sample.arguments = [String(process.processIdentifier), "1", "-file", "/dev/stdout"]
+            sample.standardOutput = sampleOutput; sample.standardError = FileHandle.nullDevice
+            try sample.run()
+            let sampleData = sampleOutput.fileHandleForReading.readDataToEndOfFile()
+            sample.waitUntilExit()
+            let trace = String(decoding: sampleData, as: UTF8.self).split(separator: "\n").filter { line in
+                ["SSHAskpass", "VsuxMain", "SecItem", "SecKeychain", "securityd", "runModal", "NSApplication", "dyld"].contains { line.contains($0) }
+            }
+            process.terminate()
+            Thread.sleep(forTimeInterval: 0.2)
+            if process.isRunning { kill(process.processIdentifier, SIGKILL) }
+            process.waitUntilExit()
+            XCTFail("Askpass did not complete; stack: \(trace.joined(separator: "\n"))")
+            return
+        }
         let result = output.fileHandleForReading.readDataToEndOfFile()
         XCTAssertEqual(process.terminationStatus, 0)
         XCTAssertTrue(result == Data((password + "\n").utf8), "Askpass must return only the saved password")
