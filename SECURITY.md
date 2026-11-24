@@ -15,6 +15,7 @@ virtual machine when investigating untrusted repositories or executables.
   with the user's environment and filesystem permissions. Their output stays in
   a bounded in-memory log. They are not sandboxed and are not automatically
   restarted after app relaunch; stop them before closing a workspace or window.
+- SSH passwords are optional and stored in macOS Keychain under a workspace/connection identifier. Project JSON stores only that reference. OpenSSH receives saved passwords through an askpass helper pipe, never command arguments or environment values. Changing a saved connection endpoint requires re-entering or removing its password. Closing a workspace ends sessions but retains saved credentials; deleting a connection removes its Keychain item.
 - Quick Tunnel starts a separately installed `cloudflared` only after an explicit
   public-access confirmation. It forwards a selected loopback HTTP port through
   Cloudflare; anyone with the temporary URL may access that service. Share only
@@ -40,6 +41,17 @@ Early DMG builds are Apple Silicon only, ad-hoc signed and not notarized by
 Apple. Verify the repository and SHA-256 before installation. Checksums detect
 corruption; a checksum hosted alongside a binary does not independently prove
 publisher identity. Do not disable Gatekeeper globally.
+
+Update-enabled releases use Sparkle with an embedded Ed25519 public key. Both
+the GitHub-hosted appcast and update archives must be signed; archives are
+verified before extraction. Delta updates retain a full archive fallback.
+Automatic checks are opt-in; unattended downloads/installations and system
+profiling are disabled. Checks and downloads contact GitHub and its asset CDN,
+which receive ordinary request metadata (including the app/updater version).
+Source builds without a configured public key do not start the updater.
+The release private key belongs in Keychain or the repository's Actions secret,
+never in source or distributed artifacts. Sparkle signing does not notarize an
+app or bypass Gatekeeper.
 
 ## Reporting a vulnerability
 

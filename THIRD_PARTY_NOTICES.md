@@ -8,6 +8,7 @@ them.
 | --- | --- | --- |
 | GhosttyKit and C API | `manaflow-ai/ghostty`, commit `ef4f1570d62117ebc51e3b0f07ad4f34032267b6`; exact release and SHA-256 in `Scripts/bootstrap-ghostty.sh` | `Vendor/Ghostty-LICENSE` (MIT) |
 | Swift Markdown | 0.7.3, `swiftlang/swift-markdown` | `Resources/Licenses/swift-markdown-LICENSE.txt` and NOTICE (Apache-2.0 with Swift Runtime Library Exception) |
+| Sparkle | 2.9.6, `sparkle-project/Sparkle`; archive checksum pinned by SwiftPM | `Resources/Licenses/Sparkle-LICENSE.txt` (MIT and bundled component notices) |
 | swift-cmark | Revision in `Package.resolved` | `Resources/Licenses/swift-cmark-COPYING.txt` |
 | Highlight.js | 11.11.1 | `Resources/Licenses/highlightjs-LICENSE.txt` (BSD-3-Clause); asset checksums in `highlightjs-provenance.json` |
 | VS Code Codicons, git-branch icon | Microsoft / VS Code Codicons; SVG converted to SwiftUI paths | `Resources/Licenses/vscode-codicons-LICENSE.txt` and NOTICE (CC BY 4.0) |

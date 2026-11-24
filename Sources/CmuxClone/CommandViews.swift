@@ -42,6 +42,8 @@ struct CommandSidebar: View {
                 Divider().padding(.vertical, 4)
                 serviceSection
                 Divider().padding(.vertical, 4)
+                SSHSection(model: model, workspace: workspace, runtime: model.sshRuntime(for: workspace.id))
+                Divider().padding(.vertical, 4)
                 commandSection
             }.frame(maxWidth: .infinity, alignment: .leading).padding(12)
         }.background(Color(nsColor: .controlBackgroundColor))
@@ -419,6 +421,7 @@ struct CommandEditor: View {
 }
 
 struct SettingsView: View {
+    @ObservedObject private var updater = AppUpdater.shared
     @ObservedObject private var languagePreferences = LanguagePreferences.shared
     @ObservedObject var preferences: Preferences
     @ObservedObject private var shortcuts = ShortcutPreferences.shared
@@ -438,6 +441,21 @@ struct SettingsView: View {
                         ForEach(AppLanguage.allCases) { language in Text(language.title).tag(language) }
                     }.pointingHandCursor()
                     Text(L("切换后立即生效，无需重启。")).font(.caption).foregroundStyle(.secondary)
+                    Section(L("软件更新")) {
+                        HStack {
+                            Text(L("当前版本：\(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—")"))
+                            Spacer()
+                            Button(L("检查更新…")) { updater.checkForUpdates() }
+                                .disabled(updater.isConfigured && !updater.canCheckForUpdates)
+                                .pointingHandCursor()
+                        }
+                        Toggle(L("自动检查更新"), isOn: $updater.automaticallyChecksForUpdates)
+                            .disabled(!updater.isConfigured).pointingHandCursor()
+                        Text(updater.isConfigured
+                             ? L("更新可用时通知你，由你确认下载和安装。")
+                             : L("此构建未启用应用内更新"))
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                     Picker(L("应用外观"), selection: $preferences.appearance) {
                         ForEach(AppAppearance.allCases) { mode in Text(mode.title).tag(mode) }
                     }.pointingHandCursor()

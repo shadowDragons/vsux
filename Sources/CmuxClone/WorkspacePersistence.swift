@@ -134,6 +134,18 @@ private struct WorkspaceArchive: Codable {
             var tabIDs = Set<UUID>(), paneIDs = Set<UUID>(), terminalIDs = Set<UUID>(), splitIDs = Set<UUID>()
             for workspace in window.workspaces {
                 try workspace.files?.validate()
+                if let connections = workspace.sshConnections {
+                    guard connections.count <= 500, Set(connections.map(\.id)).count == connections.count else {
+                        throw WorkspaceArchiveError.invalid
+                    }
+                    for connection in connections {
+                        try connection.validate()
+                        if let reference = connection.credentialReference {
+                            guard reference == SSHCredentialReference(workspaceID: workspace.id, connectionID: connection.id),
+                                  connection.authentication == .password else { throw WorkspaceArchiveError.invalid }
+                        }
+                    }
+                }
                 if let services = workspace.services {
                     guard services.count <= 500,
                           Set(services.map(\.id)).count == services.count,
@@ -194,6 +206,7 @@ private struct SavedWorkspace: Codable {
     var color: String
     var isPinned: Bool
     var services: [WorkspaceService]?
+    var sshConnections: [SSHConnection]?
     var tabs: [TerminalTab]?
     var selectedTabID: UUID?
     var panes: [SavedPane]?
@@ -203,6 +216,7 @@ private struct SavedWorkspace: Codable {
         id = workspace.id; name = workspace.name; description = workspace.description
         directory = workspace.directory; color = workspace.color; isPinned = workspace.isPinned
         services = workspace.services
+        sshConnections = workspace.sshConnections
         files = model.tools.fileSession(for: workspace.id)
         // Mutations can briefly remove a selected tab/pane before updating selection.
         // Snapshot a valid fallback during these synchronous intermediate states.
@@ -233,6 +247,7 @@ private struct SavedWorkspace: Codable {
         workspace.id = id; workspace.description = description
         workspace.color = color; workspace.isPinned = isPinned
         workspace.services = services ?? []
+        workspace.sshConnections = sshConnections ?? []
         if let tabs, !tabs.isEmpty {
             workspace.tabs = tabs
             workspace.selectedTabID = selectedTabID.flatMap { id in tabs.contains(where: { $0.id == id }) ? id : nil } ?? tabs[0].id

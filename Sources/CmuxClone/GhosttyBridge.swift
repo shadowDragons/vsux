@@ -61,7 +61,10 @@ final class GhosttyEngine {
             MainActor.assumeIsolated {
                 let view = Unmanaged<GhosttyTerminalView>.fromOpaque(userdata).takeUnretainedValue()
                 let id = view.paneID
-                DispatchQueue.main.async { [weak model = view.model] in model?.processExited(id) }
+                DispatchQueue.main.async { [weak view, weak model = view.model] in
+                    if let onProcessExit = view?.onProcessExit { onProcessExit() }
+                    else { model?.processExited(id) }
+                }
             }
         }
         app = ghostty_app_new(&runtime, config)
@@ -101,7 +104,7 @@ final class GhosttyEngine {
         for controller in AppDelegate.shared.windows {
             controller.window?.isOpaque = settings.opacity >= 1
             controller.window?.backgroundColor = settings.opacity >= 1 ? .windowBackgroundColor : .clear
-            for terminal in controller.model.terminals.values {
+            for terminal in controller.model.allTerminals {
                 if let surface = terminal.surface {
                     ghostty_surface_set_color_scheme(surface, scheme)
                     ghostty_surface_update_config(surface, next)
@@ -125,7 +128,11 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
         didSet { model?.updateDirectory(terminalID: paneID, directory: directory) }
     }
     let command: String?
+    let environment: [String: String]
+    var onSurfaceReady: (() -> Void)?
     weak var model: WindowModel?
+    var onProcessExit: (() -> Void)?
+    var onSurfaceFailure: (() -> Void)?
     private(set) var surface: ghostty_surface_t?
     private var marked = NSMutableAttributedString(string: "")
     private var keyText: String?
@@ -135,8 +142,8 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
     private var tracking: NSTrackingArea?
     var needsConfirmation: Bool { surface.map { ghostty_surface_needs_confirm_quit($0) } ?? false }
 
-    init(paneID: UUID, directory: String, command: String? = nil) {
-        self.paneID = paneID; self.directory = directory; self.command = command
+    init(paneID: UUID, directory: String, command: String? = nil, environment: [String: String] = [:]) {
+        self.paneID = paneID; self.directory = directory; self.command = command; self.environment = environment
         super.init(frame: NSRect(x: 0, y: 0, width: 640, height: 400))
         wantsLayer = true
         layer?.backgroundColor = NSColor.clear.cgColor
@@ -160,7 +167,13 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
         config.command = UnsafePointer(commandPointer)
         config.context = GHOSTTY_SURFACE_CONTEXT_TAB
         config.io_mode = GHOSTTY_SURFACE_IO_EXEC
-        surface = ghostty_surface_new(app, &config)
+        let strings = environment.map { (strdup($0.key)!, strdup($0.value)!) }
+        defer { strings.forEach { free($0.0); free($0.1) } }
+        var variables = strings.map { ghostty_env_var_s(key: UnsafePointer($0.0), value: UnsafePointer($0.1)) }
+        surface = variables.withUnsafeMutableBufferPointer { buffer in
+            config.env_vars = buffer.baseAddress; config.env_var_count = buffer.count
+            return ghostty_surface_new(app, &config)
+        }
         if let surface { GhosttyEngine.shared.actionBridge.register(surface: surface, view: self) }
         if let surface { ghostty_surface_set_color_scheme(surface, Preferences.shared.effectiveTerminalSettings.theme == "dark" ? GHOSTTY_COLOR_SCHEME_DARK : GHOSTTY_COLOR_SCHEME_LIGHT) }
         free(cwd); free(commandPointer)
@@ -169,7 +182,8 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
             let text = pendingText; pendingText = ""
             pasteText(text)
         }
-        if surface == nil { model?.error = L("无法创建 Ghostty 终端。") }
+        if surface == nil { model?.error = L("无法创建 Ghostty 终端。"); onSurfaceFailure?() }
+        else { onSurfaceReady?() }
     }
     override func becomeFirstResponder() -> Bool {
         guard !isShutdown, let surface else { return false }

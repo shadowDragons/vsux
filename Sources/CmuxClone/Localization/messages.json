@@ -2350,5 +2350,189 @@
   "content_font_size": {
     "zh": "终端与编辑器字号  {0} pt",
     "en": "Terminal and editor font size  {0} pt"
+  },
+  "ssh_0": {
+    "zh": "项目工具",
+    "en": "Project Tools"
+  },
+  "ssh_1": {
+    "zh": "显示 / 隐藏项目工具",
+    "en": "Show / Hide Project Tools"
+  },
+  "ssh_2": {
+    "zh": "SSH Agent / 默认密钥",
+    "en": "SSH Agent / Default Keys"
+  },
+  "ssh_3": {
+    "zh": "密码",
+    "en": "Password"
+  },
+  "ssh_4": {
+    "zh": "指定私钥",
+    "en": "Private Key"
+  },
+  "ssh_5": {
+    "zh": "请填写连接名称、有效主机、用户名和 1 到 65535 之间的端口。",
+    "en": "Enter a connection name, valid host, username, and a port between 1 and 65535."
+  },
+  "ssh_6": {
+    "zh": "请选择私钥文件，或填写以 / 或 ~/ 开头的路径。",
+    "en": "Choose a private key file or enter a path starting with / or ~/."
+  },
+  "ssh_7": {
+    "zh": "无法读取所选私钥文件。",
+    "en": "The selected private key file cannot be read."
+  },
+  "ssh_8": {
+    "zh": "SSH 连接",
+    "en": "SSH Connections"
+  },
+  "ssh_9": {
+    "zh": "添加 SSH 连接",
+    "en": "Add SSH Connection"
+  },
+  "ssh_10": {
+    "zh": "搜索服务器",
+    "en": "Search servers"
+  },
+  "ssh_11": {
+    "zh": "当前项目暂无 SSH 连接",
+    "en": "No SSH connections in this project"
+  },
+  "ssh_12": {
+    "zh": "服务器配置和终端会话仅属于此项目。切换项目不会断开连接。",
+    "en": "Servers and terminal sessions belong to this project. Switching projects keeps connections open."
+  },
+  "ssh_13": {
+    "zh": "没有匹配的服务器",
+    "en": "No matching servers"
+  },
+  "ssh_14": {
+    "zh": "会话已结束",
+    "en": "Session ended"
+  },
+  "ssh_15": {
+    "zh": "重新连接",
+    "en": "Reconnect"
+  },
+  "ssh_16": {
+    "zh": "断开",
+    "en": "Disconnect"
+  },
+  "ssh_17": {
+    "zh": "打开会话",
+    "en": "Open Session"
+  },
+  "ssh_18": {
+    "zh": "连接",
+    "en": "Connect"
+  },
+  "ssh_19": {
+    "zh": "此操作将断开相关会话，并从当前项目移除此连接。",
+    "en": "This disconnects related sessions and removes the connection from this project."
+  },
+  "ssh_20": {
+    "zh": "关闭 SSH 会话",
+    "en": "Close SSH Session"
+  },
+  "ssh_21": {
+    "zh": "SSH 连接设置",
+    "en": "SSH Connection Settings"
+  },
+  "ssh_22": {
+    "zh": "主机 / IP 地址",
+    "en": "Host / IP Address"
+  },
+  "ssh_23": {
+    "zh": "端口",
+    "en": "Port"
+  },
+  "ssh_24": {
+    "zh": "用户名",
+    "en": "Username"
+  },
+  "ssh_25": {
+    "zh": "认证方式",
+    "en": "Authentication"
+  },
+  "ssh_26": {
+    "zh": "私钥路径",
+    "en": "Private Key Path"
+  },
+  "ssh_27": {
+    "zh": "选择…",
+    "en": "Choose…"
+  },
+  "ssh_28": {
+    "zh": "密码、密钥口令和首次连接的主机指纹确认将在终端中提示。密码不会保存在项目配置中。",
+    "en": "The terminal prompts for passwords, key passphrases, and host fingerprint confirmation on first connection. Passwords are not saved in project settings."
+  },
+  "ssh_keychain_error": {
+    "zh": "无法访问 SSH 密码钥匙串：{0}",
+    "en": "Cannot access the SSH password Keychain: {0}"
+  },
+  "ssh_authentication": {
+    "zh": "SSH 身份验证",
+    "en": "SSH Authentication"
+  },
+  "ssh_credential_missing": {
+    "zh": "找不到已保存的 SSH 密码，请重新保存或取消记住密码。",
+    "en": "Saved SSH password not found. Save it again or turn off Remember Password."
+  },
+  "ssh_endpoint_changed": {
+    "zh": "连接地址或用户名已改变，请重新输入密码或取消记住密码。",
+    "en": "The address or username changed. Re-enter the password or turn off Remember Password."
+  },
+  "ssh_password_invalid": {
+    "zh": "密码不能为空，也不能包含换行或空字符。",
+    "en": "The password cannot be empty or contain newline or null characters."
+  },
+  "ssh_remember_password": {
+    "zh": "在钥匙串中记住密码",
+    "en": "Remember password in Keychain"
+  },
+  "ssh_keep_password": {
+    "zh": "留空保留已保存的密码",
+    "en": "Leave blank to keep the saved password"
+  },
+  "ssh_credential_help": {
+    "zh": "密码按项目保存在 macOS 钥匙串中，不写入项目配置。未保存的密码在终端输入；使用已保存密码时，额外认证和主机指纹确认会弹窗提示。",
+    "en": "Passwords are stored per project in macOS Keychain, never in project settings. Unsaved passwords are entered in the terminal. With a saved password, additional authentication and host fingerprint confirmation appear in dialogs."
+  },
+  "ssh_close_confirm": {
+    "zh": "关闭 SSH 会话？",
+    "en": "Close SSH Session?"
+  },
+  "ssh_close_detail": {
+    "zh": "SSH 连接仍在运行，关闭后远程进程可能结束。",
+    "en": "The SSH connection is still running. Closing it may terminate remote processes."
+  },
+  "check_for_updates": {
+    "zh": "检查更新…",
+    "en": "Check for Updates…"
+  },
+  "software_updates": {
+    "zh": "软件更新",
+    "en": "Software Updates"
+  },
+  "current_app_version": {
+    "zh": "当前版本：{0}",
+    "en": "Current version: {0}"
+  },
+  "automatically_check_updates": {
+    "zh": "自动检查更新",
+    "en": "Automatically check for updates"
+  },
+  "update_notice": {
+    "zh": "更新可用时通知你，由你确认下载和安装。",
+    "en": "Notify you when an update is available. You choose when to download and install it."
+  },
+  "updates_unconfigured": {
+    "zh": "此构建未启用应用内更新",
+    "en": "In-app updates are not enabled in this build"
+  },
+  "updates_unconfigured_detail": {
+    "zh": "请安装配置了更新签名的正式版本；从源码构建的版本可重新构建升级。",
+    "en": "Install an official release configured for signed updates. Source builds can be upgraded by rebuilding."
   }
 }

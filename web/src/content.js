@@ -1,5 +1,5 @@
 export const repository = 'https://github.com/shadowDragons/vsux';
-export const dmgRelease = `${repository}/releases/download/v1.0.0/vsux-1.0.0-macos-arm64.dmg`;
+export const dmgRelease = `${repository}/releases/download/v1.1.0/vsux-1.1.0-macos-arm64.dmg`;
 
 export const copy = {
   zh: {
@@ -54,6 +54,12 @@ export const copy = {
     toolsTitle: '命令和服务，跟着项目走。',
     toolsBody: '偶尔运行的命令，存进项目命令库；需要一直运行的服务，放到后台。当前项目的配置、状态和输出，留在同一个侧栏。',
     toolsAlt: 'vsux 实际项目侧栏：后台文档服务、运行状态、日志入口，以及可搜索的常用命令和填入终端按钮',
+    sshTitle: '项目的服务器，也放在项目里。',
+    sshBody: '在右侧 SSH 分区保存主机、端口和用户名，点击连接，在主终端区域打开独立的 SSH 标签。连接配置按项目隔离；切换项目或终端标签，会话继续保留，需要时可以断开或重连。',
+    sshNote: '支持密码、SSH Agent 和指定私钥。密码可选保存在 macOS 钥匙串；关闭项目会断开连接，重启后需手动连接。',
+    updatesTitle: '有新版本，在应用里检查。',
+    updatesBody: '打开「vsux → 检查更新…」，确认下载并安装新版。可在设置中开启自动检查；有适用的增量包时优先下载，否则使用完整包。',
+    updatesNote: 'v1.1.0 新增 · v1.0.0 用户需要先手动安装一次新版，后续即可在应用内更新。',
     tunnelTitle: '本地页面，临时分享。',
     tunnelBody: '安装所需隧道组件，输入本地 HTTP 端口并确认公开，就能生成临时公网链接。让别人看看效果，展示结束再停止。',
     tunnelNote: '需安装 cloudflared。拿到链接的人可以访问你公开的本地服务。',
@@ -126,6 +132,12 @@ export const copy = {
     toolsTitle: 'Commands and services belong to the project.',
     toolsBody: 'Save occasional commands in the project library. Put long-running services in the background. Configuration, status, and output stay together in the sidebar.',
     toolsAlt: 'Actual vsux sidebar: background documentation service, status and logs, searchable saved commands, and insert-into-terminal controls',
+    sshTitle: 'Keep servers with their project.',
+    sshBody: 'Save a host, port, and username in the right-hand SSH section, then connect in a dedicated tab in the main terminal area. Connection settings belong to each project. Switching projects or tabs keeps sessions alive; disconnect or reconnect when needed.',
+    sshNote: 'Supports passwords, SSH Agent, and a selected private key. Optionally save passwords in macOS Keychain. Closing a project disconnects its sessions; reconnect manually after restarting the app.',
+    updatesTitle: 'Check for new versions in the app.',
+    updatesBody: 'Choose “vsux → Check for Updates…” to download and install a new version. Enable automatic checks in Settings if you prefer. Updates use an applicable delta when available, with a full download as fallback.',
+    updatesNote: 'New in v1.1.0 · Users on v1.0.0 must install the new release manually once to enable future in-app updates.',
     tunnelTitle: 'A local page. A temporary link.',
     tunnelBody: 'Install the tunnel component, enter a local HTTP port, and confirm public access to create a temporary link. Share the result, then stop the tunnel when finished.',
     tunnelNote: 'Requires cloudflared. Anyone with the link can access the local service you expose.',
@@ -188,6 +200,7 @@ export const stories = {
       { title: '命令与服务，各自有地方放。', paragraphs: [
         '测试、构建和启动命令，按项目存进命令库。下次搜索一下，复制或者填入当前终端，看清命令后，按回车执行。',
         '需要一直运行的前端、接口或文档服务，放到后台。配好启动命令和运行目录，就能启动、停止、重启和查看日志。切到另一个项目，它们也继续运行。',
+        '从 v1.1.0 开始，远程服务器也可以按项目保存。右侧管理 SSH 连接，点击后在主终端区域打开会话；切换项目不会断开。密码可选保存在 macOS 钥匙串，也可以使用 SSH Agent 或指定私钥。',
       ], image: 'project-tools', actual: true },
       { title: 'AI 改完，我在这里接着处理。', paragraphs: [
         '文件可以直接编辑和搜索替换。AI 改完，查看 Git 差异，检查清楚，再暂存和提交。Markdown 可以实时预览，项目说明和开发方案不用再换个地方看。',
@@ -238,6 +251,7 @@ export const stories = {
       { title: 'Commands and services each have a place.', paragraphs: [
         'Save test, build, and start commands in the project library. Search for one next time, copy it or insert it into the terminal, review it, then press Enter.',
         'Put long-running frontend, API, and documentation services in the background. Configure their commands and directories; start, stop, restart, and inspect logs. They keep running when you switch projects.',
+        'Starting with v1.1.0, save remote servers per project too. Manage SSH connections on the right and open sessions in the main terminal area. Switching projects keeps sessions alive. Optionally save passwords in macOS Keychain, or use SSH Agent or a selected private key.',
       ], image: 'project-tools', actual: true },
       { title: 'When AI finishes, I take over here.', paragraphs: [
         'Edit files, search and replace text, and inspect Git diffs. Review what changed before staging and committing. Read project notes and plans in the live Markdown preview.',

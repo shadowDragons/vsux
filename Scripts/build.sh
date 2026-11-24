@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-version=${VERSION:-1.0.0}
-build_number=${BUILD_NUMBER:-1}
-if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ ! "$build_number" =~ ^[0-9]+$ ]]; then
-  printf 'VERSION must be X.Y.Z and BUILD_NUMBER must be numeric.\n' >&2
+version=${VERSION:-1.1.0}
+build_number=${BUILD_NUMBER:-$version}
+if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ ! "$build_number" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
+  printf 'VERSION must be X.Y.Z and BUILD_NUMBER must contain 1–3 numeric components.\n' >&2
   exit 1
 fi
 Scripts/bootstrap-ghostty.sh
@@ -18,6 +18,8 @@ trap 'rm -rf "$staging"' EXIT
 app="$staging/vsux.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/ghostty" "$app/Contents/Resources/terminfo"
 cp "$bin_path/CmuxClone" "$app/Contents/MacOS/vsux"
+mkdir -p "$app/Contents/Frameworks"
+ditto .build/artifacts/sparkle/Sparkle/Sparkle.xcframework/macos-arm64_x86_64/Sparkle.framework "$app/Contents/Frameworks/Sparkle.framework"
 # Release binaries must not carry STABS entries containing local build paths.
 # Keep debug builds intact, and strip before creating the code signature.
 if [[ "$configuration" == release ]]; then
@@ -60,6 +62,7 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 PLIST
 /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $version" "$app/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $build_number" "$app/Contents/Info.plist"
+python3 Scripts/updates.py configure "$app/Contents/Info.plist"
 codesign --force --deep --sign - "$app"
 codesign --verify --deep --strict "$app"
 "$app/Contents/MacOS/vsux" --verify-bundled-resources

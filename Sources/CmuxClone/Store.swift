@@ -69,6 +69,7 @@ final class Preferences: ObservableObject {
 @MainActor
 final class WindowModel: ObservableObject {
     let tools = WorkspaceToolsState()
+    let ssh: SSHWorkspaceStore
     let shellCommandOverride: String?
     var onWorkspaceChange: (() -> Void)?
     @Published var isDisposed = false
@@ -92,7 +93,8 @@ final class WindowModel: ObservableObject {
     var terminalDirectories: [UUID: String] = [:] { didSet { if !isDisposed { onWorkspaceChange?() } } }
     weak var window: NSWindow?
 
-    init(workspaces initial: [Workspace]? = nil, shellCommand: String? = nil) {
+    init(workspaces initial: [Workspace]? = nil, shellCommand: String? = nil, sshCredentials: SSHCredentialStore = SSHKeychain()) {
+        ssh = SSHWorkspaceStore(credentials: sshCredentials)
         shellCommandOverride = shellCommand
         if let initial, !initial.isEmpty {
             workspaces = initial; selectedWorkspaceID = initial[0].id
@@ -109,7 +111,7 @@ final class WindowModel: ObservableObject {
     var workspaceIndex: Int? { workspaces.firstIndex { $0.id == selectedWorkspaceID } }
     var workspace: Workspace? { workspaces.first { $0.id == selectedWorkspaceID } }
     var selectedTab: TerminalTab? { workspace?.tabs.first { $0.id == workspace?.selectedTabID } }
-    var focusedTerminal: GhosttyTerminalView? { selectedTab.flatMap { terminals[activeTerminalID($0.focusedPane)] } }
+    var focusedTerminal: GhosttyTerminalView? { ssh.existing(selectedWorkspaceID)?.presentedSession?.terminal ?? selectedTab.flatMap { terminals[activeTerminalID($0.focusedPane)] } }
     var title: String { workspace?.name ?? "vsux" }
 
     func terminal(_ id: UUID) -> GhosttyTerminalView {
@@ -149,17 +151,17 @@ final class WindowModel: ObservableObject {
     }
     func focusTerminal() {
         guard tools.content == .terminal else { return }
-        guard let pane = selectedTab?.focusedPane else { return }
-        let id = activeTerminalID(pane)
         DispatchQueue.main.async { [weak self] in
-            guard let self, let view = self.terminals[id], view.window != nil else { return }
+            guard let self, self.tools.content == .terminal, let view = self.focusedTerminal, view.window != nil else { return }
             view.window?.makeFirstResponder(view)
         }
     }
+
     func selectWorkspace(_ id: UUID) {
         selectedWorkspaceID = id; showFind = false; window?.title = title; focusTerminal()
     }
     func selectTab(_ id: UUID) {
+        ssh.existing(selectedWorkspaceID)?.showLocalTerminal()
         guard let wi = workspaceIndex else { return }
         workspaces[wi].selectedTabID = id; showFind = false; focusTerminal()
     }
@@ -184,8 +186,11 @@ final class WindowModel: ObservableObject {
     func closeWorkspace(_ id: UUID) {
         guard let wi = workspaces.firstIndex(where: { $0.id == id }) else { return }
         let ids = workspaces[wi].tabs.flatMap { $0.layout.leaves }
-        guard confirmClose(ids, title: L("关闭“\(workspaces[wi].name)”？")) else { return }
+        let needsConfirmation = surfaceIDs(for: ids).contains { terminals[$0]?.needsConfirmation == true }
+            || ssh.existing(id)?.needsConfirmation == true
+        if needsConfirmation && !confirm(title: L("关闭“\(workspaces[wi].name)”？"), detail: L("终端中仍有运行的进程，关闭后进程将结束。"), action: L("关闭")) { return }
         stopServices(in: id)
+        ssh.dispose(id)
         stopQuickTunnel(in: id)
         quickTunnelStatuses.removeValue(forKey: id)
         dispose(ids); workspaces.remove(at: wi)
@@ -208,6 +213,7 @@ final class WindowModel: ObservableObject {
         let value = workspaces.remove(at: from); workspaces.insert(value, at: to)
     }
     func addTab() {
+        ssh.existing(selectedWorkspaceID)?.showLocalTerminal()
         guard let wi = workspaceIndex else { return }
         let tab = TerminalTab()
         workspaces[wi].tabs.append(tab); workspaces[wi].selectedTabID = tab.id; focusTerminal()
@@ -243,6 +249,7 @@ final class WindowModel: ObservableObject {
         selectWorkspace(destination)
     }
     func split(_ axis: SplitAxis, before: Bool = false) {
+        ssh.existing(selectedWorkspaceID)?.showLocalTerminal()
         guard let tab = selectedTab else { return }
         let new = UUID()
         let directory = focusedTerminal?.directory ?? workspace?.directory ?? NSHomeDirectory()
@@ -277,7 +284,7 @@ final class WindowModel: ObservableObject {
     func insertCommand(_ command: String) {
         guard let pane = selectedTab?.focusedPane else { error = L("请先选择一个终端。"); return }
         tools.content = .terminal
-        let view = terminal(activeTerminalID(pane))
+        let view = ssh.existing(selectedWorkspaceID)?.presentedSession?.terminal ?? terminal(activeTerminalID(pane))
         view.pasteText(commandForInsertion(command))
         focusTerminal()
     }
@@ -298,7 +305,8 @@ final class WindowModel: ObservableObject {
         return confirm(title: title, detail: L("终端中仍有运行的进程，关闭后进程将结束。"), action: L("关闭"))
     }
     func canCloseWindow() -> Bool {
-        guard terminals.values.contains(where: { $0.needsConfirmation }) else { return true }
+        guard terminals.values.contains(where: { $0.needsConfirmation }) ||
+              ssh.needsConfirmation else { return true }
         return confirm(title: L("关闭窗口和全部终端？"), detail: L("终端中仍有运行的进程，关闭后进程将结束。"), action: L("关闭"))
     }
     func dispose(_ ids: [UUID]) {
@@ -307,6 +315,7 @@ final class WindowModel: ObservableObject {
     }
     func disposeAll() {
         isDisposed = true
+        ssh.disposeAll()
         stopAllServices()
         stopAllQuickTunnels()
         terminals.values.forEach { $0.shutdown() }; terminals.removeAll()

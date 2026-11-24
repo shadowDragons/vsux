@@ -47,3 +47,12 @@ Rebuilt the isolated demonstration app from source commit 9b74832 and recaptured
 ## Product naming, 2026-11-12
 
 The owner confirmed the public category as “vsux，一款轻量编辑器” / “vsux, a lightweight editor”. The terminal core and parallel projects remain feature explanations, not the product name. Article, landing introduction, README and OG metadata/artwork use this wording. The video introduction and closing visuals identify the lightweight editor; its existing intact narration never used the previous category name and remains unchanged. The 20-billion-token title and open-source/platform facts remain.
+
+## v1.1.0 release, 2026-11-24
+
+Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspaceStore, SSHViews, AppUpdater, and release scripts. The owner authorized merging SSH and in-app updates to main, publishing a release, and mentioning SSH on the official site and README.
+
+- Project SSH: right sidebar connection management; sessions appear in the main terminal area as independent SSH tabs. Configurations and optional Keychain credential references belong to each workspace. Password, SSH Agent and selected-private-key authentication are supported. Switching projects preserves sessions; closing a project disconnects them. Restart requires manual reconnection.
+- Sparkle 2.9.6 provides signed GitHub Release appcast/ZIP/delta updates, full-package fallback and user-confirmed installation. Automatic checking is opt-in. The first updater-enabled release is v1.1.0; v1.0.0 users install its DMG manually once.
+- The app remains Apple Silicon/macOS 14+, ad-hoc signed and not Apple-notarized. Existing screenshots retain their original capture dates and do not claim to show the new SSH feature.
+- Full suite: 225 Swift tests; 9 script tests include signed delta generation/application, tamper rejection and mismatched-key rejection. Live SSH success was reported in the owner's referenced chat; automated tests use disposable local fixtures.

@@ -40,7 +40,7 @@ final class GhosttyActionBridge: @unchecked Sendable {
     }
 
     private enum Event: Sendable {
-        case title(String), directory(String), openURL(String), startSearch
+        case title(String), directory(String), openURL(String), startSearch, processExited
 
         init?(_ action: ghostty_action_s) {
             switch action.tag {
@@ -56,6 +56,7 @@ final class GhosttyActionBridge: @unchecked Sendable {
                 guard let value = String(data: bytes, encoding: .utf8) else { return nil }
                 self = .openURL(value)
             case GHOSTTY_ACTION_START_SEARCH: self = .startSearch
+            case GHOSTTY_ACTION_SHOW_CHILD_EXITED: self = .processExited
             default: return nil
             }
         }
@@ -75,6 +76,7 @@ final class GhosttyActionBridge: @unchecked Sendable {
                     NSWorkspace.shared.open(url)
                 }
             case .startSearch: break
+            case .processExited: view.onProcessExit?()
             }
         }
     }
