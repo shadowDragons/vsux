@@ -63,3 +63,8 @@ Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspa
 - The file tree supports Command-click and Shift-click selection and moving selected files and folders to the macOS Trash.
 - Only the active Settings tab scrolls. Restore Defaults and Done stay visible as the interface zoom changes.
 - The download links target the v1.1.1 Apple Silicon DMG. v1.1.0 users can use the built-in updater.
+
+## v1.1.2 release, 2026-11-25
+
+- The file editor wraps long lines at the available width by default. Option-Z or View → Word Wrap toggles wrapping for the active document.
+- The download links target the v1.1.2 Apple Silicon DMG. Users of v1.1.0 and later can use the built-in updater.

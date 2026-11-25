@@ -11,9 +11,9 @@
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)
 ![Apple Silicon](https://img.shields.io/badge/Apple%20Silicon-supported-555)
 
-[官网](https://vsux.sphrag.com/) · [下载 macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v1.1.1/vsux-1.1.1-macos-arm64.dmg) · [查看所有 Release](https://github.com/shadowDragons/vsux/releases) · [报告问题](https://github.com/shadowDragons/vsux/issues)
+[官网](https://vsux.sphrag.com/) · [下载 macOS DMG](https://github.com/shadowDragons/vsux/releases/download/v1.1.2/vsux-1.1.2-macos-arm64.dmg) · [查看所有 Release](https://github.com/shadowDragons/vsux/releases) · [报告问题](https://github.com/shadowDragons/vsux/issues)
 
-> v1.1.1 是 Apple Silicon 正式版本，支持 macOS 14 或更新版本。安装包采用临时签名，未经 Apple 公证；下载前请阅读[安装说明](#安装)和[安全边界](#安全边界)。
+> v1.1.2 是 Apple Silicon 正式版本，支持 macOS 14 或更新版本。安装包采用临时签名，未经 Apple 公证；下载前请阅读[安装说明](#安装)和[安全边界](#安全边界)。
 
 如果它适合你的工作习惯，欢迎[点个 Star](https://github.com/shadowDragons/vsux)。你也可以基于源码，让 AI 帮你添加需要的功能、删掉用不到的功能，再构建自己的版本。遇到问题、有功能需求或改进建议，都欢迎到 [Issues](https://github.com/shadowDragons/vsux/issues) 提出来。
 
@@ -73,12 +73,12 @@ vsux 没有内置 AI Agent，继续在终端里使用你习惯的编程工具即
 
 ## 安装
 
-1. 从 [v1.1.1 Release](https://github.com/shadowDragons/vsux/releases/tag/v1.1.1) 下载 `vsux-1.1.1-macos-arm64.dmg`。
+1. 从 [v1.1.2 Release](https://github.com/shadowDragons/vsux/releases/tag/v1.1.2) 下载 `vsux-1.1.2-macos-arm64.dmg`。
 2. 打开磁盘映像，将 `vsux.app` 拖到 `Applications`。
 3. 可选：下载同一页面上的 `.dmg.sha256`，在终端验证文件完整性：
 
    ```sh
-   shasum -a 256 -c vsux-1.1.1-macos-arm64.dmg.sha256
+   shasum -a 256 -c vsux-1.1.2-macos-arm64.dmg.sha256
    ```
 
 当前构建没有 Apple Developer ID 签名或公证。如果 macOS 阻止打开，请先确认下载来源与校验和，再按系统“隐私与安全性”中的提示操作。不要全局关闭 Gatekeeper。
@@ -123,7 +123,7 @@ swift test
 python3 Scripts/check-localizations.py
 ```
 
-本机生成的 `dist/vsux.app` 使用临时签名。构建正式 DMG 可运行 `Scripts/release.sh 1.1.1`；产物和校验文件写入 `dist/`。完整发布流程见[发布说明](docs/RELEASING.md)。
+本机生成的 `dist/vsux.app` 使用临时签名。构建正式 DMG 可运行 `Scripts/release.sh 1.1.2`；产物和校验文件写入 `dist/`。完整发布流程见[发布说明](docs/RELEASING.md)。
 
 ## 数据与隐私
 
