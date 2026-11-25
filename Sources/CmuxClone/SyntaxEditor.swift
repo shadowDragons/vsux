@@ -13,7 +13,7 @@ struct SyntaxEditor: NSViewRepresentable {
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
     func makeNSView(context: Context) -> NSScrollView {
-        let scroll = CodeEditorScrollView(); scroll.hasVerticalScroller = true; scroll.hasHorizontalScroller = true
+        let scroll = CodeEditorScrollView(); scroll.hasVerticalScroller = true
         // NSRulerView's separator can paint above this representable into the
         // SwiftUI tabs/titlebar unless the native scroll view clips its children.
         scroll.clipsToBounds = true
@@ -29,11 +29,9 @@ struct SyntaxEditor: NSViewRepresentable {
         text.isContinuousSpellCheckingEnabled = false; text.isGrammarCheckingEnabled = false
         text.isAutomaticLinkDetectionEnabled = false; text.isAutomaticDataDetectionEnabled = false
         text.textContainerInset = NSSize(width: 12, height: 10)
-        text.isVerticallyResizable = true; text.isHorizontallyResizable = true
+        text.isVerticallyResizable = true
         text.minSize = NSSize(width: 0, height: 0); text.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         text.autoresizingMask = [.width]
-        text.textContainer?.containerSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        text.textContainer?.widthTracksTextView = false
         text.delegate = context.coordinator
         text.setAccessibilityIdentifier("local-code-editor")
         text.setAccessibilityLabel(L("代码编辑器"))
@@ -41,6 +39,7 @@ struct SyntaxEditor: NSViewRepresentable {
         scroll.documentView = text
         let ruler = CodeLineRuler(textView: text)
         scroll.verticalRulerView = ruler; scroll.hasVerticalRuler = true; scroll.rulersVisible = true
+        scroll.setWordWrap(document.wordWrap)
         context.coordinator.textView = text
         let find = EditorFindController(editor: text, session: document.findSession)
         context.coordinator.find = find
@@ -64,7 +63,8 @@ struct SyntaxEditor: NSViewRepresentable {
                 let location = min(position.selection.location, length)
                 text.setSelectedRange(NSRange(location: location, length: min(position.selection.length, length - location)))
                 text.layoutManager?.ensureLayout(for: text.textContainer!)
-                scroll.contentView.scroll(to: position.origin)
+                let x = coordinator.parent.document.wordWrap ? 0 : position.origin.x
+                scroll.contentView.scroll(to: NSPoint(x: x, y: position.origin.y))
                 scroll.reflectScrolledClipView(scroll.contentView)
                 coordinator.updateSelection()
                 coordinator.didScroll()
@@ -83,6 +83,7 @@ struct SyntaxEditor: NSViewRepresentable {
             if !isEditable, text.window?.firstResponder === text { text.window?.makeFirstResponder(nil) }
         }
         context.coordinator.textView?.setAccessibilityLabel(L("代码编辑器"))
+        (scroll as? CodeEditorScrollView)?.setWordWrap(document.wordWrap)
         context.coordinator.applyTypography()
         if context.coordinator.textView?.string != document.text { context.coordinator.install(document.text, language: document.language) }
         else if context.coordinator.language != document.language { context.coordinator.highlight() }
@@ -134,17 +135,19 @@ struct SyntaxEditor: NSViewRepresentable {
             guard ProcessInfo.processInfo.systemUptime > suppressScrollUntil,
                   let view = textView, let layout = view.layoutManager, let container = view.textContainer,
                   layout.numberOfGlyphs > 0 else { return }
-            let y = max(0, view.visibleRect.minY - view.textContainerInset.height)
+            let y = max(0, view.visibleRect.minY - view.textContainerOrigin.y)
             let glyph = min(layout.glyphIndex(for: NSPoint(x: 0, y: y), in: container), layout.numberOfGlyphs - 1)
-            let character = layout.characterIndexForGlyph(at: glyph)
             let ns = view.string as NSString
-            let line = ns.substring(to: min(character, ns.length)).components(separatedBy: "\n").count
-            let rect = layout.lineFragmentRect(forGlyphAt: glyph, effectiveRange: nil)
+            let extra = layout.extraLineFragmentRect
+            let character = extra.height > 0 && y >= extra.minY ? ns.length : layout.characterIndexForGlyph(at: glyph)
+            let lineStart = ns.lineRange(for: NSRange(location: character, length: 0)).location
+            let line = ns.substring(to: lineStart).components(separatedBy: "\n").count
+            let rect = view.logicalLineRect(at: character)
             parent.onScroll(Double(line) + min(0.99, max(0, (y - rect.minY) / max(1, rect.height))))
         }
         func reveal(_ request: EditorScrollRequest?) {
             guard let request, request.id != lastRequest, request.line.isFinite,
-                  let view = textView, let layout = view.layoutManager, let scroll = view.enclosingScrollView else { return }
+                  let view = textView, let scroll = view.enclosingScrollView else { return }
             lastRequest = request.id
             let ns = view.string as NSString
             var location = 0; var line = 1
@@ -152,10 +155,8 @@ struct SyntaxEditor: NSViewRepresentable {
                 let range = ns.lineRange(for: NSRange(location: location, length: 0))
                 location = NSMaxRange(range); line += 1
             }
-            layout.ensureLayout(for: view.textContainer!)
-            let glyph = layout.glyphIndexForCharacter(at: min(location, ns.length))
-            let rect = glyph < layout.numberOfGlyphs ? layout.lineFragmentRect(forGlyphAt: glyph, effectiveRange: nil) : layout.extraLineFragmentRect
-            let y = rect.minY + view.textContainerInset.height + CGFloat(request.line - floor(request.line)) * rect.height
+            let rect = view.logicalLineRect(at: location)
+            let y = rect.minY + view.textContainerOrigin.y + CGFloat(request.line - floor(request.line)) * rect.height
             suppressScrollUntil = ProcessInfo.processInfo.systemUptime + 0.18
             let origin = scroll.contentView.bounds.origin
             scroll.contentView.scroll(to: NSPoint(x: origin.x, y: max(0, min(y, view.bounds.height - scroll.contentSize.height))))
@@ -243,6 +244,23 @@ final class CodeTextView: NSTextView {
     var onSave: (() -> Void)?
     var onFind: (() -> Void)?
     var onFindKey: ((NSEvent) -> Bool)?
+
+    // Markdown scroll sync expresses progress as a fraction of a source line.
+    func logicalLineRect(at character: Int) -> NSRect {
+        guard let layout = layoutManager else { return .zero }
+        let line = (string as NSString).lineRange(for: NSRange(location: character, length: 0))
+        if line.length == 0 {
+            if let textContainer { layout.ensureLayout(for: textContainer) }
+            return layout.extraLineFragmentRect
+        }
+        layout.ensureLayout(forCharacterRange: line)
+        let glyphs = layout.glyphRange(forCharacterRange: line, actualCharacterRange: nil)
+        guard glyphs.length > 0 else { return .zero }
+        let first = layout.lineFragmentRect(forGlyphAt: glyphs.location, effectiveRange: nil)
+        let last = layout.lineFragmentRect(forGlyphAt: NSMaxRange(glyphs) - 1, effectiveRange: nil)
+        return first.union(last)
+    }
+
     override func viewDidChangeEffectiveAppearance() {
         super.viewDidChangeEffectiveAppearance()
         needsDisplay = true
@@ -317,30 +335,39 @@ final class CodeLineRuler: NSRulerView {
     @objc private func redraw() { needsDisplay = true }
     override func drawHashMarksAndLabels(in rect: NSRect) {
         NSColor.textBackgroundColor.setFill(); bounds.fill()
-        guard let text = editor, let layout = text.layoutManager, let container = text.textContainer else { return }
-        let visible = text.visibleRect.offsetBy(dx: -text.textContainerInset.width, dy: -text.textContainerInset.height)
-        let glyphs = layout.glyphRange(forBoundingRect: visible, in: container)
-        let ns = text.string as NSString
-        let charStart = layout.characterIndexForGlyph(at: min(glyphs.location, max(0, layout.numberOfGlyphs - 1)))
-        var line = ns.substring(to: min(charStart, ns.length)).reduce(1) { $1 == "\n" ? $0 + 1 : $0 }
+        guard let text = editor else { return }
         let attrs: [NSAttributedString.Key: Any] = [.font: NSFont.monospacedDigitSystemFont(ofSize: 11, weight: .regular), .foregroundColor: NSColor.tertiaryLabelColor]
-        layout.enumerateLineFragments(forGlyphRange: glyphs) { [weak self] lineRect, _, _, range, _ in
-            guard let self else { return }
-            let charIndex = layout.characterIndexForGlyph(at: range.location)
-            if charIndex == 0 || (charIndex <= ns.length && ns.character(at: charIndex - 1) == 10) {
-                let label = "\(line)" as NSString
-                let y = self.convert(NSPoint(x: 0, y: lineRect.minY + text.textContainerInset.height), from: text).y
-                label.draw(at: NSPoint(x: self.ruleThickness - label.size(withAttributes: attrs).width - 10, y: y), withAttributes: attrs)
+        enumerateVisibleLineNumbers { [self] line, offset in
+            let label = "\(line)" as NSString
+            let y = convert(NSPoint(x: 0, y: offset), from: text).y
+            label.draw(at: NSPoint(x: ruleThickness - label.size(withAttributes: attrs).width - 10, y: y), withAttributes: attrs)
+        }
+    }
+
+    func enumerateVisibleLineNumbers(_ emit: @escaping (Int, CGFloat) -> Void) {
+        guard let text = editor, let layout = text.layoutManager, let container = text.textContainer else { return }
+        let origin = text.textContainerOrigin
+        let visible = text.visibleRect.offsetBy(dx: -origin.x, dy: -origin.y)
+        // Start at the left edge even when the source is horizontally scrolled.
+        let rows = NSRect(x: 0, y: visible.minY, width: max(1, visible.maxX), height: visible.height)
+        let glyphs = layout.glyphRange(forBoundingRect: rows, in: container)
+        let ns = text.string as NSString
+        if glyphs.length > 0 {
+            var firstFragment = NSRange()
+            layout.lineFragmentRect(forGlyphAt: glyphs.location, effectiveRange: &firstFragment)
+            let charStart = layout.characterIndexForGlyph(at: firstFragment.location)
+            var line = ns.substring(to: charStart).components(separatedBy: "\n").count
+            if charStart > 0, ns.character(at: charStart - 1) != 10 { line += 1 }
+            layout.enumerateLineFragments(forGlyphRange: glyphs) { lineRect, _, _, range, _ in
+                let charIndex = layout.characterIndexForGlyph(at: range.location)
+                guard charIndex == 0 || ns.character(at: charIndex - 1) == 10 else { return }
+                emit(line, lineRect.minY + origin.y)
                 line += 1
             }
         }
-        if ns.length == 0 || ns.hasSuffix("\n") {
-            let fragment = layout.extraLineFragmentRect
-            if fragment.height > 0 {
-                let label = "\(ns.components(separatedBy: "\n").count)" as NSString
-                let y = convert(NSPoint(x: 0, y: fragment.minY + text.textContainerInset.height), from: text).y
-                label.draw(at: NSPoint(x: ruleThickness - label.size(withAttributes: attrs).width - 10, y: y), withAttributes: attrs)
-            }
+        let extra = layout.extraLineFragmentRect
+        if extra.height > 0, visible.intersects(extra) {
+            emit(ns.components(separatedBy: "\n").count, extra.minY + origin.y)
         }
     }
 }

@@ -5,6 +5,27 @@ final class CodeEditorScrollView: NSScrollView {
     weak var findPanel: NSView?
     override func tile() { super.tile(); positionFindPanel() }
     override func layout() { super.layout(); positionFindPanel() }
+
+    func setWordWrap(_ enabled: Bool) {
+        guard let text = documentView as? CodeTextView, let container = text.textContainer,
+              container.widthTracksTextView != enabled || hasHorizontalScroller == enabled else { return }
+        hasHorizontalScroller = !enabled
+        text.isHorizontallyResizable = !enabled
+        let unlimited = CGFloat.greatestFiniteMagnitude
+        if enabled {
+            text.setFrameSize(NSSize(width: contentSize.width, height: text.frame.height))
+            container.containerSize = NSSize(width: max(0, contentSize.width - 2 * text.textContainerInset.width),
+                                             height: unlimited)
+            container.widthTracksTextView = true
+            contentView.scroll(to: NSPoint(x: 0, y: contentView.bounds.minY))
+            reflectScrolledClipView(contentView)
+        } else {
+            container.widthTracksTextView = false
+            container.containerSize = NSSize(width: unlimited, height: unlimited)
+        }
+        verticalRulerView?.needsDisplay = true
+    }
+
     func positionFindPanel() {
         guard let findPanel else { return }
         let width = max(0, min(600, bounds.width - 26))

@@ -254,27 +254,31 @@ final class MarkdownTests: XCTestCase {
         window.contentView = host; window.orderFront(nil)
         defer { window.orderOut(nil) }
         try await eventually { host.layoutSubtreeIfNeeded(); return self.find(CodeTextView.self, in: host) != nil }
-        let editor = try XCTUnwrap(find(CodeTextView.self, in: host))
-        let scroll = try XCTUnwrap(editor.enclosingScrollView)
+        var editor = try XCTUnwrap(find(CodeTextView.self, in: host))
         // A previously consumed search result must not be replayed on every return.
         document.searchSelection = EditorSelectionRequest(range: NSRange(location: 20, length: 4))
         try await eventually { editor.selectedRange() == NSRange(location: 20, length: 4) }
-        editor.layoutManager?.ensureLayout(for: editor.textContainer!)
         let selection = (source as NSString).range(of: "Line 90")
-        editor.setSelectedRange(selection)
-        scroll.contentView.scroll(to: NSPoint(x: 150, y: 1400)); scroll.reflectScrolledClipView(scroll.contentView)
-        let origin = scroll.contentView.bounds.origin
         // The content switch removes FileEditorArea, just as switching to the terminal does.
-        for _ in 0..<2 {
+        for wordWrap in [true, false] {
+            document.wordWrap = wordWrap
+            let scroll = try XCTUnwrap(editor.enclosingScrollView)
+            try await eventually { scroll.hasHorizontalScroller == !wordWrap }
+            editor.layoutManager?.ensureLayout(for: editor.textContainer!)
+            editor.setSelectedRange(selection)
+            let origin = NSPoint(x: wordWrap ? 0 : 150, y: 1400)
+            scroll.contentView.scroll(to: origin)
+            scroll.reflectScrolledClipView(scroll.contentView)
             host.rootView = AnyView(Text("Terminal"))
             try await eventually { host.layoutSubtreeIfNeeded(); return self.find(CodeTextView.self, in: host) == nil }
             host.rootView = AnyView(FileEditorArea(model: model))
             try await eventually { host.layoutSubtreeIfNeeded(); return self.find(CodeTextView.self, in: host) != nil }
-            let restored = try XCTUnwrap(find(CodeTextView.self, in: host))
+            editor = try XCTUnwrap(find(CodeTextView.self, in: host))
             try await Task.sleep(nanoseconds: 100_000_000)
-            XCTAssertEqual(restored.selectedRange(), selection)
-            XCTAssertEqual(restored.enclosingScrollView?.contentView.bounds.origin.x ?? 0, origin.x, accuracy: 1)
-            XCTAssertEqual(restored.enclosingScrollView?.contentView.bounds.origin.y ?? 0, origin.y, accuracy: 1)
+            XCTAssertEqual(editor.selectedRange(), selection)
+            XCTAssertEqual(editor.enclosingScrollView?.hasHorizontalScroller, !wordWrap)
+            XCTAssertEqual(editor.enclosingScrollView?.contentView.bounds.origin.x ?? 0, origin.x, accuracy: 1)
+            XCTAssertEqual(editor.enclosingScrollView?.contentView.bounds.origin.y ?? 0, origin.y, accuracy: 1)
         }
         host.rootView = AnyView(Text("Terminal"))
         try await eventually { host.layoutSubtreeIfNeeded(); return self.find(CodeTextView.self, in: host) == nil }

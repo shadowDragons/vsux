@@ -5,7 +5,7 @@ import SwiftUI
 enum AppCommand: String, CaseIterable, Identifiable, Codable {
     case settings, hide, quit, newWindow, newWorkspace, quickOpen, newTab, closePane, closeWindow
     case saveFile, undo, redo, cut, copy, paste, selectAll, find, findFile, findInFiles
-    case splitRight, splitBelow, equalize, markdownPreview, increaseFont, decreaseFont, resetInterfaceZoom
+    case splitRight, splitBelow, equalize, wordWrap, markdownPreview, increaseFont, decreaseFont, resetInterfaceZoom
     case sidebar, commands, fullScreen, minimize, zoom
     var id: String { rawValue }
 
@@ -33,6 +33,7 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .splitRight: return L("向右分屏")
         case .splitBelow: return L("向下分屏")
         case .equalize: return L("均分分屏")
+        case .wordWrap: return L("自动换行")
         case .markdownPreview: return L("Markdown 侧边预览")
         case .increaseFont: return L("放大界面")
         case .decreaseFont: return L("缩小界面")
@@ -69,6 +70,7 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .splitRight: return #selector(AppDelegate.splitRight(_:))
         case .splitBelow: return #selector(AppDelegate.splitBelow(_:))
         case .equalize: return #selector(AppDelegate.equalize(_:))
+        case .wordWrap: return #selector(AppDelegate.toggleWordWrap(_:))
         case .markdownPreview: return #selector(AppDelegate.toggleMarkdownPreview(_:))
         case .increaseFont: return #selector(AppDelegate.increaseFontSize(_:))
         case .decreaseFont: return #selector(AppDelegate.decreaseFontSize(_:))
@@ -104,6 +106,7 @@ enum AppCommand: String, CaseIterable, Identifiable, Codable {
         case .findInFiles: return KeyBinding("f", [.command, .shift])
         case .splitRight: return KeyBinding("d", .command)
         case .splitBelow: return KeyBinding("d", [.command, .shift])
+        case .wordWrap: return KeyBinding("z", .option)
         case .markdownPreview: return KeyBinding("v", [.command, .shift])
         case .increaseFont: return KeyBinding("+", .control)
         case .decreaseFont: return KeyBinding("-", .control)
@@ -186,19 +189,13 @@ final class ShortcutPreferences: ObservableObject {
             // Invalid/colliding archives fall back as a whole, so defaults and
             // overrides can never silently assign one combination twice.
             var known = saved.filter { AppCommand(rawValue: $0.key) != nil }
-            if known[AppCommand.resetInterfaceZoom.rawValue] == nil,
-               AppCommand.allCases.contains(where: {
-                   $0 != .resetInterfaceZoom && (known[$0.rawValue] ?? $0.defaultBinding).overlaps(AppCommand.resetInterfaceZoom.defaultBinding)
-               }) {
-                known[AppCommand.resetInterfaceZoom.rawValue] = .disabled
-            }
-            // Existing users may already own Ctrl+F. Adding a command must not
-            // invalidate their complete shortcut archive or steal that binding.
-            if known[AppCommand.findFile.rawValue] == nil,
-               AppCommand.allCases.contains(where: {
-                   $0 != .findFile && (known[$0.rawValue] ?? $0.defaultBinding).overlaps(AppCommand.findFile.defaultBinding)
-               }) {
-                known[AppCommand.findFile.rawValue] = .disabled
+            // Added defaults yield to any existing binding that uses the same key.
+            for command in [AppCommand.resetInterfaceZoom, .findFile, .wordWrap] where known[command.rawValue] == nil {
+                if AppCommand.allCases.contains(where: {
+                    $0 != command && (known[$0.rawValue] ?? $0.defaultBinding).overlaps(command.defaultBinding)
+                }) {
+                    known[command.rawValue] = .disabled
+                }
             }
             if Self.isValid(known) { overrides = known }
         }

@@ -160,6 +160,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     @objc func resetInterfaceZoom(_ sender: Any?) { Preferences.shared.setInterfaceZoomLevel(0) }
     @objc func sidebar(_ sender: Any?) { current?.showSidebar.toggle() }
     @objc func commands(_ sender: Any?) { current?.showCommands.toggle() }
+    private func selectedFileDocument(in model: WindowModel?) -> LocalFileDocument? {
+        guard let model, model.tools.content == .editor, let workspace = model.workspace else { return nil }
+        return model.tools.files(workspace).selectedDocument
+    }
+    @objc func toggleWordWrap(_ sender: Any?) {
+        selectedFileDocument(in: current)?.wordWrap.toggle()
+    }
     @objc func toggleMarkdownPreview(_ sender: Any?) {
         guard let model = current, model.tools.content == .editor, let workspace = model.workspace,
               let document = model.tools.files(workspace).selectedDocument, document.language == .markdown else { return }
@@ -176,6 +183,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         if menuItem.action == #selector(saveFile(_:)) {
             guard let model = current, model.tools.content == .editor, let workspace = model.workspace else { return false }
             return model.tools.files(workspace).selectedDocument != nil
+        }
+        if menuItem.action == #selector(toggleWordWrap(_:)) {
+            guard let document = selectedFileDocument(in: current) else { return false }
+            menuItem.state = document.wordWrap ? .on : .off
         }
         if menuItem.action == #selector(toggleMarkdownPreview(_:)) {
             guard let model = current, model.tools.content == .editor, let workspace = model.workspace,
@@ -208,6 +219,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         case .splitRight: model.split(.horizontal)
         case .splitBelow: model.split(.vertical)
         case .equalize: model.equalize()
+        case .wordWrap:
+            guard let document = selectedFileDocument(in: model) else { return false }
+            document.wordWrap.toggle()
         case .markdownPreview:
             guard model.tools.content == .editor, let workspace = model.workspace,
                   let document = model.tools.files(workspace).selectedDocument, document.language == .markdown else { return false }
@@ -287,6 +301,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         add(view, L("向下分屏"), #selector(splitBelow(_:)), "d", [.command, .shift], target: self)
         add(view, L("均分分屏"), #selector(equalize(_:)), target: self)
         view.addItem(.separator())
+        add(view, AppCommand.wordWrap.title, #selector(toggleWordWrap(_:)), target: self)
         add(view, L("Markdown 侧边预览"), #selector(toggleMarkdownPreview(_:)), "v", [.command, .shift], target: self)
         add(view, L("放大界面"), #selector(increaseFontSize(_:)), "+", [.control], target: self)
         add(view, L("缩小界面"), #selector(decreaseFontSize(_:)), "-", [.control], target: self)

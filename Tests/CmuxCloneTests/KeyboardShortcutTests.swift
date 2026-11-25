@@ -92,6 +92,17 @@ final class KeyboardShortcutTests: XCTestCase {
         XCTAssertNotNil(settings.reset(.resetInterfaceZoom))
     }
 
+    func testExistingOptionZOverrideSurvivesNewWordWrapCommand() throws {
+        let suite = "vsux.Shortcuts.\(UUID())"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let custom = KeyBinding("z", .option)
+        defaults.set(try JSONEncoder().encode(["quickOpen": custom]), forKey: "keyboardShortcuts")
+        let settings = ShortcutPreferences(defaults: defaults)
+        XCTAssertEqual(settings.binding(for: .quickOpen), custom)
+        XCTAssertTrue(settings.binding(for: .wordWrap).isDisabled)
+    }
+
     func testRemappingRoutesNewKeysToOwningWindowAndUpdatesMenus() async throws {
         _ = NSApplication.shared
         let shortcuts = ShortcutPreferences.shared
@@ -132,6 +143,22 @@ final class KeyboardShortcutTests: XCTestCase {
         try await Task.sleep(for: .milliseconds(100))
         let editor = try XCTUnwrap(find(CodeTextView.self, in: try XCTUnwrap(window.contentView)))
         window.makeFirstResponder(editor)
+        let doc = try XCTUnwrap(files.selectedDocument)
+        let scroll = try XCTUnwrap(editor.enclosingScrollView)
+        let wrapItem = try XCTUnwrap(NSApp.mainMenu?.items.compactMap(\.submenu).flatMap(\.items).first {
+            $0.identifier?.rawValue == AppCommand.wordWrap.rawValue
+        })
+        XCTAssertEqual(wrapItem.keyEquivalentModifierMask, .option)
+        XCTAssertFalse(scroll.hasHorizontalScroller)
+        press(window, key: "z", code: 6, flags: .option)
+        XCTAssertFalse(doc.wordWrap)
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertTrue(scroll.hasHorizontalScroller)
+        press(window, key: "z", code: 6, flags: .option)
+        XCTAssertTrue(doc.wordWrap)
+        try await Task.sleep(for: .milliseconds(100))
+        XCTAssertFalse(scroll.hasHorizontalScroller)
+        XCTAssertTrue(window.firstResponder === editor)
         var findOpens = 0
         let onFind = editor.onFind
         editor.onFind = { findOpens += 1 }
@@ -158,7 +185,6 @@ final class KeyboardShortcutTests: XCTestCase {
         XCTAssertTrue(window.performKeyEquivalent(with: event(window, key: "a", code: 0, flags: .command)))
         XCTAssertEqual(editor.selectedRange().length, 0, "Retired Command-A must not leak into NSTextView's default select-all")
         XCTAssertNil(shortcuts.set(KeyBinding("s", [.control, .shift]), for: .saveFile))
-        let doc = try XCTUnwrap(files.selectedDocument)
         files.update(doc, text: "after")
         // Test the editor's own key-equivalent path as well as window dispatch.
         XCTAssertFalse(editor.performKeyEquivalent(with: event(window, key: "s", code: 1, flags: .command)))

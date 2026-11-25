@@ -39,6 +39,7 @@ final class LocalFileDocument: ObservableObject, Identifiable {
     @Published var savedText: String
     @Published var isPreview: Bool { didSet { if isPreview != oldValue { onSessionChange?() } } }
     @Published var externalChange = false
+    @Published var wordWrap = true
     @Published var markdownPreview = false { didSet { if markdownPreview != oldValue { onSessionChange?() } } }
     @Published var markdownPreviewOnly = false { didSet { if markdownPreviewOnly != oldValue { onSessionChange?() } } }
     @Published var markdownSyncScroll = true

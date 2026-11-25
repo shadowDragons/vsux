@@ -2295,6 +2295,10 @@
     "zh": "查找当前文件…",
     "en": "Find in Current File…"
   },
+  "editor_word_wrap": {
+    "zh": "自动换行",
+    "en": "Word Wrap"
+  },
   "markdown_outline_hide": {
     "zh": "收起目录大纲",
     "en": "Hide Outline"
