@@ -56,3 +56,10 @@ Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspa
 - Sparkle 2.9.6 provides signed GitHub Release appcast/ZIP/delta updates, full-package fallback and user-confirmed installation. Automatic checking is opt-in. The first updater-enabled release is v1.1.0; v1.0.0 users install its DMG manually once.
 - The app remains Apple Silicon/macOS 14+, ad-hoc signed and not Apple-notarized. Existing screenshots retain their original capture dates and do not claim to show the new SSH feature.
 - Full suite: 225 Swift tests; 9 script tests include signed delta generation/application, tamper rejection and mismatched-key rejection. Live SSH success was reported in the owner's referenced chat; automated tests use disposable local fixtures.
+
+## v1.1.1 release, 2026-11-25
+
+- Switching projects displays the selected terminal immediately and restores the existing session when switching back.
+- The file tree supports Command-click and Shift-click selection and moving selected files and folders to the macOS Trash.
+- Only the active Settings tab scrolls. Restore Defaults and Done stay visible as the interface zoom changes.
+- The download links target the v1.1.1 Apple Silicon DMG. v1.1.0 users can use the built-in updater.
