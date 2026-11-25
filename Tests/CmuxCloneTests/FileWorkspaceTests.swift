@@ -112,4 +112,32 @@ final class FileWorkspaceTests: XCTestCase {
         try model.trash(renamedItem)
         XCTAssertFalse(FileManager.default.fileExists(atPath: renamed.path))
     }
+
+    func testBatchTrashChecksUnsavedFilesBeforeMovingAndHandlesNestedSelection() throws {
+        let root = try temporaryDirectory()
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = FileWorkspaceModel(rootURL: root)
+        let file = try model.create(name: "standalone.txt", directory: false)
+        let folder = try model.create(name: "folder", directory: true)
+        let nestedFile = try model.create(name: "nested.txt", directory: false, in: folder)
+        let document = try XCTUnwrap(model.selectedDocument)
+        let items = try [file, nestedFile, folder].map { url in
+            try XCTUnwrap(model.rows.first { $0.id == url.path }?.item)
+        }
+
+        model.update(document, text: "Unsaved changes")
+        XCTAssertThrowsError(try model.trash(items)) { error in
+            XCTAssertEqual(error as? LocalFileError, .unsaved)
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: file.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: nestedFile.path))
+        XCTAssertTrue(model.save(document))
+
+        try model.trash(items)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: file.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: folder.path))
+        XCTAssertTrue(model.rows.isEmpty)
+        XCTAssertTrue(model.documents.isEmpty)
+        XCTAssertTrue(model.selectedPaths.isEmpty)
+    }
 }

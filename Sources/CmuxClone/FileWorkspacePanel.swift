@@ -13,6 +13,9 @@ struct FileExplorerView: View {
     @State private var filterTask: Task<Void, Never>?
     var body: some View {
         let _ = languagePreferences.language
+        let rows = model.filter.isEmpty ? model.rows : []
+        let items = model.filter.isEmpty ? rows.map(\.item) : filteredFiles.map(filteredItem)
+        let selection = items.filter { model.selectedPaths.contains($0.id) }
         VStack(spacing: 0) {
             HStack(spacing: 2) {
                 Text(L("文件")).font(.system(size: 11, weight: .semibold)).foregroundStyle(.secondary)
@@ -25,6 +28,8 @@ struct FileExplorerView: View {
                     Toggle(L("显示隐藏文件"), isOn: $model.showHidden)
                     Button(L("折叠所有文件夹")) { model.collapseAll() }
                     Button(L("在 Finder 中显示工作区")) { NSWorkspace.shared.selectFile(nil, inFileViewerRootedAtPath: model.rootURL.path) }
+                    Divider()
+                    trashButton(selection).disabled(selection.isEmpty)
                 } label: { Image(systemName: "ellipsis").frame(width: 19) }.menuStyle(.borderlessButton).pointingHandCursor().fixedSize().help(L("文件操作"))
             }.padding(.leading, 12).padding(.trailing, 6).frame(height: 38)
             HStack(spacing: 5) {
@@ -49,12 +54,12 @@ struct FileExplorerView: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 0) {
                     if model.filter.isEmpty {
-                        ForEach(model.rows) { row in fileRow(row) }
-                        if model.rows.isEmpty {
+                        ForEach(rows) { row in fileRow(row, items: items, selection: selection) }
+                        if rows.isEmpty {
                             Text(L("此目录为空")).font(.system(size: 12)).foregroundStyle(.tertiary).padding(16)
                         }
                     } else {
-                        ForEach(filteredFiles) { result in filteredFileRow(result) }
+                        ForEach(filteredFiles) { result in filteredFileRow(result, items: items, selection: selection) }
                         if filteredFiles.isEmpty {
                             Text(indexingFiles ? L("正在读取文件…") : L("未找到文件"))
                                 .font(.system(size: 12)).foregroundStyle(.tertiary).padding(16)
@@ -69,11 +74,15 @@ struct FileExplorerView: View {
             FileErrorBanner(model: model)
         }.background(Color(nsColor: .controlBackgroundColor).opacity(0.5))
             .onAppear { model.refresh(); model.startWatching(); loadFileIndex() }
-            .onChange(of: model.filter) { _, _ in updateFilteredFiles() }
+            .onChange(of: model.filter) { _, _ in
+                filteredFiles = []
+                updateFilteredFiles()
+            }
             .onDisappear { model.stopWatching(); indexTask?.cancel(); filterTask?.cancel() }
     }
     private func loadFileIndex() {
         indexTask?.cancel()
+        filterTask?.cancel()
         indexingFiles = true
         let root = model.rootURL
         indexTask = Task {
@@ -98,23 +107,38 @@ struct FileExplorerView: View {
             filteredFiles = results
         }
     }
-    private func filteredFileRow(_ result: QuickOpenResult) -> some View {
-        HStack(spacing: 5) {
+    private func filteredItem(_ result: QuickOpenResult) -> FileTreeItem {
+        FileTreeItem(url: result.url, isDirectory: false, isSymbolicLink: false)
+    }
+    private func filteredFileRow(_ result: QuickOpenResult, items: [FileTreeItem], selection: [FileTreeItem]) -> some View {
+        let item = filteredItem(result)
+        return HStack(spacing: 5) {
             Image(systemName: fileIcon(result.url)).foregroundStyle(fileColor(result.url)).font(.system(size: 12)).frame(width: 14)
             Text(result.url.lastPathComponent).font(.system(size: 12)).lineLimit(1).truncationMode(.middle)
             Text((result.path as NSString).deletingLastPathComponent).font(.system(size: 10)).foregroundStyle(.tertiary).lineLimit(1).truncationMode(.middle)
             Spacer(minLength: 0)
         }.padding(.leading, 10).padding(.trailing, 10).frame(height: 25)
+            .background(model.selectedPaths.contains(item.id) ? Color.accentColor.opacity(0.13) : .clear)
             .contentShape(Rectangle()).pointingHandCursor().help(result.path)
-            .onTapGesture(count: 2) { openFilteredFile(result.url, preview: false) }
-            .onTapGesture { openFilteredFile(result.url, preview: true) }
-            .contextMenu { Button(L("打开并保留")) { openFilteredFile(result.url, preview: false) } }
+            .overlay { FileRowClick { event in
+                click(item, in: items, event: event) { openFilteredFile(result.url, preview: event.clickCount < 2) }
+            }.accessibilityHidden(true) }
+            .accessibilityAddTraits(model.selectedPaths.contains(item.id) ? .isSelected : [])
+            .accessibilityAction { openFilteredFile(result.url, preview: true) }
+            .contextMenu {
+                let targets = menuSelection(for: item, selection: selection)
+                if targets.count == 1 {
+                    Button(L("打开并保留")) { openFilteredFile(result.url, preview: false) }
+                    Divider()
+                }
+                trashButton(targets)
+            }
     }
     private func openFilteredFile(_ url: URL, preview: Bool) {
         model.open(url, preview: preview)
         if model.selectedDocument?.url == url { onOpen() }
     }
-    private func fileRow(_ row: FileTreeRow) -> some View {
+    private func fileRow(_ row: FileTreeRow, items: [FileTreeItem], selection: [FileTreeItem]) -> some View {
         let item = row.item
         return HStack(spacing: 5) {
             if item.isDirectory {
@@ -125,30 +149,52 @@ struct FileExplorerView: View {
             Text(item.name).font(.system(size: 12)).lineLimit(1).truncationMode(.middle)
             Spacer(minLength: 0)
         }.padding(.leading, CGFloat(10 + row.depth * 14)).padding(.trailing, 10).frame(height: 25)
-            .background(model.selectedPath == item.id ? Color.accentColor.opacity(0.13) : .clear)
+            .background(model.selectedPaths.contains(item.id) ? Color.accentColor.opacity(0.13) : .clear)
             .contentShape(Rectangle()).pointingHandCursor().help(item.url.path)
-            .onTapGesture(count: 2) { activate(item, preview: false) }
-            .onTapGesture { activate(item, preview: true) }
+            .overlay { FileRowClick { event in
+                click(item, in: items, event: event) { activate(item, preview: event.clickCount < 2) }
+            }.accessibilityHidden(true) }
             .accessibilityElement(children: .combine).accessibilityLabel(item.name + (item.isDirectory ? L("，文件夹") : L("，文件")))
+            .accessibilityAddTraits(model.selectedPaths.contains(item.id) ? .isSelected : [])
+            .accessibilityAction { activate(item, preview: true) }
             .contextMenu {
-                if item.isDirectory && !item.isSymbolicLink {
-                    Button(L("新建文件…")) { create(directory: false, parent: item.url) }
-                    Button(L("新建文件夹…")) { create(directory: true, parent: item.url) }
+                let targets = menuSelection(for: item, selection: selection)
+                if targets.count == 1 {
+                    if item.isDirectory && !item.isSymbolicLink {
+                        Button(L("新建文件…")) { create(directory: false, parent: item.url) }
+                        Button(L("新建文件夹…")) { create(directory: true, parent: item.url) }
+                        Divider()
+                    } else if !item.isSymbolicLink {
+                        Button(L("打开并保留")) { model.open(item.url, preview: false); onOpen() }
+                    }
+                    Button(L("重命名…")) { rename(item) }
+                    Button(L("在 Finder 中显示")) { NSWorkspace.shared.activateFileViewerSelecting([item.url]) }
+                    Button(L("复制路径")) { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(item.url.path, forType: .string) }
                     Divider()
-                } else if !item.isSymbolicLink {
-                    Button(L("打开并保留")) { model.open(item.url, preview: false); onOpen() }
                 }
-                Button(L("重命名…")) { rename(item) }
-                Button(L("在 Finder 中显示")) { NSWorkspace.shared.activateFileViewerSelecting([item.url]) }
-                Button(L("复制路径")) { NSPasteboard.general.clearContents(); NSPasteboard.general.setString(item.url.path, forType: .string) }
-                Divider()
-                Button(L("移到废纸篓…"), role: .destructive) { trash(item) }
+                trashButton(targets)
             }
     }
+    private func click(_ item: FileTreeItem, in items: [FileTreeItem], event: NSEvent, activate: () -> Void) {
+        let modifiers = event.modifierFlags
+        guard event.clickCount == 1 || modifiers.intersection([.command, .shift]).isEmpty else { return }
+        if modifiers.contains(.shift) {
+            model.selectPath(item.id, extending: true, toggling: modifiers.contains(.command), visiblePaths: items.map(\.id))
+        } else if modifiers.contains(.command) {
+            model.selectPath(item.id, toggling: true)
+        } else {
+            activate()
+        }
+    }
+    private func menuSelection(for item: FileTreeItem, selection: [FileTreeItem]) -> [FileTreeItem] {
+        model.selectedPaths.contains(item.id) ? selection : [item]
+    }
     private func activate(_ item: FileTreeItem, preview: Bool) {
-        model.selectedPath = item.id
+        model.selectPath(item.id)
         if item.isSymbolicLink { model.error = LocalFileError.symbolicLink.localizedDescription; return }
-        if item.isDirectory { model.toggle(item) } else { model.open(item.url, preview: preview); if model.selectedDocument != nil { onOpen() } }
+        if item.isDirectory {
+            if preview { model.toggle(item) }
+        } else { model.open(item.url, preview: preview); if model.selectedDocument != nil { onOpen() } }
     }
     private func create(directory: Bool, parent: URL? = nil) {
         var target = parent
@@ -163,9 +209,19 @@ struct FileExplorerView: View {
         guard let name = askText(title: L("重命名"), value: item.name) else { return }
         do { try model.rename(item, to: name) } catch { model.error = error.localizedDescription }
     }
-    private func trash(_ item: FileTreeItem) {
-        guard confirm(title: L("将“\(item.name)”移到废纸篓？"), detail: item.isDirectory ? L("文件夹及其内容将移到 macOS 废纸篓。") : L("可在 macOS 废纸篓中恢复此文件。"), action: L("移到废纸篓")) else { return }
-        do { try model.trash(item) } catch { model.error = error.localizedDescription }
+    private func trashButton(_ items: [FileTreeItem]) -> some View {
+        Button(L("移到废纸篓…"), role: .destructive) { trash(items) }
+    }
+    private func trash(_ items: [FileTreeItem]) {
+        guard let first = items.first else { return }
+        let title = items.count == 1 ? L("将“\(first.name)”移到废纸篓？") : L("将所选的 \(items.count) 项移到废纸篓？")
+        let detail = items.count == 1
+            ? (first.isDirectory ? L("文件夹及其内容将移到 macOS 废纸篓。") : L("可在 macOS 废纸篓中恢复此文件。"))
+            : L("所选文件和文件夹可在 macOS 废纸篓中恢复。")
+        guard confirm(title: title, detail: detail, action: L("移到废纸篓")) else { return }
+        do { try model.trash(items) } catch { model.error = error.localizedDescription }
+        filteredFiles.removeAll { !model.fileManager.fileExists(atPath: $0.url.path) }
+        loadFileIndex()
     }
     private func fileIcon(_ url: URL) -> String {
         switch CodeLanguage.forFile(url) {
@@ -183,6 +239,29 @@ struct FileExplorerView: View {
         case .python: return .yellow
         case .shell: return .green
         default: return .secondary
+        }
+    }
+}
+
+private struct FileRowClick: NSViewRepresentable {
+    let action: (NSEvent) -> Void
+
+    func makeNSView(context: Context) -> ClickView { ClickView() }
+    func updateNSView(_ view: ClickView, context: Context) { view.action = action }
+
+    final class ClickView: NSView {
+        var action: ((NSEvent) -> Void)?
+
+        override func hitTest(_ point: NSPoint) -> NSView? {
+            // Leave other mouse events to SwiftUI, including the context menu.
+            guard NSApp.currentEvent?.type == .leftMouseDown,
+                  NSApp.currentEvent?.modifierFlags.contains(.control) != true else { return nil }
+            return super.hitTest(point)
+        }
+        override func acceptsFirstMouse(for event: NSEvent?) -> Bool { true }
+        override func mouseDown(with event: NSEvent) {}
+        override func mouseUp(with event: NSEvent) {
+            if bounds.contains(convert(event.locationInWindow, from: nil)) { action?(event) }
         }
     }
 }

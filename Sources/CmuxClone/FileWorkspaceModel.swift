@@ -67,16 +67,20 @@ final class FileWorkspaceModel: ObservableObject {
     let rootURL: URL
     @Published var children: [String: [FileTreeItem]] = [:]
     @Published var expandedPaths: Set<String> = []
-    @Published var selectedPath: String?
+    @Published private(set) var selectedPaths: Set<String> = []
+    private var selectionAnchor: String?
+    var selectedPath: String? { selectionAnchor.flatMap { selectedPaths.contains($0) ? $0 : nil } }
     @Published var documents: [LocalFileDocument] = [] { didSet { onSessionChange?() } }
     @Published var selectedDocumentID: UUID? {
         didSet {
-            selectedPath = selectedDocument?.url.path
+            selectPath(selectedDocument?.url.path)
             if selectedDocumentID != oldValue { onSessionChange?() }
         }
     }
     @Published var showHidden = true { didSet { refresh() } }
-    @Published var filter = ""
+    @Published var filter = "" {
+        didSet { if filter != oldValue { selectPath(nil) } }
+    }
     @Published var error: String?
     private var documentObservers: [UUID: AnyCancellable] = [:]
     private var refreshTimer: Timer?
@@ -112,6 +116,21 @@ final class FileWorkspaceModel: ObservableObject {
         }
     }
     func stopWatching() { refreshTimer?.invalidate(); refreshTimer = nil }
+    func selectPath(_ path: String?, extending: Bool = false, toggling: Bool = false, visiblePaths: [String] = []) {
+        guard let path else { selectionAnchor = nil; selectedPaths = []; return }
+        if extending, let selectionAnchor, let start = visiblePaths.firstIndex(of: selectionAnchor),
+           let end = visiblePaths.firstIndex(of: path) {
+            let range = visiblePaths[min(start, end)...max(start, end)]
+            selectedPaths = toggling ? selectedPaths.union(range) : Set(range)
+            return
+        }
+        selectionAnchor = path
+        if toggling && !extending {
+            if selectedPaths.remove(path) == nil { selectedPaths.insert(path) }
+        } else {
+            selectedPaths = [path]
+        }
+    }
     func toggle(_ item: FileTreeItem) {
         guard item.isDirectory, !item.isSymbolicLink else { return }
         if expandedPaths.remove(item.id) == nil { expandedPaths.insert(item.id); loadChildren(item.url) }
@@ -139,7 +158,7 @@ final class FileWorkspaceModel: ObservableObject {
             let url = try checked(url)
             if let current = documents.first(where: { $0.url == url }) {
                 if !preview { current.isPreview = false }
-                selectedDocumentID = current.id; selectedPath = url.path; return
+                selectedDocumentID = current.id; return
             }
             let values = try url.resourceValues(forKeys: [.fileSizeKey, .isSymbolicLinkKey])
             guard values.isSymbolicLink != true else { throw LocalFileError.symbolicLink }
@@ -151,7 +170,7 @@ final class FileWorkspaceModel: ObservableObject {
             if let previous = documents.first(where: { $0.isPreview && !$0.isDirty }) {
                 documentObservers[previous.id] = nil; documents.removeAll { $0.id == previous.id }
             }
-            documents.append(document); selectedDocumentID = document.id; selectedPath = url.path
+            documents.append(document); selectedDocumentID = document.id
             documentObservers[document.id] = document.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }
         } catch { self.error = L("打开失败：\(error.localizedDescription)") }
     }
@@ -227,13 +246,49 @@ final class FileWorkspaceModel: ObservableObject {
         refresh()
     }
     func trash(_ item: FileTreeItem) throws {
-        let url = try checked(item.url, permitSymlink: true)
-        let affected = documents.filter { $0.url.path == url.path || $0.url.path.hasPrefix(url.path + "/") }
-        guard !affected.contains(where: \.isDirty) else { throw LocalFileError.unsaved }
-        try fileManager.trashItem(at: url, resultingItemURL: nil)
-        for document in affected { _ = close(document) }
-        expandedPaths = Set(expandedPaths.filter { $0 != url.path && !$0.hasPrefix(url.path + "/") })
-        refresh()
+        try trash([item])
+    }
+    func trash(_ items: [FileTreeItem]) throws {
+        let urls = try items.map { item in
+            let url = try checked(item.url, permitSymlink: true)
+            guard url.path != rootURL.path else { throw LocalFileError.outsideRoot }
+            // Allow trashing a symlink itself. Its parent must still be inside the workspace.
+            _ = try checked(url.deletingLastPathComponent())
+            return url
+        }
+        let paths = Set(urls.map(\.path))
+        var seen: Set<String> = []
+        let targets = urls.filter { url in
+            guard seen.insert(url.path).inserted else { return false }
+            var parent = url.deletingLastPathComponent()
+            while parent.path != rootURL.path {
+                if paths.contains(parent.path) { return false }
+                parent.deleteLastPathComponent()
+            }
+            return true
+        }
+        let operations = try targets.map { url in
+            _ = try fileManager.attributesOfItem(atPath: url.path)
+            let affected = documents.filter { isAtOrBelow($0.url.path, url.path) }
+            guard !affected.contains(where: \.isDirty) else { throw LocalFileError.unsaved }
+            return (url, affected)
+        }
+
+        // If one move fails, refresh the tree for any moves that already succeeded.
+        defer { refresh() }
+        for (url, affected) in operations {
+            try fileManager.trashItem(at: url, resultingItemURL: nil)
+            let remainingSelection = selectedPaths.filter { !isAtOrBelow($0, url.path) }
+            let remainingAnchor = selectionAnchor.flatMap { isAtOrBelow($0, url.path) ? nil : $0 }
+            for document in affected { _ = close(document) }
+            selectionAnchor = remainingAnchor
+            selectedPaths = remainingSelection
+            expandedPaths = expandedPaths.filter { !isAtOrBelow($0, url.path) }
+            children = children.filter { !isAtOrBelow($0.key, url.path) }
+        }
+    }
+    private func isAtOrBelow(_ path: String, _ directory: String) -> Bool {
+        path == directory || path.hasPrefix(directory + "/")
     }
     func relativePath(_ url: URL) -> String {
         let path = url.path

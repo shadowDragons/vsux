@@ -432,8 +432,26 @@ struct SettingsView: View {
         _selectedTab = State(initialValue: initialTab)
     }
     var body: some View {
+        let zoom = preferences.zoomFactor
+        let screen = NSApp.keyWindow?.screen?.visibleFrame.size ?? NSScreen.main?.visibleFrame.size ?? CGSize(width: 1280, height: 900)
+        let width = min(610 * zoom, screen.width - 80)
+        let height = min(700 * zoom, screen.height - 100)
+        GeometryReader { geometry in
+            let size = geometry.size
+            // Keep room for labels and controls at high zoom on smaller displays.
+            let scale = min(zoom, size.width / 500, size.height / 360)
+            if scale > 0 {
+                settingsContent
+                    .frame(width: size.width / scale, height: size.height / scale)
+                    .scaleEffect(scale, anchor: .topLeading)
+            }
+        }
+        .frame(width: width, height: height)
+    }
+
+    private var settingsContent: some View {
         let _ = languagePreferences.language
-        VStack(alignment: .leading, spacing: 18) {
+        return VStack(alignment: .leading, spacing: 18) {
             Text(L("设置")).font(.system(size: 18, weight: .semibold))
             TabView(selection: $selectedTab) {
                 Form {
@@ -476,7 +494,6 @@ struct SettingsView: View {
                 ShortcutSettingsView(shortcuts: shortcuts).tabItem { Text(L("快捷键")) }.tag(1)
             }
             HStack { Button(L("恢复默认")) { if selectedTab == 1 { shortcuts.resetAll() } else { preferences.terminal = TerminalSettings(); preferences.appearance = .system; preferences.setInterfaceZoomLevel(0) } }.pointingHandCursor(); Spacer(); Button(L("完成")) { dismiss() }.pointingHandCursor().keyboardShortcut(.defaultAction) }
-        }.padding(24).frame(width: 610, height: 700)
-            .modifier(ZoomedSheetContent(preferences: preferences))
+        }.padding(24)
     }
 }

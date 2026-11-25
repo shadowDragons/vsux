@@ -111,6 +111,14 @@
     "zh": "将“{0}”移到废纸篓？",
     "en": "Move “{0}” to the Trash?"
   },
+  "move_selected_items_to_the_trash": {
+    "zh": "将所选的 {0} 项移到废纸篓？",
+    "en": "Move the {0} selected items to the Trash?"
+  },
+  "restore_selected_items_from_trash": {
+    "zh": "所选文件和文件夹可在 macOS 废纸篓中恢复。",
+    "en": "You can restore the selected files and folders from the macOS Trash."
+  },
   "the_folder_and_its_contents_will_be_moved": {
     "zh": "文件夹及其内容将移到 macOS 废纸篓。",
     "en": "The folder and its contents will be moved to the macOS Trash."

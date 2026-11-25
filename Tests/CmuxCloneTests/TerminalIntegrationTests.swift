@@ -4,6 +4,35 @@ import CGhostty
 @testable import CmuxClone
 
 final class TerminalIntegrationTests: XCTestCase {
+    @MainActor func testSwitchingWorkspacesShowsTheSelectedTerminalWithoutChangingModes() throws {
+        _ = NSApplication.shared
+        let first = Workspace(name: "First", directory: NSTemporaryDirectory())
+        let second = Workspace(name: "Second", directory: "/tmp")
+        let model = WindowModel(workspaces: [first, second], shellCommand: "/bin/zsh -f")
+        let controller = TerminalWindowController(model: model)
+        let window = try XCTUnwrap(controller.window)
+        window.makeKeyAndOrderFront(nil)
+        defer { model.disposeAll(); window.orderOut(nil) }
+
+        func isVisible(_ terminal: GhosttyTerminalView?) -> Bool {
+            guard let terminal else { return false }
+            return terminal.window === window && !terminal.isHiddenOrHasHiddenAncestor
+                && !terminal.visibleRect.isEmpty && terminal.surface != nil && terminal.layer?.contents != nil
+        }
+
+        XCTAssertTrue(pump { isVisible(model.focusedTerminal) }, "The initial terminal should render")
+        let originalTerminal = try XCTUnwrap(model.focusedTerminal)
+        let originalSurface = try XCTUnwrap(originalTerminal.surface)
+        model.selectWorkspace(second.id)
+        XCTAssertTrue(pump { isVisible(model.focusedTerminal) }, "The new workspace terminal should render")
+        XCTAssertFalse(model.focusedTerminal === originalTerminal)
+        model.selectWorkspace(first.id)
+        XCTAssertTrue(pump { isVisible(model.focusedTerminal) }, "The previous workspace terminal should render again")
+        XCTAssertTrue(model.focusedTerminal === originalTerminal)
+        XCTAssertEqual(model.focusedTerminal?.surface, originalSurface)
+        XCTAssertEqual(model.tools.content, .terminal)
+    }
+
     @MainActor func testCommandInsertionSwitchesFromEditorAndDiffAndWaitsForEnter() throws {
         _ = NSApplication.shared
         let root = FileManager.default.temporaryDirectory.appendingPathComponent("vsux-command-" + UUID().uuidString)

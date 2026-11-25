@@ -18,6 +18,35 @@ private struct ServiceLogSheetFixture: View {
 
 @MainActor
 final class WorkbenchZoomTests: XCTestCase {
+    func testSettingsTabsOnlyScrollVerticallyInsideTheTabAtAnyZoom() async throws {
+        _ = NSApplication.shared
+        let preferences = Preferences.shared
+        let original = preferences.interfaceZoomLevel
+        defer { preferences.setInterfaceZoomLevel(original) }
+
+        func scrollViews(in view: NSView) -> [NSScrollView] {
+            (view as? NSScrollView).map { [$0] + view.subviews.flatMap(scrollViews) } ?? view.subviews.flatMap(scrollViews)
+        }
+
+        for tab in [0, 1] {
+            preferences.setInterfaceZoomLevel(0)
+            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 610, height: 700),
+                                  styleMask: [.titled], backing: .buffered, defer: false)
+            let content = NSHostingView(rootView: SettingsView(preferences: preferences, initialTab: tab))
+            window.contentView = content
+            window.makeKeyAndOrderFront(nil)
+            defer { window.orderOut(nil) }
+
+            for level in [-1, 0, 8] {
+                preferences.setInterfaceZoomLevel(level)
+                try await settle()
+                let scrollViews = scrollViews(in: content)
+                XCTAssertEqual(scrollViews.filter(\.hasVerticalScroller).count, 1, "Tab \(tab), zoom \(level)")
+                XCTAssertFalse(scrollViews.contains(where: \.hasHorizontalScroller), "Tab \(tab), zoom \(level)")
+            }
+        }
+    }
+
     func testServiceLogSheetKeepsRightEdgeAndFooterVisibleAfterZoom() async throws {
         _ = NSApplication.shared
         let preferences = Preferences.shared

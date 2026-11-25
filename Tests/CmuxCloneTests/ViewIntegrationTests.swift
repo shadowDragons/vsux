@@ -195,6 +195,61 @@ final class ViewIntegrationTests: XCTestCase {
         }
     }
 
+    @MainActor func testFileTreeModifierClicksSelectWithoutOpeningFiles() throws {
+        _ = NSApplication.shared
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let files = ["a.txt", "b.txt", "c.txt"].map { root.appendingPathComponent($0) }
+        for file in files { try Data().write(to: file) }
+        let model = FileWorkspaceModel(rootURL: root)
+        let host = NSHostingView(rootView: FileExplorerView(model: model))
+        let window = PointerCursorWindow(contentRect: NSRect(x: 0, y: 0, width: 360, height: 400),
+                                        styleMask: [.titled], backing: .buffered, defer: false)
+        window.contentView = host; window.makeKeyAndOrderFront(nil)
+        defer { window.orderOut(nil) }
+        settle(); host.layoutSubtreeIfNeeded()
+
+        func rowPoints(_ view: NSView) -> [NSPoint] {
+            if view is PointerCursorView, abs(view.bounds.height - 25) < 0.1 {
+                return [view.convert(NSPoint(x: view.bounds.midX, y: view.bounds.midY), to: nil)]
+            }
+            return view.subviews.flatMap(rowPoints)
+        }
+        let points = rowPoints(host).sorted { $0.y > $1.y }
+        XCTAssertEqual(points.count, files.count)
+        guard points.count == files.count else { return }
+
+        try clickFileRow(points[0], in: window, modifiers: .command)
+        XCTAssertEqual(model.selectedPaths, [files[0].path])
+        try clickFileRow(points[2], in: window, modifiers: .shift)
+        XCTAssertEqual(model.selectedPaths, Set(files.map(\.path)))
+        try clickFileRow(points[1], in: window, modifiers: .command)
+        XCTAssertEqual(model.selectedPaths, [files[0].path, files[2].path])
+        XCTAssertTrue(model.documents.isEmpty)
+
+        try clickFileRow(points[1], in: window)
+        XCTAssertEqual(model.selectedPaths, [files[1].path])
+        XCTAssertEqual(model.selectedDocument?.url.path, files[1].path)
+        XCTAssertTrue(model.selectedDocument?.isPreview == true)
+
+        try clickFileRow(points[1], in: window, count: 2)
+        XCTAssertTrue(model.selectedDocument?.isPreview == false)
+    }
+
+    @MainActor private func clickFileRow(_ point: NSPoint, in window: NSWindow, modifiers: NSEvent.ModifierFlags = [], count: Int = 1) throws {
+        let timestamp = ProcessInfo.processInfo.systemUptime
+        for (type, delay) in [(NSEvent.EventType.leftMouseDown, 0.0), (.leftMouseUp, 0.01)] {
+            let event = try XCTUnwrap(NSEvent.mouseEvent(with: type, location: point, modifierFlags: modifiers, timestamp: timestamp + delay,
+                windowNumber: window.windowNumber, context: nil, eventNumber: 1, clickCount: count, pressure: 1))
+            // The application records the current event as it reads its queue.
+            NSApp.postEvent(event, atStart: true)
+            let queued = try XCTUnwrap(NSApp.nextEvent(matching: [.leftMouseDown, .leftMouseUp], until: Date(), inMode: .default, dequeue: true))
+            window.sendEvent(queued)
+        }
+        RunLoop.current.run(until: Date().addingTimeInterval(0.05))
+    }
+
     @MainActor private func click(_ point: NSPoint, in window: NSWindow) throws {
         let timestamp = ProcessInfo.processInfo.systemUptime
         for (type, delay) in [(NSEvent.EventType.leftMouseDown, 0.0), (.leftMouseUp, 0.01)] {

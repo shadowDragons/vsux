@@ -132,6 +132,7 @@ struct RootView: View {
                                     } else {
                                         FileExplorerView(model: tools.files(workspace), onOpen: { tools.content = .editor },
                                             onSearch: { tools.showFileSearch = true })
+                                            .id(workspace.id)
                                     }
                                 case .git:
                                     SourceControlPanel(model: tools.git(workspace), openFile: { url in
@@ -145,7 +146,8 @@ struct RootView: View {
                     Group {
                         if let workspace = model.workspace {
                             switch tools.content {
-                            case .terminal: TerminalArea(model: model).id(workspace.id)
+                            // Keep the terminal area mounted while switching its workspace and SSH runtime.
+                            case .terminal: TerminalArea(model: model)
                             case .editor: FileEditorArea(model: tools.files(workspace))
                             case .diff: LocalDiffArea(model: tools.git(workspace), showTerminal: { tools.content = .terminal; model.focusTerminal() })
                             }
