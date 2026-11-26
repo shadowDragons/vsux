@@ -82,6 +82,7 @@ final class PointerCursorView: NSView {
 final class PointerCursorWindow: NSWindow {
     private var pointerLocation: NSPoint?
     private var appliedCursor: NSCursor?
+    private weak var draggedDivider: WorkbenchDividerView?
     var onShortcut: ((AppCommand) -> Bool)?
 
     private func handleShortcut(_ event: NSEvent) -> Bool {
@@ -110,6 +111,25 @@ final class PointerCursorWindow: NSWindow {
     override func sendEvent(_ event: NSEvent) {
         if handleShortcut(event) { return }
         switch event.type {
+        case .leftMouseDown:
+            if let contentView {
+                let location = contentView.superview?.convert(event.locationInWindow, from: nil) ?? event.locationInWindow
+                if let divider = contentView.hitTest(location) as? WorkbenchDividerView {
+                    // Keep sending drag events to the view that received mouse-down,
+                    // even when the divider moves or the pointer crosses another pane.
+                    draggedDivider = divider
+                    divider.mouseDown(with: event)
+                    return
+                }
+            }
+            super.sendEvent(event)
+        case .leftMouseDragged where draggedDivider?.window === self:
+            draggedDivider?.mouseDragged(with: event)
+        case .leftMouseUp where draggedDivider?.window === self:
+            draggedDivider?.mouseUp(with: event)
+            draggedDivider = nil
+            pointerLocation = event.locationInWindow
+            updatePointerCursor()
         case .mouseMoved, .cursorUpdate, .mouseEntered, .mouseExited,
              .leftMouseUp, .rightMouseUp, .otherMouseUp:
             pointerLocation = event.locationInWindow

@@ -115,8 +115,12 @@ struct RootView: View {
                 let searchingFiles = tools.sidebar == .files && tools.showFileSearch
                 let wideSidebar = tools.sidebar == .git || searchingFiles
                 let sidebarMinimum = wideSidebar ? 280.0 : (tools.sidebar == .files ? 220.0 : 150.0)
-                let sidebarMaximum = max(sidebarMinimum, min(wideSidebar ? 620.0 : 300.0, geometry.size.width - (model.showCommands ? commandsWidth : 0) - 370))
-                let displayedSidebarWidth = min(sidebarMaximum, max(sidebarMinimum, searchingFiles ? searchSidebarWidth : (tools.sidebar == .git ? gitSidebarWidth : sidebarWidth)))
+                let sidebar = searchingFiles ? $searchSidebarWidth : (tools.sidebar == .git ? $gitSidebarWidth : $sidebarWidth)
+                let showsCommands = model.showCommands && model.workspace != nil
+                let panels = WorkbenchPanels(width: geometry.size.width,
+                    left: model.showSidebar ? sidebar.wrappedValue : nil, leftMinimum: sidebarMinimum,
+                    right: showsCommands ? commandsWidth : nil)
+                let zoom = preferences.zoomFactor
                 HStack(spacing: 0) {
                     if model.showSidebar {
                         VStack(spacing: 0) {
@@ -140,8 +144,8 @@ struct RootView: View {
                                     }, showDiff: { tools.content = .diff })
                                 }
                             }
-                        }.frame(width: displayedSidebarWidth)
-                        PanelDivider(width: searchingFiles ? $searchSidebarWidth : (tools.sidebar == .git ? $gitSidebarWidth : $sidebarWidth), maximum: sidebarMaximum, minimum: sidebarMinimum, direction: 1)
+                        }.frame(width: panels.left).clipped()
+                        panelDivider(.left, panels: panels, sidebar: sidebar, zoom: zoom)
                     }
                     Group {
                         if let workspace = model.workspace {
@@ -152,19 +156,12 @@ struct RootView: View {
                             case .diff: LocalDiffArea(model: tools.git(workspace), showTerminal: { tools.content = .terminal; model.focusTerminal() })
                             }
                         }
-                    }.frame(minWidth: 320, maxWidth: .infinity, maxHeight: .infinity).layoutPriority(1)
-                    if model.showCommands, let workspace = model.workspace {
-                        let maximum = max(240, min(900, geometry.size.width - (model.showSidebar ? displayedSidebarWidth : 0) - 370))
-                        PanelDivider(width: $commandsWidth, maximum: maximum, minimum: 240, direction: -1)
+                    }.frame(width: panels.center).frame(maxHeight: .infinity).clipped()
+                    if showsCommands, let workspace = model.workspace {
+                        panelDivider(.right, panels: panels, sidebar: sidebar, zoom: zoom)
                         CommandSidebar(model: model, library: library, workspace: workspace)
-                            .id(workspace.id).frame(width: min(commandsWidth, maximum))
+                            .id(workspace.id).frame(width: panels.right).clipped()
                     }
-                }
-                .onChange(of: geometry.size.width) { _, width in
-                    commandsWidth = min(commandsWidth, max(240, width - displayedSidebarWidth - 370))
-                    sidebarWidth = min(sidebarWidth, max(150, width - commandsWidth - 370))
-                    gitSidebarWidth = min(gitSidebarWidth, max(280, width - commandsWidth - 370))
-                    searchSidebarWidth = min(searchSidebarWidth, max(280, width - commandsWidth - 370))
                 }
             }
             .overlay(alignment: .bottomTrailing) {
@@ -194,6 +191,18 @@ struct RootView: View {
         .alert(L("操作未完成"), isPresented: Binding(get: { model.error != nil || library.error != nil }, set: { if !$0 { model.error = nil; library.error = nil } })) {
             Button(L("好")) { model.error = nil; library.error = nil }
         } message: { Text(model.error ?? library.error ?? "") }
+    }
+
+    private func panelDivider(_ side: WorkbenchPanels.Side, panels: WorkbenchPanels, sidebar: Binding<Double>, zoom: CGFloat) -> some View {
+        WorkbenchDivider {
+            // Use the displayed sizes and scale at mouse-down throughout the drag.
+            { distance in
+                let resized = panels.resized(side, by: distance / zoom)
+                if panels.showsLeft { sidebar.wrappedValue = resized.left }
+                if panels.showsRight { commandsWidth = resized.right }
+            }
+        }
+        .frame(width: panels.dividerWidth)
     }
 
     private func showNotificationOutput(_ notice: GitNotice) {
@@ -415,24 +424,6 @@ func loadDrop(_ providers: [NSItemProvider], prefix: String, action: @escaping (
         DispatchQueue.main.async { action(id) }
     }
     return true
-}
-
-private struct PanelDivider: View {
-    @ObservedObject private var languagePreferences = LanguagePreferences.shared
-    @Binding var width: Double
-    let maximum: Double
-    let minimum: Double
-    let direction: Double
-    @State private var initial: Double?
-    var body: some View {
-        let _ = languagePreferences.language
-        Rectangle().fill(Color(nsColor: .separatorColor).opacity(0.5)).frame(width: 1).frame(width: 5).contentShape(Rectangle())
-            .onHover { inside in if inside { NSCursor.resizeLeftRight.push() } else { NSCursor.pop() } }
-            .gesture(DragGesture(minimumDistance: 0).onChanged { value in
-                if initial == nil { initial = width }
-                width = max(minimum, min(maximum, (initial ?? width) + direction * value.translation.width))
-            }.onEnded { _ in initial = nil })
-    }
 }
 
 struct PaneTabBar: View {
