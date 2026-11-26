@@ -26,7 +26,7 @@ The page and article follow the approved product ad: a complete editor is useful
 
 Native screenshots (`workspace-{zh,en}.webp`, `editor-{zh,en}.webp`, `markdown-{zh,en}.webp`, `git-{zh,en}.webp`) are actual app captures with fictional Orbit Studio fixtures. The native sidebar image is only cropped, with no UI alteration. `scripts/make-demo-app.py` builds the isolated screenshot fixture; it does not load personal sessions or modify native product sources. The logo comes from the app's resources. These eight images were recaptured from source commit `9b74832` on November 12, 2026. The title bar with the system capture badge is cropped; the remaining UI is unaltered. The service/command crop uses `[2062, 238, 470, 764]` with symmetric horizontal insets.
 
-Downloads target the `v1.1.3` Apple Silicon DMG. The bilingual landing page and article describe project SSH management, main-area sessions, Keychain password storage, and signed in-app updates. The source-build links target the appropriate language README.
+Download buttons open the latest GitHub Release, where visitors can select the Apple Silicon DMG. The bilingual landing page and article describe project SSH management, main-area sessions, Keychain password storage, and signed in-app updates. The source-build links target the appropriate language README.
 
 ## Motion and verification
 
@@ -43,7 +43,7 @@ Local verification outputs are ignored under `design/screenshots/`.
 
 ## Open-source launch
 
-The repository is public at `https://github.com/shadowDragons/vsux`. The article includes the launch invitation: MIT/open source, Stars, AI-assisted source customization, macOS 14+ on Apple Silicon, and Issues feedback. `github-public.jpg` is an actual signed-out public-repository capture from November 12, 2026; provenance records its crop. The original v0.1.2 DMG was published as an Apple Silicon prerelease; the current download targets stable v1.1.3. The app remains ad-hoc signed and not notarized.
+The repository is public at `https://github.com/shadowDragons/vsux`. The article includes the launch invitation: MIT/open source, Stars, AI-assisted source customization, macOS 14+ on Apple Silicon, and Issues feedback. `github-public.jpg` is an actual signed-out public-repository capture from November 12, 2026; provenance records its crop. The original v0.1.2 DMG was published as an Apple Silicon prerelease. The app remains ad-hoc signed and not notarized.
 
 The release section was checked in both languages at 390 and 1440 px, including the GitHub image dialog and exact repository/Issues links. No runtime errors, failed images or horizontal overflow were found.
 

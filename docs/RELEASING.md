@@ -83,7 +83,7 @@ and npm audit.
    run the workflow manually against an existing `vX.Y.Z` tag.
 4. Review the draft, download its assets, verify checksums, and test installation
    on a separate machine, including the oldest supported macOS version.
-5. Publish the draft when ready. Update the website download URL and version in
+5. Publish the draft when ready. Update the version displayed on the website in
    `web/src/content.js` and `web/design/product-facts.md` when cutting the next release.
 
 The workflow intentionally fails if a release already exists; it does not
@@ -91,8 +91,8 @@ overwrite an existing release's assets. Review/delete the draft manually before
 rerunning the same tag. Ad-hoc signing and the absence of Apple notarization
 must be clearly disclosed.
 
-The website points directly to the published DMG, with source build instructions
-kept as a secondary option.
+The website download buttons open the latest GitHub Release. Visitors can choose
+the DMG and checksum from its assets or follow the source build instructions.
 
 ## In-app updates and delta releases
 

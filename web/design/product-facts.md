@@ -72,4 +72,4 @@ Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspa
 ## v1.1.3 release, 2026-11-26
 
 - macOS can pass project folders to vsux. Opening a directory creates or selects its workspace. The app can receive the directory during startup or while it is running. Verified against the packaged app built from `4123831`.
-- The landing page shows v1.1.3 and links to its Apple Silicon DMG. The Chinese and English workspace descriptions cover opening folders from other apps.
+- The landing page shows v1.1.3. Its download buttons open the latest GitHub Release, where visitors can download the Apple Silicon DMG. The Chinese and English workspace descriptions cover opening folders from other apps.

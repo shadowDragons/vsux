@@ -1,6 +1,6 @@
 export const repository = 'https://github.com/shadowDragons/vsux';
 export const releaseVersion = '1.1.3';
-export const dmgRelease = `${repository}/releases/download/v${releaseVersion}/vsux-${releaseVersion}-macos-arm64.dmg`;
+export const latestRelease = `${repository}/releases/latest`;
 
 export const copy = {
   zh: {
@@ -8,7 +8,7 @@ export const copy = {
     eyebrow: '原生 macOS 轻量编辑器 · 为多项目并行而做',
     title: ['AI 同时推进几个项目，', '工作环境也该轻一点。'],
     description: '一个窗口，管理多个项目。\n围绕终端，把文件、Git、命令和后台服务放在手边。',
-    primary: '下载 Mac', secondary: '去 GitHub 点 Star', platform: 'macOS 14+ · Apple Silicon',
+    primary: '在 GitHub 下载', secondary: '去 GitHub 点 Star', platform: 'macOS 14+ · Apple Silicon',
     waitlist: {
       action: 'Windows 候补名单', title: '等 Windows 版？',
       description: '留下邮箱，Windows 版可用时通知你。目前还没有发布日期。',
@@ -86,7 +86,7 @@ export const copy = {
     eyebrow: 'A LIGHTWEIGHT macOS EDITOR · FOR PARALLEL PROJECTS',
     title: ['More projects with AI.', 'Less to carry.'],
     description: 'Multiple projects. One window.\nTerminals, files, Git, commands, and background services, close at hand.',
-    primary: 'Download for Mac', secondary: 'Star on GitHub', platform: 'macOS 14+ · Apple Silicon',
+    primary: 'Download on GitHub', secondary: 'Star on GitHub', platform: 'macOS 14+ · Apple Silicon',
     waitlist: {
       action: 'Windows waitlist', title: 'Waiting for Windows?',
       description: 'Leave your email to hear when the Windows version is available. There is no release date yet.',

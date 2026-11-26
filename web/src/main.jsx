@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './story.css';
 import { HeroAtmosphere, usePageEffects } from './effects';
-import { copy, stories, repository, releaseVersion, dmgRelease } from './content';
+import { copy, stories, repository, releaseVersion, latestRelease } from './content';
 import { SceneFigure, shotSource } from './SceneFigure';
 import { Story } from './Story';
 import { shareTags } from './share-meta';
@@ -61,7 +61,7 @@ function App() {
     <header className="header wrap">
       <a href={languagePath} className="brand" aria-label="vsux"><img src="/assets/vsux-logo.png" alt="" />vsux<span className="brand-slash">/</span></a>
       <nav aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}>{t.nav.map((label, i) => <a key={i} href={[`${languagePath}#why-vsux`, `${languagePath}#features`, `${languagePath}?view=story`][i]}>{label}</a>)}</nav>
-      <div className="header-actions"><button className="language" aria-label={t.langLabel} onClick={switchLanguage}>{t.lang}</button><a className="button button-small" href={dmgRelease}>{t.primary}<span aria-hidden="true">↓</span></a></div>
+      <div className="header-actions"><button className="language" aria-label={t.langLabel} onClick={switchLanguage}>{t.lang}</button><a className="button button-small" href={latestRelease}>{t.primary}<span aria-hidden="true">↗</span></a></div>
     </header>
     <main id="main">
       {isArticle ? <Story lang={lang} t={t} onImage={openImage} /> : <>
@@ -71,7 +71,7 @@ function App() {
           <p className="eyebrow"><span />{t.eyebrow}</p>
           <h1><span className="hero-line"><span>{t.title[0]}</span></span><span className="hero-line hero-line-accent"><span>{t.title[1]}</span></span></h1>
           <p className="hero-description">{t.description}</p>
-          <div className="hero-actions"><a className="button" href={dmgRelease}><span aria-hidden="true">↓</span>{t.primary}</a><button ref={waitlistButton} className="button button-secondary" type="button" aria-expanded={waitlistOpen} aria-controls="windows-waitlist" onClick={() => setWaitlistOpen(value => !value)}>{t.waitlist.action}</button>
+          <div className="hero-actions"><a className="button" href={latestRelease}>{t.primary}<span aria-hidden="true">↗</span></a><button ref={waitlistButton} className="button button-secondary" type="button" aria-expanded={waitlistOpen} aria-controls="windows-waitlist" onClick={() => setWaitlistOpen(value => !value)}>{t.waitlist.action}</button>
             <a className="button hero-star" href={repository} target="_blank" rel="noreferrer">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.558 21.922c.562.104.768-.244.768-.542 0-.267-.01-.975-.015-1.914-3.13.68-3.79-1.508-3.79-1.508-.512-1.3-1.25-1.646-1.25-1.646-1.023-.7.077-.686.077-.686 1.13.08 1.725 1.16 1.725 1.16 1.005 1.722 2.637 1.225 3.278.937.102-.728.393-1.225.715-1.507-2.498-.284-5.124-1.25-5.124-5.565 0-1.23.44-2.235 1.16-3.022-.116-.285-.503-1.43.11-2.98 0 0 .945-.302 3.094 1.155a10.8 10.8 0 0 1 5.63 0c2.148-1.457 3.092-1.155 3.092-1.155.614 1.55.227 2.695.112 2.98.72.787 1.158 1.792 1.158 3.022 0 4.327-2.63 5.278-5.136 5.557.404.35.765 1.042.765 2.1 0 1.516-.014 2.74-.014 3.112 0 .3.202.65.774.54A11.25 11.25 0 0 0 12 .75Z" /></svg>
               {t.secondary}
