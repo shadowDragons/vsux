@@ -93,7 +93,8 @@ final class WorkbenchDividerTests: XCTestCase {
         model.showSidebar = false
         settle(window)
         XCTAssertEqual(terminalFrame().minX, 0, accuracy: 2)
-        window.setContentSize(originalSize)
+        // A small display may constrain the requested size when the window is shown.
+        window.setContentSize(viewport.size)
         model.showSidebar = true
         settle(window)
         XCTAssertEqual(terminalFrame().minX, final.minX, accuracy: 2)
