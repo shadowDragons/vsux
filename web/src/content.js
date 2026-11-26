@@ -1,5 +1,6 @@
 export const repository = 'https://github.com/shadowDragons/vsux';
-export const dmgRelease = `${repository}/releases/download/v1.1.2/vsux-1.1.2-macos-arm64.dmg`;
+export const releaseVersion = '1.1.3';
+export const dmgRelease = `${repository}/releases/download/v${releaseVersion}/vsux-${releaseVersion}-macos-arm64.dmg`;
 
 export const copy = {
   zh: {
@@ -44,7 +45,7 @@ export const copy = {
     features: '多个项目，各有位置。',
     featureIntro: '项目与终端是中心，其余功能围绕日常接手的事情展开。',
     cards: [
-      ['多项目工作区', '命名、排序、置顶。每个项目各有工作区，布局和目录保存在本机，下次接着用。'],
+      ['多项目工作区', '在支持的 macOS 应用里用 vsux 打开项目目录。再次打开同一目录，会回到已有工作区。工作区可命名、排序和置顶，布局保存在本机。'],
       ['终端标签与四向分屏', '一边让 AI 工作，一边运行测试。多个标签，上下左右分屏，按项目安排。'],
       ['项目命令', '测试、构建和启动命令按项目保存。搜索后复制或填入终端，看清内容，再按回车执行。'],
       ['后台服务', '配置启动命令和运行目录，支持启动、停止、重启和查看日志。切换项目，服务继续跑。'],
@@ -122,7 +123,7 @@ export const copy = {
     features: 'Several projects. A place for each.',
     featureIntro: 'Projects and terminals come first. Everyday tools support the work I take over.',
     cards: [
-      ['Project workspaces', 'Name, sort, and pin projects. Save workspace layouts and directories locally, ready for next time.'],
+      ['Project workspaces', 'Open project folders in vsux from compatible macOS apps. Reopening the same folder selects its workspace. Name, sort, and pin projects, with layouts saved locally.'],
       ['Terminal tabs & splits', 'Let AI work in one pane and run tests in another. Arrange tabs and splits in four directions.'],
       ['Project commands', 'Save test, build, and start commands per project. Search, copy, or insert one into the terminal. Review it, then press Enter.'],
       ['Background services', 'Set a command and directory. Start, stop, restart, and inspect logs. Services keep running when you switch projects.'],

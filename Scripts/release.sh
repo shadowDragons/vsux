@@ -2,7 +2,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-version=${1:-1.1.2}
+version=${1:-1.1.3}
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
   printf 'Usage: %s X.Y.Z\n' "$0" >&2
   exit 1

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './styles.css';
 import './story.css';
 import { HeroAtmosphere, usePageEffects } from './effects';
-import { copy, stories, repository, dmgRelease } from './content';
+import { copy, stories, repository, releaseVersion, dmgRelease } from './content';
 import { SceneFigure, shotSource } from './SceneFigure';
 import { Story } from './Story';
 import { shareTags } from './share-meta';
@@ -78,7 +78,7 @@ function App() {
               <svg className="star-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m12 3 2.78 5.63L21 9.54l-4.5 4.39 1.06 6.2L12 17.2l-5.56 2.93 1.06-6.2L3 9.54l6.22-.91L12 3Z" /></svg>
             </a>
           </div>
-          <p className="platform">{t.platform}</p>
+          <p className="platform">v{releaseVersion} · {t.platform}</p>
         </div>
         <figure className="product-stage" id="workflow">
           <div className="stage-meta"><span>vsux / workspace</span><span>JUST ENOUGH. ALL YOURS.</span></div>

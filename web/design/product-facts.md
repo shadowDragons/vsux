@@ -68,3 +68,8 @@ Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspa
 
 - The file editor wraps long lines at the available width by default. Option-Z or View → Word Wrap toggles wrapping for the active document.
 - The download links target the v1.1.2 Apple Silicon DMG. Users of v1.1.0 and later can use the built-in updater.
+
+## v1.1.3 release, 2026-11-26
+
+- macOS can pass project folders to vsux. Opening a directory creates or selects its workspace. The app can receive the directory during startup or while it is running. Verified against the packaged app built from `4123831`.
+- The landing page shows v1.1.3 and links to its Apple Silicon DMG. The Chinese and English workspace descriptions cover opening folders from other apps.

@@ -9,10 +9,10 @@ Use Apple Silicon, macOS 14+, and Xcode 26 / Swift 6.2 or newer. Swift Markdown
 Scripts/bootstrap-ghostty.sh
 swift test
 python3 Scripts/check-localizations.py
-Scripts/release.sh 1.1.2
+Scripts/release.sh 1.1.3
 ```
 
-Outputs are `dist/vsux-1.1.2-macos-arm64.dmg` and the matching `.dmg.sha256`.
+Outputs are `dist/vsux-1.1.3-macos-arm64.dmg` and the matching `.dmg.sha256`.
 The image contains vsux.app, an Applications shortcut and installation notes.
 Builds start from an empty app staging directory and validate code signatures,
 DMG integrity and executable architecture. No user preferences, workspace JSON,
@@ -64,7 +64,7 @@ changes. The export script does not create a remote or change visibility.
 
 Prepare new repositories privately until the owner authorizes publication.
 A Release draft remains unpublished until explicitly released. The current
-`shadowDragons/vsux` repository is public; v1.1.2 is the stable release target.
+`shadowDragons/vsux` repository is public; v1.1.3 is the stable release target.
 
 ## GitHub Release
 
@@ -79,7 +79,7 @@ and npm audit.
 1. Complete the license review, inspect screenshots/assets, and run the full
    test suite locally; CI also runs the full Swift test suite.
 2. Commit the reviewed source in the clean repository and push it.
-3. Tag that reviewed commit, e.g. `git tag v1.1.2`, and push the tag. Alternatively
+3. Tag that reviewed commit, e.g. `git tag v1.1.3`, and push the tag. Alternatively
    run the workflow manually against an existing `vX.Y.Z` tag.
 4. Review the draft, download its assets, verify checksums, and test installation
    on a separate machine, including the oldest supported macOS version.
@@ -138,9 +138,9 @@ its Check for Updates action explains how to upgrade that build.
 
 ```sh
 export SPARKLE_PUBLIC_KEY="$(.build/artifacts/sparkle/Sparkle/bin/generate_keys --account vsux -p)"
-Scripts/release.sh 1.1.2
-python3 Scripts/updates.py fetch-baseline 1.1.2 dist/update-baseline
-python3 Scripts/updates.py package 1.1.2 --baseline dist/update-baseline
+Scripts/release.sh 1.1.3
+python3 Scripts/updates.py fetch-baseline 1.1.3 dist/update-baseline
+python3 Scripts/updates.py package 1.1.3 --baseline dist/update-baseline
 ```
 
 Fetching the previous release requires `gh` and network access. For offline
@@ -148,12 +148,12 @@ preparation, put previously published update ZIPs in the baseline directory,
 or omit `--baseline` for a full update only. `UPDATE_REPOSITORY=owner/name`
 configures forks consistently in both the build and packaging steps.
 
-`dist/updates-1.1.2/` contains only uploadable assets: `appcast.xml`, the full
+`dist/updates-1.1.3/` contains only uploadable assets: `appcast.xml`, the full
 ZIP, useful delta patches and SHA-256 files. Upload all these files alongside
 the DMG to the **same** release. The helper refuses to overwrite an existing
 output directory. Review/move old output before regenerating it.
 
-`CFBundleVersion` defaults to the marketing version (`1.1.2`), so local and CI
+`CFBundleVersion` defaults to the marketing version (`1.1.3`), so local and CI
 builds share one ordering. If overriding `BUILD_NUMBER`, keep it strictly
 increasing across all distribution channels and never revert to smaller values.
 The helper requires the feed to describe exactly the current build, include a
