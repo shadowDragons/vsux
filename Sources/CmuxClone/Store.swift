@@ -172,7 +172,7 @@ final class WindowModel: ObservableObject {
         addWorkspace(at: url)
     }
     func addWorkspace(at url: URL) {
-        let value = Workspace(name: url.lastPathComponent, directory: url.path)
+        let value = Workspace(directoryURL: url)
         workspaces.append(value); selectWorkspace(value.id)
     }
     func renameWorkspace(_ id: UUID) {

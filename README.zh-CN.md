@@ -105,6 +105,20 @@ v1.1.0 起可通过 **vsux → 检查更新…** 或设置中的“软件更新�
 | 查找工作区文件 | `⌘⇧F` |
 | Markdown 侧边预览 | `⇧⌘V` |
 
+### 从其他应用打开项目目录
+
+macOS 可以将目录交给 vsux，重复打开同一目录会切回已有的工作区。也可以在项目目录里运行 `open -a /Applications/vsux.app .`。
+
+Codex 桌面版使用自己的「打开方式」菜单。要添加 vsux，请将下面的配置加到 `~/.codex/config.toml`，然后重新启动 Codex。若应用安装在其他位置，请将 `args` 中的路径改为实际位置。
+
+```toml
+[desktop.custom_file_handlers.vsux]
+label = "vsux"
+icon = "apps/terminal.png"
+command = "/usr/bin/open"
+args = ["-a", "/Applications/vsux.app"]
+```
+
 ## 从源码构建
 
 需要 macOS 14 或更新版本、Apple Silicon，以及 Xcode 26 / Swift 6.2 或更新工具链。首次构建需要联网下载固定版本的 GhosttyKit（约 123 MB）和 SwiftPM 依赖；GhosttyKit 会先校验 SHA-256。

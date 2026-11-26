@@ -52,6 +52,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
     var windows: [TerminalWindowController] = []
     private lazy var workspaceSession = WorkspaceSession()
     private var workspacePersistenceEnabled = false
+    private var pendingWorkspaceDirectories: [URL] = []
     var current: WindowModel? { windows.first { $0.window === NSApp.keyWindow }?.model }
     func applicationDidFinishLaunching(_ notification: Notification) {
         _ = LanguagePreferences.shared
@@ -59,13 +60,55 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuItemValidation {
         _ = GhosttyEngine.shared
         makeMenus()
         workspacePersistenceEnabled = true
-        newWindow(nil)
+        let directories = pendingWorkspaceDirectories
+        pendingWorkspaceDirectories.removeAll()
+        if directories.isEmpty { showNewWindow() }
+        else { openWorkspaceDirectories(directories) }
         NSApp.activate(ignoringOtherApps: true)
         AppUpdater.shared.start()
     }
-    @objc func newWindow(_ sender: Any?) {
+    func application(_ sender: NSApplication, openFiles filenames: [String]) {
+        let directories = filenames.compactMap { filename -> URL? in
+            let url = URL(fileURLWithPath: filename, isDirectory: true).resolvingSymlinksInPath()
+            var isDirectory: ObjCBool = false
+            guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory),
+                  isDirectory.boolValue else { return nil }
+            return url
+        }
+        guard !directories.isEmpty else {
+            sender.reply(toOpenOrPrint: .failure)
+            return
+        }
+        if workspacePersistenceEnabled { openWorkspaceDirectories(directories) }
+        else { pendingWorkspaceDirectories.append(contentsOf: directories) }
+        sender.reply(toOpenOrPrint: .success)
+    }
+    private func openWorkspaceDirectories(_ directories: [URL]) {
+        if windows.isEmpty { showNewWindow(initialDirectory: directories.first) }
+        for directory in directories {
+            if let (controller, workspace) = existingWorkspace(for: directory) {
+                controller.window?.makeKeyAndOrderFront(nil)
+                controller.model.selectWorkspace(workspace.id)
+            } else if let controller = windows.first(where: { $0.window === NSApp.keyWindow }) ?? windows.last {
+                controller.window?.makeKeyAndOrderFront(nil)
+                controller.model.addWorkspace(at: directory)
+            }
+        }
+    }
+    private func existingWorkspace(for directory: URL) -> (TerminalWindowController, Workspace)? {
+        for controller in windows {
+            if let workspace = controller.model.workspaces.first(where: {
+                URL(fileURLWithPath: $0.directory, isDirectory: true).resolvingSymlinksInPath().path == directory.path
+            }) {
+                return (controller, workspace)
+            }
+        }
+        return nil
+    }
+    @objc func newWindow(_ sender: Any?) { showNewWindow() }
+    private func showNewWindow(initialDirectory: URL? = nil) {
         let restored = workspacePersistenceEnabled && windows.isEmpty ? workspaceSession.restore() : []
-        let models = restored.isEmpty ? [WindowModel()] : restored
+        let models = restored.isEmpty ? [WindowModel(workspaces: initialDirectory.map { [Workspace(directoryURL: $0)] })] : restored
         if workspacePersistenceEnabled, let workspaceID = models.last?.workspace?.id {
             CommandLibrary.shared.migrateLegacyCommands(to: workspaceID)
         }

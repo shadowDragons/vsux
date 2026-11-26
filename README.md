@@ -105,6 +105,20 @@ Common shortcuts:
 | Find in workspace files | `⌘⇧F` |
 | Markdown side preview | `⇧⌘V` |
 
+### Open project folders from other apps
+
+macOS can pass a folder to vsux. Opening the same folder again selects its existing workspace. From a terminal in the project folder, you can also run `open -a /Applications/vsux.app .`.
+
+The Codex desktop app has its own Open In menu. To add vsux, append the following to `~/.codex/config.toml` and restart Codex. If you installed vsux elsewhere, use its actual path in `args`.
+
+```toml
+[desktop.custom_file_handlers.vsux]
+label = "vsux"
+icon = "apps/terminal.png"
+command = "/usr/bin/open"
+args = ["-a", "/Applications/vsux.app"]
+```
+
 ## Build from source
 
 Requires macOS 14 or later, Apple Silicon, and Xcode 26 / Swift 6.2 or a newer toolchain. The first build downloads a pinned GhosttyKit build (about 123 MB) and SwiftPM dependencies. GhosttyKit is verified against a SHA-256 checksum before use.

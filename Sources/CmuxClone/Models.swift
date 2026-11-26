@@ -206,6 +206,12 @@ struct Workspace: Identifiable, Equatable {
     var tabs: [TerminalTab]
     var selectedTabID: UUID
 
+    init(directoryURL: URL) {
+        let name = directoryURL.lastPathComponent
+        self.init(name: name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? directoryURL.path : name,
+                  directory: directoryURL.path)
+    }
+
     init(name: String, directory: String) {
         self.name = name; self.directory = directory
         let tab = TerminalTab(); tabs = [tab]; selectedTabID = tab.id
