@@ -1,5 +1,5 @@
 export const repository = 'https://github.com/shadowDragons/vsux';
-export const releaseVersion = '1.1.4';
+export const releaseVersion = '1.1.5';
 export const latestRelease = `${repository}/releases/latest`;
 
 export const copy = {

@@ -4,6 +4,59 @@ import CGhostty
 @testable import CmuxClone
 
 final class TerminalIntegrationTests: XCTestCase {
+    @MainActor func testClosingIdleTabLeavesOtherTabsRunning() throws {
+        _ = NSApplication.shared
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = WindowModel(workspaces: [Workspace(name: "Close tab", directory: root.path)])
+        let controller = TerminalWindowController(model: model)
+        let window = try XCTUnwrap(controller.window)
+        window.orderFront(nil)
+        defer { model.disposeAll(); window.orderOut(nil) }
+
+        func run(_ command: String, in terminal: GhosttyTerminalView) {
+            terminal.pasteText(command)
+            let enter = NSEvent.keyEvent(with: .keyDown, location: .zero, modifierFlags: [], timestamp: 0,
+                windowNumber: window.windowNumber, context: nil, characters: "\r", charactersIgnoringModifiers: "\r", isARepeat: false, keyCode: 36)!
+            terminal.keyDown(with: enter)
+        }
+        func exists(_ filename: String) -> Bool {
+            FileManager.default.fileExists(atPath: root.appendingPathComponent(filename).path)
+        }
+
+        let idleID = try XCTUnwrap(model.selectedTab?.id)
+        XCTAssertTrue(pump { model.focusedTerminal?.surface != nil })
+        let idle = try XCTUnwrap(model.focusedTerminal)
+        run("printf ready > ready", in: idle)
+        XCTAssertTrue(pump { exists("ready") })
+        guard pump(until: { !idle.needsConfirmation }, timeout: 2) else {
+            return XCTFail("An idle shell at the prompt should close without confirmation")
+        }
+
+        model.addTab()
+        let runningID = try XCTUnwrap(model.selectedTab?.id)
+        XCTAssertTrue(pump { model.focusedTerminal?.surface != nil })
+        let running = try XCTUnwrap(model.focusedTerminal)
+        let surface = try XCTUnwrap(running.surface)
+        run("printf started > started; while [ ! -f finish ]; do /bin/sleep 0.1; done; printf done > done", in: running)
+        XCTAssertTrue(pump { exists("started") })
+        XCTAssertTrue(running.needsConfirmation)
+        XCTAssertFalse(idle.needsConfirmation)
+        model.closeTab(idleID)
+        XCTAssertEqual(model.workspace?.tabs.map(\.id), [runningID])
+        XCTAssertNil(idle.surface)
+        XCTAssertEqual(running.surface, surface)
+
+        try Data().write(to: root.appendingPathComponent("finish"))
+        XCTAssertTrue(pump { exists("done") && !running.needsConfirmation })
+
+        run("/bin/sleep 30 &", in: running)
+        run("printf ready > background", in: running)
+        XCTAssertTrue(pump { exists("background") })
+        XCTAssertTrue(running.needsConfirmation)
+    }
+
     @MainActor func testSwitchingWorkspacesShowsTheSelectedTerminalWithoutChangingModes() throws {
         _ = NSApplication.shared
         let first = Workspace(name: "First", directory: NSTemporaryDirectory())

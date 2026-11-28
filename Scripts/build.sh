@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
-version=${VERSION:-1.1.4}
+version=${VERSION:-1.1.5}
 build_number=${BUILD_NUMBER:-$version}
 if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || [[ ! "$build_number" =~ ^[0-9]+(\.[0-9]+){0,2}$ ]]; then
   printf 'VERSION must be X.Y.Z and BUILD_NUMBER must contain 1–3 numeric components.\n' >&2

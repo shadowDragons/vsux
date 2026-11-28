@@ -78,3 +78,8 @@ Verified against SSHConnections, SSHCredentials, SSHWorkspaceRuntime, SSHWorkspa
 
 - Both workbench dividers follow the pointer in window coordinates. Sidebars can grow until the other visible regions reach their minimum widths.
 - Native tests cover continuous dragging, reversing direction after hitting a limit, hiding and restoring a sidebar, and zoom and window size changes.
+
+## v1.1.5 release, 2026-11-28
+
+- Idle local terminals can close without a confirmation when the shell is waiting for input and has no jobs.
+- Closing one tab leaves commands in other tabs running. Terminals with active jobs still require confirmation.

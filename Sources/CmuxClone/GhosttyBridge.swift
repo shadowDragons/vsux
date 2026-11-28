@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import CGhostty
+import Darwin
 
 @MainActor
 final class GhosttyEngine {
@@ -140,7 +141,53 @@ final class GhosttyTerminalView: NSView, @preconcurrency NSTextInputClient {
     private var isShutdown = false
     private var pendingText = ""
     private var tracking: NSTrackingArea?
-    var needsConfirmation: Bool { surface.map { ghostty_surface_needs_confirm_quit($0) } ?? false }
+    var needsConfirmation: Bool {
+        guard let surface, ghostty_surface_needs_confirm_quit(surface) else { return false }
+        return command != nil || !isIdleLoginShell(on: surface)
+    }
+
+    private func isIdleLoginShell(on surface: ghostty_surface_t) -> Bool {
+        // Shell integration is disabled. Only skip confirmation when the local
+        // login shell owns the foreground and the tty is in line-editing mode.
+        // macOS login is the session leader when Ghostty uses a login wrapper.
+        guard let pid = pid_t(exactly: ghostty_surface_foreground_pid(surface)), pid > 0,
+              let shell = processInfo(pid),
+              ["zsh", "bash", "fish"].contains(processName(pid)),
+              shell.pbi_pgid == UInt32(pid), shell.e_tpgid == UInt32(pid),
+              let parentPID = pid_t(exactly: shell.pbi_ppid),
+              parentPID == getpid() || parentPID == getsid(pid) else { return false }
+
+        let tty = ghostty_surface_tty_name(surface)
+        defer { ghostty_string_free(tty) }
+        guard let path = tty.ptr else { return false }
+        let fd = open(path, O_RDONLY | O_NOCTTY | O_NONBLOCK)
+        guard fd >= 0 else { return false }
+        defer { close(fd) }
+        var device = stat()
+        var mode = termios()
+        guard fstat(fd, &device) == 0, UInt32(bitPattern: device.st_rdev) == shell.e_tdev,
+              tcgetattr(fd, &mode) == 0, mode.c_lflag & tcflag_t(ICANON | ECHO) == 0 else { return false }
+
+        // A background or stopped job can still belong to a shell at its prompt.
+        var child: pid_t = 0
+        errno = 0
+        guard proc_listchildpids(pid, &child, Int32(MemoryLayout<pid_t>.size)) == 0,
+              errno == 0 else { return false }
+        return ghostty_surface_foreground_pid(surface) == UInt64(pid)
+    }
+
+    private func processInfo(_ pid: pid_t) -> proc_bsdinfo? {
+        var info = proc_bsdinfo()
+        let size = Int32(MemoryLayout<proc_bsdinfo>.size)
+        guard proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &info, size) == size else { return nil }
+        return info
+    }
+
+    private func processName(_ pid: pid_t) -> String {
+        var name = [CChar](repeating: 0, count: Int(MAXCOMLEN) * 2)
+        guard proc_name(pid, &name, UInt32(name.count)) > 0 else { return "" }
+        return String(cString: name)
+    }
 
     init(paneID: UUID, directory: String, command: String? = nil, environment: [String: String] = [:]) {
         self.paneID = paneID; self.directory = directory; self.command = command; self.environment = environment
